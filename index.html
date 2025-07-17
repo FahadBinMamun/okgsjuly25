@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.1">
+    <style>
+        /* হোমপেজের জন্য ব্লার সহ ব্যাকগ্রাউন্ড */
+        .homepage-bg-with-blur {
+            /* ছবির লিঙ্ক পরিবর্তন করা হয়েছে */
+            background-image: url('images/school_building.jpeg'); /* স্কুলের বিল্ডিং এর ছবি */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            z-index: 0;
+        }
+        .homepage-bg-with-blur::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(248, 244, 240, 0.8); /* স্বচ্ছতা সহ হালকা বেইজ ওভারলে */
+            backdrop-filter: blur(5px); /* ব্লার ইফেক্ট */
+            -webkit-backdrop-filter: blur(5px);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="antialiased homepage-bg-with-blur">
+    <div class="container mx-auto p-4 md:p-8 relative z-10">
+
+        <header class="text-center mb-12">
+            <!-- ছবির লিঙ্ক পরিবর্তন করা হয়েছে এবং লোগোর স্টাইল style.css থেকে নিয়ন্ত্রণ করা হবে -->
+            <img src="images/school_logo.png" alt="স্কুলের লোগো" class="school-logo mx-auto mb-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#025373]">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি</h1>
+            <p class="text-xl mt-2 text-[#037E8C] quote-text">"প্রতিটি শিক্ষার্থীর সুপ্ত প্রতিভা বিকাশে আমরা অঙ্গীকারবদ্ধ।"</p>
+        </header>
+
+        <main>
+            <section id="welcome" class="section-bg-white rounded-2xl p-8 mb-12 text-center">
+                <h2 class="text-3xl font-bold mb-4 text-[#025373]">আমাদের মাসিক কার্যক্রম</h2>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি শিক্ষার্থীদের সুপ্ত প্রতিভা বিকাশে বদ্ধপরিকর। প্রতি মাসে আমরা বিভিন্ন শিক্ষামূলক ও সহ-শিক্ষা কার্যক্রমের আয়োজন করি, যা শিক্ষার্থীদের জ্ঞান ও দক্ষতা বৃদ্ধিতে সহায়তা করে। আমাদের লক্ষ্য হলো একটি সামগ্রিক শিক্ষার পরিবেশ তৈরি করা, যেখানে শিক্ষার্থীরা শুধু বই থেকে শিখবে না, বরং বাস্তব জীবনের চ্যালেঞ্জ মোকাবেলার জন্য প্রস্তুত হবে।
+                </p>
+            </section>
+
+            <section id="contests" class="mb-12">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]">জুলাই মাসের বিশেষ প্রতিযোগিতা</h2>
+                <p class="text-center mb-6 text-lg text-gray-700">
+                    এই জুলাই মাসে আমরা দুটি বিশেষ প্রতিযোগিতার আয়োজন করেছি, যা শিক্ষার্থীদের মেধা ও সৃজনশীলতা প্রদর্শনের সুযোগ দেবে।
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="contest-card flex flex-col items-center justify-center p-6" onclick="location.href='contest-science_olympiad-july24.html'">
+                        <!-- ছবির লিঙ্ক পরিবর্তন করা হয়েছে -->
+                        <img src="images/science_olympiad_logo.png" alt="বিজ্ঞান অলিম্পিয়াড লোগো">
+                        <h3 class="text-2xl font-bold mb-2 text-[#025373]">ALSMM বিজ্ঞান অলিম্পিয়াড, জুলাই ২০২৫</h3>
+                        <p class="text-gray-700 text-center">১ম থেকে ১০ম শ্রেণির সকল শিক্ষার্থীর জন্য একটি সমন্বিত ও অনুপ্রেরণামূলক উদ্যোগ।</p>
+                        <p class="text-md font-semibold text-[#025373] mt-4">পরীক্ষার তারিখ: ৩১ জুলাই, ২০২৫</p>
+                        <p class="click-for-details">বিস্তারিত জানতে ক্লিক করুন</p>
+                    </div>
+                    <div class="contest-card flex flex-col items-center justify-center p-6" onclick="location.href='contest-web_development_contest-july24.html'">
+                        <!-- ছবির লিঙ্ক পরিবর্তন করা হয়েছে -->
+                        <img src="images/alpcg_logo.png" alt="ওয়েব ডেভেলপমেন্ট প্রতিযোগিতা লোগো">
+                        <h3 class="text-2xl font-bold mb-2 text-[#025373]">ALPCG ওয়েব ডেভেলপমেন্ট প্রতিযোগিতা, জুলাই ২০২৫</h3>
+                        <p class="text-gray-700 text-center">৬ষ্ঠ থেকে ১০ম শ্রেণির যেকোনো আগ্রহী শিক্ষার্থী এককভাবে অংশগ্রহণ করতে পারবে।</p>
+                        <p class="text-md font-semibold text-[#025373] mt-4">পরীক্ষার তারিখ: ৩১ জুলাই, ২০২৫</p>
+                        <p class="click-for-details">বিস্তারিত জানতে ক্লিক করুন</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="syllabus" class="section-bg-white rounded-2xl p-8 mb-12">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]">জুলাই মাসের প্রতিযোগিতার সিলেবাস</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[#037E8C]">১। বিজ্ঞান অলিম্পিয়াড</h3>
+                        <p class="text-gray-700 mb-2"><strong>পরীক্ষার তারিখ: ৩১ জুলাই, ২০২৫</strong></p>
+                        <p class="text-gray-700 mb-4"><strong>নির্দেশনা:</strong></p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li><strong>১ম-২য় শ্রেণি:</strong> পদার্থ ও শক্তি</li>
+                            <li><strong>৩য়-৫ম শ্রেণি:</strong> উদ্ভিদ, প্রাণী, শক্তি, পরিবেশ, পদার্থ।</li>
+                            <li><strong>৬ষ্ঠ-৮ম শ্রেণি:</strong> পরিমাপ, পদার্থ, শক্তি।</li>
+                            <li><strong>৯ম-১০ম শ্রেণি - মানবিক বিভাগ:</strong> বল, শক্তি, কাজ মানবদেহ, আলো, BMI, খাদ্য, মৌলিক কণিকা ও রাসায়নিক বিক্রিয়া।</li>
+                            <li><strong>৯ম-১০ম শ্রেণি - বিজ্ঞান বিভাগ:</strong> গতি, কাজ ক্ষমতা ও শক্তি, বল, মোলারিটি, পর্যায় সারণি, কোষ, কোষ বিভাজন, রক্ত।</li>
+                        </ul>
+                        <p class="text-gray-600 mt-4 font-semibold">
+                            বি.দ্র: বিজ্ঞান অলিম্পিয়াড এর জন্য সাধারণ বিজ্ঞান সম্পর্কিত বিষয় ও ডাইভেনশন ম্যাগাজিন গুরুত্বপূর্ণ।
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4 text-[#037E8C]">২। ওয়েব ডেভেলপমেন্ট</h3>
+                        <p class="text-gray-700 mb-2"><strong>পরীক্ষার তারিখ: ৩১ জুলাই, ২০২৫</strong></p>
+                        <p class="text-gray-700 mb-4"><strong>অংশগ্রহণকারীদের নির্দেশনা:</strong> ৬ষ্ঠ থেকে ১০ম শ্রেণির যেকোনো আগ্রহী শিক্ষার্থী এককভাবে অংশগ্রহণ করতে পারবে।</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li>কনটেস্ট চলাকালীন কোন ধরনের অনলাইন কপি ব্যবহার করা যাবে না।</li>
+                            <li>ALPCG ক্লাব সদস্যদের জন্য অংশগ্রহণ আবশ্যক।</li>
+                            <li>**সিলেবাস:** HTML ব্যবহার করে একটি সহজ ও কার্যকর ওয়েবপেজ তৈরির ক্ষমতা যাচাই করা হবে। অংশগ্রহণকারীদের প্রয়োজনীয় বিষয়বস্তু নিয়ে ল্যাব ক্লাসে বিস্তারিত আলোচনা ও অনুশীলনের মাধ্যমে প্রস্তুতি গ্রহণ করা হবে।</li>
+                        </ul>
+                        <p class="text-gray-600 mt-4 font-semibold">
+                            অন্যান্য শিক্ষার্থীর জন্য: অংশগ্রহণ ঐচ্ছিক, তবে কনটেস্টে অংশ নিতে হলে কনটেস্টের পূর্বে ক্লাব কর্তৃক আয়োজিত নির্দিষ্ট ওয়েব ডেভেলপমেন্ট ক্লাস বা সেশন-এ অংশগ্রহণ আবশ্যক।
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-300">
+            <nav class="mb-4">
+                <ul class="flex flex-wrap justify-center gap-4 text-lg">
+                    <li><a href="index.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">হোম</a></li>
+                    <li><a href="contest-science_olympiad-july24.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
+                    <li><a href="contest-web_development_contest-july24.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
+                    <li><a href="#privacy-policy" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">গোপনীয়তা নীতি</a></li>
+                    <li><a href="#terms-of-service" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
+                </ul>
+            </nav>
+            <p class="text-gray-600">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
+   <p class="text-sm text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p>
+        </footer>
+
+    </div>
+</body>
+</html>
+
+

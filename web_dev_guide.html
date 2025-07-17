@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>HTML পরিচিতি: একটি ভিজ্যুয়াল গাইড</title>
+    <!-- Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts for Bengali text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <!-- আপনার বিদ্যমান style.css ফাইলটি লোড করা হচ্ছে -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom styles for the body and general elements */
+        body {
+            font-family: 'Tiro Bangla', serif; /* বাংলার জন্য প্রধান ফন্ট */
+            background-color: #F8F4F0; /* হালকা বেইজ/অফ-হোয়াইট */
+            color: #041B2D; /* খুব গাঢ় নীল/প্রায় কালো */
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Tiro Bangla', serif; /* হেডিং এর জন্য তিরো বাংলা ফন্ট */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        /* Styling for chart containers to ensure responsiveness */
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px; /* Fixed height for charts */
+            width: 100%;
+            max-width: 400px; /* Max width for charts */
+        }
+        /* Card styling with shadow and hover effect */
+        .card {
+            background-color: white;
+            border-radius: 16px; /* Slightly more rounded corners for a softer look */
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1), 0 6px 10px -3px rgba(0, 0, 0, 0.08); /* Stronger shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover */
+            overflow: hidden; /* Ensure content stays within rounded corners */
+            padding: 0; /* Remove default padding from card, padding will be inside dropdown-toggle/content */
+        }
+        .card:hover {
+            transform: translateY(-8px); /* More pronounced lift on hover */
+            box-shadow: 0 20px 35px -8px rgba(0, 0, 0, 0.15), 0 8px 12px -4px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
+        }
+        /* Flow arrow styling for visual hierarchy */
+        .flow-arrow {
+            font-size: 2.8rem; /* Slightly larger arrows */
+            color: #F29E38; /* কমলা রঙ */
+            line-height: 1;
+            font-weight: bold;
+        }
+        /* Step circle styling for numbered lists */
+        .step-circle {
+            background-color: #037E8C; /* টিল নীল */
+            color: white;
+            border-radius: 50%;
+            width: 48px; /* Larger circles */
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.4rem; /* Larger font in circles */
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for circles */
+        }
+        /* Heading colors */
+        h1, h2, h3 {
+            color: #025373; /* গাঢ় নীল */
+        }
+        /* Dropdown specific styles */
+        .dropdown-toggle {
+            background-color: #f8f8f8; /* Light background for toggle button */
+            border-bottom: 1px solid #e0e0e0; /* Slightly darker separator line */
+            cursor: pointer;
+            padding: 1.75rem 1.5rem; /* More padding */
+            border-radius: 16px 16px 0 0; /* Rounded top corners matching card */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown-toggle:hover {
+            background-color: #eef2f7; /* Slightly darker on hover */
+        }
+        .dropdown-toggle.active {
+            border-bottom: none; /* No border when active */
+            border-radius: 16px 16px 0 0; /* Maintain top border radius */
+        }
+        .dropdown-content {
+            padding: 1.5rem; /* Padding for content inside dropdown */
+            padding-top: 0.5rem; /* Less top padding to flow from toggle */
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.4s ease-out; /* Slightly slower fade-in animation */
+            border-radius: 0 0 16px 16px; /* Rounded bottom corners */
+        }
+        .dropdown-content.active {
+            display: block; /* Show when active */
+        }
+        .arrow-icon {
+            transition: transform 0.3s ease; /* Smooth rotation for arrow */
+            font-size: 1.8rem; /* Larger arrow icon */
+            color: #037E8C; /* টিল নীল */
+        }
+        .dropdown-toggle.active .arrow-icon {
+            transform: rotate(180deg); /* Rotate arrow when active */
+        }
+        /* Code block styling */
+        pre {
+            background-color: #f4f4f4;
+            border-left: 5px solid #037E8C; /* Thicker border (টিল নীল) */
+            padding: 1.25rem; /* More padding */
+            border-radius: 10px; /* More rounded */
+            overflow-x: auto; /* Allow horizontal scrolling for long lines */
+            font-family: 'Consolas', 'Monaco', 'Lucida Console', monospace;
+            font-size: 0.95rem; /* Slightly larger font */
+            color: #333;
+            margin-top: 1rem; /* Space above code block */
+        }
+        code {
+            font-family: inherit;
+        }
+
+        /* Responsive adjustments for flow diagram */
+        @media (max-width: 768px) {
+            .flow-diagram-item {
+                margin-bottom: 1rem; /* Add space between vertical items */
+            }
+        }
+
+        /* PIN protection specific styles */
+        .pin-container {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .pin-input {
+            border: 2px solid #037E8C;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.25rem;
+        }
+        .pin-button {
+            background-color: #F29E38;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+        .pin-button:hover {
+            background-color: #A66224;
+        }
+        .error-message {
+            color: #dc2626; /* Tailwind's red-600 */
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 relative z-10">
+
+        <header class="text-center mb-12">
+            <!-- ছবির লিঙ্ক পরিবর্তন করা হয়েছে এবং লোগোর স্টাইল style.css থেকে নিয়ন্ত্রণ করা হবে -->
+            <img src="images/school_logo.png" alt="স্কুলের লোগো" class="school-logo mx-auto mb-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#025373]">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি</h1>
+            <p class="text-xl mt-2 text-[#037E8C] quote-text">"প্রতিটি শিক্ষার্থীর সুপ্ত প্রতিভা বিকাশে আমরা অঙ্গীকারবদ্ধ।"</p>
+        </header>
+
+        <main>
+            <!-- PIN Entry Section -->
+            <div id="pin-entry-section" class="pin-container">
+                <h2 class="text-2xl font-bold mb-4 text-[#025373]">প্রবেশের জন্য পিন দিন</h2>
+                <input type="password" id="pin-input" class="pin-input" placeholder="পিন কোড লিখুন" maxlength="4">
+                <button id="submit-pin" class="pin-button">প্রবেশ করুন</button>
+                <p id="error-message" class="error-message hidden">ভুল পিন কোড। আবার চেষ্টা করুন।</p>
+            </div>
+
+            <!-- Protected Content Section -->
+            <section id="protected-content" class="hidden">
+                <!-- আপনার দেওয়া 'New Text Document.html' এর সম্পূর্ণ কন্টেন্ট এখানে শুরু হচ্ছে -->
+                <header class="text-center mb-12">
+                    <h1 class="text-5xl md:text-7xl font-bold text-shadow-lg" style="color: #073B4C;">ওয়েব দুনিয়ায় প্রথম অভিযান! 🚀</h1>
+                    <p class="text-xl md:text-2xl mt-4 font-semibold" style="color: #118AB2;">ALPCG ক্লাবের পক্ষ থেকে HTML এর প্রথম ক্লাসে সবাইকে শুভেচ্ছা।</p>
+                </header>
+
+                <main class="grid grid-cols-1 gap-8">
+
+                    <!-- Section: যারা একদম নতুন তাদের জন্য বিশেষ গাইড (Special Guide for Beginners - Moved to top) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">যারা একদম নতুন তাদের জন্য বিশেষ গাইড 👶</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="mb-6 text-center text-gray-600">কম্পিউটার বা মোবাইল কিভাবে কাজ করে, তা বুঝতে এই অংশটি তোমাকে সাহায্য করবে।</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+                                <div class="text-center p-6 border-2 border-dashed rounded-lg flex flex-col items-center justify-center" style="border-color: #EF476F; background-color: #FFF0F2;">
+                                    <div class="text-6xl mb-3">🖥️</div>
+                                    <h3 class="font-semibold text-2xl mb-2" style="color: #EF476F;">হার্ডওয়্যার (শরীর)</h3>
+                                    <p class="text-base text-gray-700">কম্পিউটারের যে অংশগুলো ছোঁয়া যায়, সেগুলোই হার্ডওয়্যার।</p>
+                                    <ul class="list-disc list-inside mt-4 text-left text-base space-y-2">
+                                        <li><strong>মনিটর (স্ক্রিন)</strong> - যা দিয়ে তুমি কম্পিউটারের ফলাফল বা ছবি দেখো। এটি একটি <strong style="color: #037E8C;">আউটপুট ডিভাইস</strong>।</li>
+                                        <li><strong>কীবোর্ড, মাউস</strong> - যা দিয়ে তুমি কম্পিউটারকে নির্দেশ দাও বা তথ্য ঢোকাও। এগুলো <strong style="color: #037E8C;">ইনপুট ডিভাইস</strong>।</li>
+                                        <li><strong>সিপিইউ (মস্তিষ্ক)</strong> - কম্পিউটারের সব কাজ বা হিসাব এখানেই হয়। এটি একটি <strong style="color: #037E8C;">প্রসেসিং ডিভাইস</strong>।</li>
+                                        <li><strong>র‍্যাম (স্মৃতি)</strong> - কম্পিউটার যখন কাজ করে, তখন দরকারি তথ্যগুলো এখানে সাময়িকভাবে জমা রাখে। এটি একটি <strong style="color: #037E8C;">স্টোরেজ ডিভাইস</strong>।</li>
+                                        <li><strong>হার্ড ডিস্ক/এসএসডি (বইয়ের আলমারি)</strong> - তোমার সব ছবি, গান, ভিডিও বা ফাইল এখানে স্থায়ীভাবে জমা থাকে। এটিও একটি <strong style="color: #037E8C;">স্টোরেজ ডিভাইস</strong>।</li>
+                                    </ul>
+                                </div>
+                                <div class="text-center p-6 border-2 border-dashed rounded-lg flex flex-col items-center justify-center" style="border-color: #06D6A0; background-color: #E6FFF6;">
+                                    <div class="text-6xl mb-3">👨‍💻</div>
+                                    <h3 class="font-semibold text-2xl mb-2" style="color: #06D6A0;">সফটওয়্যার (প্রাণ)</h3>
+                                    <p class="text-base text-gray-700">কম্পিউটারের নির্দেশ বা প্রোগ্রাম, যা হার্ডওয়্যারকে চালায়।</p>
+                                    <ul class="list-disc list-inside mt-4 text-left text-base space-y-1">
+                                        <li>ওয়েব ব্রাউজার (Chrome, Firefox) - ইন্টারনেট দেখার জন্য।</li>
+                                        <li>অপারেটিং সিস্টেম (Windows, Android, iOS) - কম্পিউটারের প্রধান চালিকা শক্তি।</li>
+                                        <li>কোড এডিটর অ্যাপ (VS Code, TrebEdit) - কোড লেখার জন্য।</li>
+                                        <li>গেম (PUBG, Candy Crush) - খেলার জন্য।</li>
+                                        <li>ভিডিও প্লেয়ার (VLC, MX Player) - ভিডিও দেখার জন্য।</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> কম্পিউটার দুটি প্রধান অংশে বিভক্ত: <strong>হার্ডওয়্যার</strong> এবং <strong>সফটওয়্যার</strong>। <strong>হার্ডওয়্যার</strong> হলো কম্পিউটারের ভৌত উপাদান, যা তুমি স্পর্শ করতে পারো (যেমন মনিটর, কীবোর্ড, মাউস, সিপিইউ)। <strong>সফটওয়্যার</strong> হলো অ-ভৌত প্রোগ্রাম এবং নির্দেশাবলী যা হার্ডওয়্যারকে কাজ করতে বলে (যেমন অপারেটিং সিস্টেম, ব্রাউজার, কোড এডিটর)। কোডিং শেখার জন্য উভয় সম্পর্কে প্রাথমিক ধারণা থাকা জরুরি। হার্ডওয়্যার ছাড়া সফটওয়্যার কাজ করতে পারে না, আবার সফটওয়্যার ছাড়া হার্ডওয়্যার শুধু একটি জড় বস্তু।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Section: বিভিন্ন সফটওয়্যার: ব্রাউজার, মিডিয়া প্লেয়ার ও পিডিএফ রিডার (New Section) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">বিভিন্ন সফটওয়্যার: ব্রাউজার, মিডিয়া প্লেয়ার ও পিডিএফ রিডার 🧩</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="mb-6 text-center text-gray-600">সবাই সফটওয়্যার, কিন্তু সবার কাজ আলাদা। চলো দেখি তাদের মিল ও অমিল!</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                                <div class="p-4 bg-yellow-50 rounded-lg shadow-md">
+                                    <div class="text-5xl mb-2">🌐</div>
+                                    <h3 class="font-semibold text-xl mb-2" style="color: #F29E38;">ওয়েব ব্রাউজার</h3>
+                                    <p class="text-sm">ইন্টারনেটের দুনিয়া দেখতে ও ওয়েবসাইটে ঘুরতে সাহায্য করে।</p>
+                                    <p class="text-xs mt-2 text-gray-500">উদাহরণ: Chrome, Firefox, Safari</p>
+                                </div>
+                                <div class="p-4 bg-green-50 rounded-lg shadow-md">
+                                    <div class="text-5xl mb-2">🎵▶️</div>
+                                    <h3 class="font-semibold text-xl mb-2" style="color: #06D6A0;">মিডিয়া প্লেয়ার</h3>
+                                    <p class="text-sm">গান শুনতে ও ভিডিও দেখতে ব্যবহার হয়।</p>
+                                    <p class="text-xs mt-2 text-gray-500">উদাহরণ: VLC, MX Player, Windows Media Player</p>
+                                </div>
+                                <div class="p-4 bg-red-50 rounded-lg shadow-md">
+                                    <div class="text-5xl mb-2">📄</div>
+                                    <h3 class="font-semibold text-xl mb-2" style="color: #EF476F;">পিডিএফ রিডার</h3>
+                                    <p class="text-sm">বই বা ডকুমেন্ট (PDF ফাইল) পড়ার জন্য এটি ব্যবহার করা হয়।</p>
+                                    <p class="text-xs mt-2 text-gray-500">উদাহরণ: Adobe Reader, Foxit Reader</p>
+                                </div>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> এই সবগুলোই সফটওয়্যার, অর্থাৎ কম্পিউটারের নির্দেশিকা। কিন্তু তাদের প্রত্যেকের কাজ ভিন্ন। <strong>ওয়েব ব্রাউজার</strong> বিশেষভাবে ডিজাইন করা হয়েছে ইন্টারনেট থেকে তথ্য আনতে এবং ওয়েবপেজ প্রদর্শন করতে। <strong>মিডিয়া প্লেয়ার</strong> ভিডিও এবং অডিও ফাইল চালানোর জন্য ব্যবহৃত হয়। আর <strong>পিডিএফ রিডার</strong> শুধুমাত্র পিডিএফ (Portable Document Format) ফাইল খুলতে এবং দেখতে পারে। তাদের মূল পার্থক্য হলো তারা কোন ধরনের ফাইল বা তথ্য প্রক্রিয়াজাত করতে পারে।
+                            </p>
+                            <p class="mt-4 text-base text-gray-700">
+                                <strong>ফাইলের এক্সটেনশন ও সফটওয়্যারের সম্পর্ক:</strong>
+                                তুমি নিশ্চয়ই দেখেছো, কিছু ফাইলের নামের শেষে `.mp3`, `.jpg`, `.pdf` এমন কিছু ছোট অক্ষর থাকে। এগুলোকে বলে <strong>এক্সটেনশন</strong>। এক্সটেনশন হলো ফাইলের একটা ছোট পরিচয়পত্র, যা কম্পিউটারকে বলে দেয় ফাইলটা কী ধরনের। যেমন:
+                                <ul class="list-disc list-inside ml-4 mt-2 space-y-1">
+                                    <li>যদি তুমি একটা `.mp3` ফাইল দেখো, কম্পিউটার বুঝে যায় এটা একটা গানের ফাইল এবং মিডিয়া প্লেয়ার দিয়ে এটাকে বাজাতে হবে।</li>
+                                    <li>যদি একটা `.jpg` ফাইল দেখো, কম্পিউটার বুঝে যায় এটা একটা ছবি এবং ছবি দেখার সফটওয়্যার দিয়ে এটাকে দেখাতে হবে।</li>
+                                    <li>আর যদি একটা `.html` ফাইল দেখো, তাহলে কম্পিউটার বুঝে যায় এটা একটা ওয়েবপেজ এবং এটাকে ব্রাউজার দিয়ে খুলতে হবে।</li>
+                                </ul>
+                                এই এক্সটেনশনগুলো না থাকলে কম্পিউটার বুঝতে পারতো না কোন ফাইলটা কী এবং কোন সফটওয়্যার দিয়ে সেটা খুলতে হবে। তাই এক্সটেনশনগুলো কম্পিউটারকে ঠিকঠাক কাজ করতে অনেক সাহায্য করে!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Section: ওয়েব ব্রাউজার কিভাবে কাজ করে? (How Web Browser Works?) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">ওয়েব ব্রাউজার কিভাবে কাজ করে? 🔍</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="text-center mb-6 max-w-3xl mx-auto text-gray-600">ব্রাউজার হলো ইন্টারনেটের জাদুর জানালা। তুমি যখন একটি ওয়েবসাইটের ঠিকানা দাও, ব্রাউজার কয়েকটি ধাপে সেই সাইটটি তোমার সামনে তুলে ধরে।</p>
+                            <div class="flex flex-col md:flex-row items-center justify-around text-center gap-4">
+                                <div class="flex flex-col items-center p-2 flow-diagram-item">
+                                    <div class="text-6xl mb-2">⌨️</div>
+                                    <h3 class="font-semibold text-lg">১. ঠিকানা টাইপ</h3>
+                                    <p class="text-sm text-gray-600">তুমি ওয়েবসাইটের ঠিকানা লেখো (যেমন: google.com)।</p>
+                                </div>
+                                <div class="flow-arrow hidden md:block">→</div>
+                                <div class="flow-arrow md:hidden my-2">↓</div>
+                                <div class="flex flex-col items-center p-2 flow-diagram-item">
+                                    <div class="text-6xl mb-2">📡</div>
+                                    <h3 class="font-semibold text-lg">২. সার্ভারে অনুরোধ</h3>
+                                    <p class="text-sm text-gray-600">ব্রাউজার সেই ওয়েবসাইটের সার্ভারকে তথ্য পাঠানোর জন্য অনুরোধ করে।</p>
+                                </div>
+                                <div class="flow-arrow hidden md:block">→</div>
+                                <div class="flow-arrow md:hidden my-2">↓</div>
+                                <div class="flex flex-col items-center p-2 flow-diagram-item">
+                                   <div class="text-6xl mb-2">📦</div>
+                                    <h3 class="font-semibold text-lg">৩. কোড গ্রহণ</h3>
+                                    <p class="text-sm text-gray-600">সার্ভার HTML, CSS, JavaScript কোডগুলো ব্রাউজারের কাছে পাঠায়।</p>
+                                </div>
+                                <div class="flow-arrow hidden md:block">→</div>
+                                <div class="flow-arrow md:hidden my-2">↓</div>
+                                <div class="flex flex-col items-center p-2 flow-diagram-item">
+                                    <div class="text-6xl mb-2">✨</div>
+                                    <h3 class="font-semibold text-lg">৪. পৃষ্ঠা প্রদর্শন</h3>
+                                    <p class="text-sm text-gray-600">ব্রাউজার কোডগুলোকে সুন্দর ছবিতে (ওয়েবপেজ) রূপান্তর করে তোমার স্ক্রিনে দেখায়।</p>
+                                </div>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> যখন তুমি তোমার ব্রাউজারে একটি ওয়েবসাইটের ঠিকানা (যেমন `www.example.com`) টাইপ করো এবং এন্টার চাপো, তখন ব্রাউজার সেই ঠিকানার সাথে সম্পর্কিত সার্ভারকে একটি অনুরোধ পাঠায়। সার্ভার তখন অনুরোধকৃত ওয়েবপেজের HTML, CSS, JavaScript ফাইলগুলো ব্রাউজারের কাছে পাঠিয়ে দেয়। ব্রাউজার এই ফাইলগুলো গ্রহণ করে সেগুলোকে একটি দৃশ্যমান ওয়েবপেজে রূপান্তরিত করে তোমার স্ক্রিনে প্রদর্শন করে। এটি অনেকটা একটি বই পড়ার মতো – ব্রাউজার হলো পাঠক, সার্ভার হলো লাইব্রেরিয়ান, এবং HTML/CSS/JS হলো বইয়ের পাতা।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Section: ওয়েবসাইট বনাম ওয়েবপেজ (Website vs. Webpage) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">ওয়েবসাইট বনাম ওয়েবপেজ 📚📄</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <div class="flex items-center mb-4">
+                                <div class="text-6xl mr-4">📖</div>
+                                <div>
+                                    <h3 class="font-semibold text-lg">ওয়েবসাইট</h3>
+                                    <p class="text-gray-700">একটি সম্পূর্ণ বইয়ের মতো, যেখানে অনেক পাতা থাকে। যেমন: facebook.com হলো একটি ওয়েবসাইট।</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="text-6xl mr-4">📄</div>
+                                <div>
+                                    <h3 class="font-semibold text-lg">ওয়েবপেজ</h3>
+                                    <p class="text-gray-700">বইয়ের একটি পাতার মতো। যেমন: তোমার ফেসবুক প্রোফাইল পেজ হলো একটি ওয়েবপেজ।</p>
+                                </div>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> একটি <strong>ওয়েবসাইট</strong> হলো সম্পর্কিত ওয়েবপেজ, মাল্টিমিডিয়া বিষয়বস্তু এবং অন্যান্য ডিজিটাল সম্পদের একটি সংগ্রহ, যা একটি একক ডোমেইন নামের অধীনে হোস্ট করা হয়। এটি ইন্টারনেটে একটি সম্পূর্ণ ডিজিটাল উপস্থিতি। অন্যদিকে, একটি <strong>ওয়েবপেজ</strong> হলো একটি ওয়েবসাইটের একক নথি, যা সাধারণত HTML দিয়ে লেখা হয় এবং ব্রাউজারে প্রদর্শিত হয়। একটি ওয়েবসাইট অনেক ওয়েবপেজের সমষ্টি হতে পারে, যেমন একটি বইতে অনেক পৃষ্ঠা থাকে।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Section: স্ট্যাটিক ওয়েবপেজ কী? (What is a Static Webpage?) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">স্ট্যাটিক ওয়েবপেজ কী? 🖼️</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="text-gray-700">স্ট্যাটিক ওয়েবপেজ হলো একটি ছাপানো পোস্টারের মতো। এর তথ্যগুলো সবার জন্য একই থাকে এবং নিজে থেকে বদলায় না। এটি HTML, CSS ও JavaScript দিয়ে তৈরি হয় এবং নতুনদের জন্য শেখা খুব সহজ।</p>
+                            <div class="mt-6 p-5 bg-blue-50 rounded-lg shadow-inner">
+                                <h3 class="font-semibold text-xl mb-3" style="color: #025373;">ফ্রন্ট-এন্ডের ৩ জাদুকর: 🧙‍♂️</h3>
+                                <ul class="list-disc list-inside text-base space-y-2">
+                                    <li><strong>HTML</strong> (কাঠামো): ওয়েবপেজের হাড়গোড় বা কাঠামো তৈরি করে। (যেমন: একটি বাড়ির ইটের দেয়াল)</li>
+                                    <li><strong>CSS</strong> (সাজসজ্জা): ওয়েবপেজকে সুন্দর করে সাজায়, রঙ ও ডিজাইন দেয়। (যেমন: বাড়ির রঙ, জানালা, দরজা)</li>
+                                    <li><strong>JavaScript</strong> (জীবন্ত করা): ওয়েবপেজকে সচল ও ইন্টারেক্টিভ করে তোলে। (যেমন: বাড়ির লাইট জ্বালানো-নেভানো, দরজা খোলা-বন্ধ করা)</li>
+                                </ul>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> একটি <strong>স্ট্যাটিক ওয়েবপেজ</strong> হলো এমন একটি পেজ যার বিষয়বস্তু সার্ভারে সংরক্ষণ করা থাকে ঠিক যেমনটি এটি ব্যবহারকারীর ব্রাউজারে পাঠানো হয়। এর মানে হলো, যখন একজন ব্যবহারকারী একটি স্ট্যাটিক পেজ লোড করেন, তখন তারা সর্বদা একই বিষয়বস্তু দেখতে পান, যতক্ষণ না ডেভেলপার ম্যানুয়ালি ফাইলটি আপডেট করেন। এটি সাধারণত তথ্যমূলক ওয়েবসাইট, পোর্টফোলিও বা এমন সাইটগুলির জন্য ব্যবহৃত হয় যেখানে বিষয়বস্তু ঘন ঘন পরিবর্তন হয় না। HTML কাঠামো তৈরি করে, CSS স্টাইল যোগ করে এবং JavaScript কিছু সাধারণ ইন্টারঅ্যাকটিভিটি প্রদান করে।
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Section: ফাইলের পরিচয়: এক্সটেনশন (File Identification: Extension) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">ফাইলের পরিচয়: এক্সটেনশন 🏷️</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="text-center mb-4 text-gray-700">যেমন `.mp3` দিয়ে গান বোঝায়, তেমনি `.html` দিয়ে কম্পিউটার বোঝে এটি একটি ওয়েবপেজ।</p>
+                            <div class="space-y-4">
+                                <div class="flex items-center p-3 bg-blue-50 rounded-lg shadow-sm">
+                                    <span class="text-3xl mr-4">🌐</span>
+                                    <div>
+                                        <h4 class="font-semibold text-lg" style="color: #025373;">ওয়েবপেজ ফাইল</h4>
+                                        <p class="text-sm text-gray-700">এক্সটেনশন: <code>.html</code>, <code>.htm</code></p>
+                                        <p class="text-xs text-gray-500">খোলে: ওয়েব ব্রাউজার (Chrome, Firefox, Edge, Safari)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 bg-green-50 rounded-lg shadow-sm">
+                                    <span class="text-3xl mr-4">🏞️</span>
+                                    <div>
+                                        <h4 class="font-semibold text-lg" style="color: #025373;">ছবি ফাইল</h4>
+                                        <p class="text-sm text-gray-700">এক্সটেনশন: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.gif</code>, <code>.webp</code></p>
+                                        <p class="text-xs text-gray-500">খোলে: ছবি দেখার সফটওয়্যার (Windows Photos, Google Photos, IrfanView)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 bg-yellow-50 rounded-lg shadow-sm">
+                                    <span class="text-3xl mr-4">🎵</span>
+                                    <div>
+                                        <h4 class="font-semibold text-lg" style="color: #025373;">অডিও ফাইল</h4>
+                                        <p class="text-sm text-gray-700">এক্সটেনশন: <code>.mp3</code>, <code>.wav</code>, <code>.aac</code></p>
+                                        <p class="text-xs text-gray-500">খোলে: মিডিয়া প্লেয়ার (VLC Media Player, Windows Media Player, MX Player)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 bg-red-50 rounded-lg shadow-sm">
+                                    <span class="text-3xl mr-4">🎥</span>
+                                    <div>
+                                        <h4 class="font-semibold text-lg" style="color: #025373;">ভিডিও ফাইল</h4>
+                                        <p class="text-sm text-gray-700">এক্সটেনশন: <code>.mp4</code>, <code>.avi</code>, <code>.mkv</code>, <code>.mov</code></p>
+                                        <p class="text-xs text-gray-500">খোলে: মিডিয়া প্লেয়ার (VLC Media Player, PotPlayer, MX Player)</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center p-3 bg-purple-50 rounded-lg shadow-sm">
+                                    <span class="text-3xl mr-4">📄</span>
+                                    <div>
+                                        <h4 class="font-semibold text-lg" style="color: #025373;">ডকুমেন্ট ফাইল</h4>
+                                        <p class="text-sm text-gray-700">এক্সটেনশন: <code>.pdf</code>, <code>.docx</code>, <code>.txt</code></p>
+                                        <p class="text-xs text-gray-500">খোলে: পিডিএফ রিডার (Adobe Acrobat Reader), ওয়ার্ড প্রসেসর (Microsoft Word), টেক্সট এডিটর (Notepad)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> ফাইলের এক্সটেনশন হলো ফাইলের নামের শেষে একটি ডট (.) এর পর থাকা অক্ষরগুলির একটি সেট (যেমন `.txt`, `.jpg`, `.mp3`, `.html`)। এই এক্সটেনশনটি অপারেটিং সিস্টেমকে বলে দেয় যে ফাইলটি কোন ধরনের এবং কোন প্রোগ্রাম দিয়ে এটি খোলা উচিত। `.html` এক্সটেনশনটি নির্দেশ করে যে এটি একটি হাইপারটেক্সট মার্কআপ ল্যাঙ্গুয়েজ ফাইল, যা ওয়েব ব্রাউজার দ্বারা প্রদর্শিত হওয়ার জন্য ডিজাইন করা হয়েছে। প্রতিটি ফাইলের একটি নির্দিষ্ট এক্সটেনশন থাকে যা তার ধরন বোঝায় এবং কম্পিউটারকে সঠিক প্রোগ্রাম ব্যবহার করে ফাইলটি খুলতে সাহায্য করে।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Section: HTML ট্যাগ: ওয়েবপেজের বিল্ডিং ব্লক (HTML Tags: Webpage Building Blocks) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">HTML ট্যাগ: ওয়েবপেজের বিল্ডিং ব্লক 🧱</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="mb-4 text-gray-700">ট্যাগ হলো HTML এর নির্দেশ। এগুলো ব্রাউজারকে বলে দেয় কোনটা হেডিং, কোনটা প্যারাগ্রাফ। বেশিরভাগ ট্যাগের শুরু (`&lt;p&gt;`) ও শেষ (`&lt;/p&gt;`) থাকে।</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                                <div>
+                                    <h3 class="font-semibold text-lg mb-2">কিছু মৌলিক ট্যাগ:</h3>
+                                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                                        <li>`&lt;h1&gt;` - সবচেয়ে বড় হেডিং (শিরোনাম)</li>
+                                        <li>`&lt;p&gt;` - প্যারাগ্রাফ (সাধারণ লেখা)</li>
+                                        <li>`&lt;img src="..."&gt;` - ছবি যোগ করার জন্য</li>
+                                        <li>`&lt;a href="..."&gt;` - অন্য পেজে যাওয়ার লিঙ্ক তৈরি করতে</li>
+                                        <li>`&lt;strong&gt;` - গুরুত্বপূর্ণ লেখা মোটা করতে</li>
+                                        <li>`&lt;ul&gt;` এবং `&lt;li&gt;` - তালিকা তৈরি করতে</li>
+                                    </ul>
+                                </div>
+                                <div class="chart-container !h-64">
+                                    <h3 class="font-semibold text-lg mb-2 text-center">HTML পাতার গঠন</h3>
+                                    <canvas id="htmlStructureChart"></canvas>
+                                </div>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> HTML ট্যাগগুলো `<` এবং `>` চিহ্নের মধ্যে লেখা হয় (যেমন: `<h1>`)। বেশিরভাগ ট্যাগেই একটি শুরুর ট্যাগ এবং একটি শেষের ট্যাগ থাকে (যেমন: `<p>এটি একটি প্যারাগ্রাফ</p>`)। শেষের ট্যাগে একটি ফরোয়ার্ড স্ল্যাশ (`/`) থাকে। কিছু ট্যাগ আছে যাদের শেষের ট্যাগ থাকে না, যেমন `<img />` (ছবি) বা `<br />` (লাইন ব্রেক)। এই ট্যাগগুলো ব্রাউজারকে বলে দেয় কিভাবে বিষয়বস্তু গঠন এবং প্রদর্শন করতে হবে। প্রতিটি ট্যাগের নিজস্ব কাজ আছে যা ওয়েবপেজের কাঠামো নির্ধারণ করে।
+                            </p>
+                            <h3 class="font-semibold text-lg mt-4 mb-2">উদাহরণ:</h3>
+                            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="bn"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;আমার প্রথম ওয়েবপেজ&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;স্বাগতম!&lt;/h1&gt;
+    &lt;p&gt;এটি আমার তৈরি করা প্রথম HTML পেজ।&lt;/p&gt;
+    &lt;img src="https://placehold.co/200x100/A7C7E7/FFFFFF?text=ছবি" alt="একটি উদাহরণ ছবি"&gt;
+    &lt;a href="https://www.google.com"&gt;Google এ যান&lt;/a&gt;
+    &lt;ul&gt;
+        &lt;li&gt;এটি একটি তালিকা আইটেম&lt;/li&gt;
+        &lt;li&gt;&lt;strong&gt;গুরুত্বপূর্ণ&lt;/strong&gt; তথ্য&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+                    
+                    <!-- Section: মোবাইলে কোডিং: কিভাবে শুরু করবে? (Mobile Coding: How to Start?) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">মোবাইলে কোডিং: কিভাবে শুরু করবে? 📱</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="mb-6 text-gray-700">কম্পিউটার না থাকলেও সমস্যা নেই! মোবাইল দিয়েই তুমি কোডিং শুরু করতে পারো। নিচের ধাপগুলো অনুসরণ করো:</p>
+                            <ol class="space-y-4">
+                                <li class="flex items-start">
+                                    <div class="step-circle mr-4">1</div>
+                                    <div>
+                                        <h3 class="font-semibold text-lg">অ্যাপ ডাউনলোড করো ⬇️</h3>
+                                        <p class="text-sm text-gray-700">Android ব্যবহারকারীদের জন্য: Google Play Store থেকে <strong>TrebEdit</strong> বা <strong>Spck Editor</strong> অ্যাপটি ডাউনলোড করো। এই অ্যাপগুলো HTML, CSS, JavaScript কোড লেখার এবং প্রিভিউ দেখার সুবিধা দেয়। iOS ব্যবহারকারীরা <strong>Koder</strong> বা <strong>Textastic</strong> দেখতে পারো।</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="step-circle mr-4">2</div>
+                                    <div>
+                                        <h3 class="font-semibold text-lg">নতুন ফাইল তৈরি করো ➕</h3>
+                                        <p class="text-sm text-gray-700">অ্যাপটি খোলার পর, সাধারণত একটি 'New File' বা 'Create Project' অপশন থাকবে। এটিতে ক্লিক করে একটি নতুন ফাইল তৈরি করো। TrebEdit-এ, 'Menu' থেকে 'New File' অথবা 'New Project' বেছে নিতে পারো।</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="step-circle mr-4">3</div>
+                                    <div>
+                                        <h3 class="font-semibold text-lg">কোড লেখো এবং সেভ করো ✍️💾</h3>
+                                        <p class="text-sm text-gray-700">নতুন ফাইলটিতে তোমার HTML কোড লেখা শুরু করো। কোড লেখা শেষ হলে, ফাইলটি সেভ করো। <strong>খুব গুরুত্বপূর্ণ:</strong> ফাইল সেভ করার সময় নামের শেষে `.html` দিতে ভুলবে না। যেমন: `amarpage.html`। এটি কম্পিউটারকে বোঝাবে যে এটি একটি ওয়েবপেজ ফাইল।</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="step-circle mr-4">4</div>
+                                    <div>
+                                        <h3 class="font-semibold text-lg">ফলাফল দেখো (Preview) 👀</h3>
+                                        <p class="text-sm text-gray-700">বেশিরভাগ মোবাইল কোড এডিটরে একটি 'Preview' বা 'Run' বাটন থাকে। এই বাটনে ক্লিক করে সাথে সাথে তোমার তৈরি করা ওয়েবপেজটি কেমন দেখাচ্ছে তা দেখতে পাবে। এটি তোমাকে রিয়েল-টাইমে তোমার কোডের পরিবর্তন দেখতে সাহায্য করবে এবং ভুলগুলো দ্রুত ধরতে পারবে।</p>
+                                    </div>
+                                </li>
+                            </ol>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> মোবাইলে কোডিং শুরু করা নতুনদের জন্য খুবই সুবিধাজনক, কারণ এর জন্য আলাদা কোনো কম্পিউটারের প্রয়োজন হয় না। উপরে উল্লিখিত অ্যাপগুলো একটি সম্পূর্ণ ডেভেলপমেন্ট পরিবেশ প্রদান করে, যেখানে তুমি কোড লিখতে, সেভ করতে এবং সরাসরি তোমার ফোনেই তার ফলাফল দেখতে পারো। এটি শেখার প্রক্রিয়াকে অনেক সহজ করে তোলে। ধৈর্য ধরে অনুশীলন করলে মোবাইল থেকেই তুমি একজন দক্ষ কোডার হয়ে উঠতে পারবে!
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Section: সেরা মোবাইল কোড এডিটর (Best Mobile Code Editors) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">সেরা মোবাইল কোড এডিটর 🌟</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="text-center mb-4 text-gray-700">নতুনদের জন্য কিছু জনপ্রিয় ও সহজ অ্যাপ।</p>
+                            <div class="chart-container">
+                                <canvas id="mobileEditorChart"></canvas>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> মোবাইল কোড এডিটর অ্যাপগুলো তোমাকে তোমার স্মার্টফোন বা ট্যাবলেটে কোড লিখতে এবং পরীক্ষা করতে দেয়। TrebEdit এবং Spck Editor অ্যান্ড্রয়েড ব্যবহারকারীদের জন্য জনপ্রিয় পছন্দ, কারণ তারা HTML, CSS এবং JavaScript সমর্থন করে এবং একটি বিল্ট-ইন প্রিভিউ ফাংশনালিটি রয়েছে। iOS ব্যবহারকারীদের জন্য Koder এবং Textastic ভালো বিকল্প। এই অ্যাপগুলো সিনট্যাক্স হাইলাইটিং, অটো-কমপ্লিশন এবং ফাইল ম্যানেজমেন্টের মতো বৈশিষ্ট্য সরবরাহ করে, যা মোবাইল ডিভাইসে কোডিংকে আরও কার্যকর করে তোলে। তোমার প্রয়োজন অনুযায়ী সঠিক এডিটর বেছে নেওয়া গুরুত্বপূর্ণ।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- New Section: কোড এডিটর: তোমার কোডিং খাতা (Code Editor: Your Coding Notebook) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">কোড এডিটর: তোমার কোডিং খাতা 📝</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="mb-4 text-gray-700">কোড এডিটর হলো এমন একটি সফটওয়্যার যেখানে তুমি তোমার কোড লেখো। এটা অনেকটা তোমার লেখার খাতার মতো, কিন্তু এখানে কোড লেখার জন্য অনেক বিশেষ সুবিধা থাকে। যেমন, এটা কোডের ভুলগুলো ধরতে সাহায্য করে, কোডকে সুন্দর করে সাজিয়ে দেয়, এবং দ্রুত কোড লিখতে সাহায্য করে।</p>
+                            <p class="mt-4 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> তুমি হয়তো ভাবছো, সাধারণ নোটপ্যাড বা টেক্সট এডিটর দিয়েও তো কোড লেখা যায়, তাহলে কোড এডিটর কেন? কারণ কোড এডিটরগুলো কোডিংয়ের জন্য বিশেষভাবে তৈরি। তারা কোডের বিভিন্ন অংশকে আলাদা রঙে দেখায় (সিনট্যাক্স হাইলাইটিং), স্বয়ংক্রিয়ভাবে কোড পূরণ করে (অটো-কমপ্লিশন), এবং কোডের ভুলগুলো খুঁজে বের করতে সাহায্য করে। এই সুবিধাগুলো কোডিংকে অনেক সহজ এবং দ্রুত করে তোলে।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- New Section: ভিজ্যুয়াল স্টুডিও কোড (VS Code): পেশাদারদের পছন্দ (Visual Studio Code (VS Code): Professionals' Choice) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">ভিজুয়াল স্টুডিও কোড (VS Code): পেশাদারদের পছন্দ 💻</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="mb-4 text-gray-700">ভিজুয়াল স্টুডিও কোড, সংক্ষেপে VS Code, হলো একটি খুব জনপ্রিয় এবং শক্তিশালী কোড এডিটর। এটি মাইক্রোসফট তৈরি করেছে এবং এটি সম্পূর্ণ বিনামূল্যে ব্যবহার করা যায়। বেশিরভাগ পেশাদার কোডার এটি ব্যবহার করে।</p>
+                            <h3 class="font-semibold text-lg mt-4 mb-2">সুবিধা: ✅</h3>
+                            <ul class="list-disc list-inside ml-4 text-sm text-gray-700 space-y-1">
+                                <li><strong>ফ্রি এবং ওপেন সোর্স:</strong> এটি ব্যবহার করতে কোনো টাকা লাগে না।</li>
+                                <li><strong>শক্তিশালী:</strong> এটি অনেক বড় এবং জটিল প্রজেক্টের জন্য উপযুক্ত।</li>
+                                <li><strong>এক্সটেনশন:</strong> এতে হাজার হাজার এক্সটেনশন আছে যা এর ক্ষমতা আরও বাড়িয়ে দেয় (যেমন লাইভ সার্ভার, কোড ফরম্যাটার)।</li>
+                                <li><strong>বড় কমিউনিটি:</strong> যদি কোনো সমস্যা হয়, অনলাইনে অনেক সাহায্যকারী মানুষ খুঁজে পাবে।</li>
+                                <li><strong>অনেক ভাষা সমর্থন:</strong> HTML, CSS, JavaScript ছাড়াও এটি C++, Python, Java সহ আরও অনেক প্রোগ্রামিং ভাষা সমর্থন করে।</li>
+                            </ul>
+                            <h3 class="font-semibold text-lg mt-4 mb-2">অসুবিধা: ❌</h3>
+                            <ul class="list-disc list-inside ml-4 text-sm text-gray-700 space-y-1">
+                                <li><strong>নতুনদের জন্য জটিল:</strong> যারা একদম নতুন, তাদের কাছে এর অনেক ফিচার প্রথমদিকে একটু কঠিন মনে হতে পারে।</li>
+                                <li><strong>কম্পিউটার প্রয়োজন:</strong> এটি মোবাইলে ভালোভাবে কাজ করে না, সাধারণত কম্পিউটার বা ল্যাপটপে ব্যবহার করতে হয়।</li>
+                                <li><strong>বেশি রিসোর্স ব্যবহার:</strong> এটি চালানোর জন্য কম্পিউটারের কিছুটা বেশি র‍্যাম এবং প্রসেসিং পাওয়ার প্রয়োজন হতে পারে।</li>
+                            </ul>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> VS Code একটি IDE (Integrated Development Environment) এর মতো কাজ করে, যদিও এটি একটি কোড এডিটর। এর মানে হলো, এটি শুধু কোড লেখার জন্য নয়, কোড ডিবাগ করা, গিট (Git) এর সাথে কাজ করা এবং আরও অনেক ডেভেলপমেন্টের কাজ করার জন্য সুবিধা দেয়। এর এক্সটেনশন মার্কেটপ্লেস এটিকে অত্যন্ত কাস্টমাইজযোগ্য করে তোলে, যা ডেভেলপারদের তাদের প্রয়োজন অনুযায়ী পরিবেশ সেট আপ করতে সাহায্য করে।
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- New Section: কোডপেন (CodePen): অনলাইনে কোডিং এর মজা (CodePen: Online Coding Fun) -->
+                    <div class="card dropdown-container">
+                        <button class="dropdown-toggle" aria-expanded="false">
+                            <h2 class="text-2xl font-bold">কোডপেন (CodePen): অনলাইনে কোডিং এর মজা 🌐</h2>
+                            <span class="arrow-icon">▼</span>
+                        </button>
+                        <div class="dropdown-content">
+                            <p class="mb-4 text-gray-700">কোডপেন হলো একটি অনলাইন কোড এডিটর। এর মানে হলো, তোমাকে কোনো সফটওয়্যার ডাউনলোড করতে হবে না, শুধু ইন্টারনেটে গিয়ে কোডপেনের ওয়েবসাইটে গেলেই তুমি কোড লিখতে পারবে। এটি HTML, CSS এবং JavaScript শেখার জন্য দারুণ একটি টুল।</p>
+                            <h3 class="font-semibold text-lg mt-4 mb-2">সুবিধা: ✅</h3>
+                            <ul class="list-disc list-inside ml-4 text-sm text-gray-700 space-y-1">
+                                <li><strong>কোনো সেটআপ নেই:</strong> সফটওয়্যার ডাউনলোড বা ইনস্টল করার ঝামেলা নেই, শুধু ব্রাউজার খুললেই হলো।</li>
+                                <li><strong>তাৎক্ষণিক প্রিভিউ:</strong> তুমি কোড লেখার সাথে সাথে ডান পাশে তার ফলাফল দেখতে পাবে।</li>
+                                <li><strong>শেয়ার করা সহজ:</strong> তোমার তৈরি করা কোড সহজেই বন্ধুদের সাথে বা অনলাইনে শেয়ার করতে পারবে।</li>
+                                <li><strong>মোবাইল-বান্ধব:</strong> মোবাইল ব্রাউজার থেকেও এটি ব্যবহার করা যায়।</li>
+                                <li><strong>অন্যদের কোড দেখা:</strong> তুমি অন্যদের তৈরি করা চমৎকার কোড দেখতে ও শিখতে পারবে।</li>
+                            </ul>
+                            <h3 class="font-semibold text-lg mt-4 mb-2">অসুবিধা: ❌</h3>
+                            <ul class="list-disc list-inside ml-4 text-sm text-gray-700 space-y-1">
+                                <li><strong>ইন্টারনেট প্রয়োজন:</strong> এটি ব্যবহার করতে সব সময় ইন্টারনেট সংযোগ দরকার।</li>
+                                <li><strong>বড় প্রজেক্টের জন্য নয়:</strong> বড় বা জটিল ওয়েবসাইটের জন্য এটি ততটা উপযুক্ত নয়।</li>
+                                <li><strong>সীমিত ফিচার:</strong> অফলাইন এডিটরগুলোর মতো সব শক্তিশালী ফিচার এতে থাকে না।</li>
+                            </ul>
+                            <p class="mt-6 text-sm text-gray-600">
+                                <strong>বিস্তারিত ব্যাখ্যা:</strong> কোডপেনকে "ফ্রন্ট-এন্ড ডেভেলপমেন্টের জন্য একটি সামাজিক ডেভেলপমেন্ট এনভায়রনমেন্ট" বলা যেতে পারে। এটি মূলত ওয়েব ডিজাইনার এবং ফ্রন্ট-এন্ড ডেভেলপারদের জন্য একটি খেলার মাঠ, যেখানে তারা ছোট কোড স্নিপেট (যাকে "পেন" বলা হয়) তৈরি, পরীক্ষা এবং প্রদর্শন করতে পারে। এটি দ্রুত ধারণা পরীক্ষা করার জন্য, অন্যদের কাজ থেকে শেখার জন্য এবং নিজের কাজ শেয়ার করার জন্য খুবই কার্যকর।
+                            </p>
+                        </div>
+                    </div>
+
+                </main>
+                <!-- আপনার দেওয়া 'New Text Document.html' এর সম্পূর্ণ কন্টেন্ট এখানে শেষ হচ্ছে -->
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-300">
+            <nav class="mb-4">
+                <ul class="flex flex-wrap justify-center gap-4 text-lg">
+                    <li><a href="index.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">হোম</a></li>
+                    <li><a href="contest-science_olympiad-july24.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
+                    <li><a href="contest-web_development_contest-july24.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
+                    <li><a href="web_dev_guide.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট গাইড</a></li> <!-- নতুন লিঙ্ক -->
+                    <li><a href="#privacy-policy" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">গোপনীয়তা নীতি</a></li>
+                    <li><a href="#terms-of-service" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
+                </ul>
+            </nav>
+            <p class="text-gray-600">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
+            <p class="text-sm text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript for Chart.js and Dropdown functionality -->
+    <script>
+        // Define a color palette for consistent styling
+        const palette = {
+            red: '#EF476F',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C'
+        };
+
+        // Default options for Chart.js charts
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: { family: "'Tiro Bangla', serif", size: 14 }, // ফন্ট পরিবর্তন করা হয়েছে
+                        color: '#041B2D' // টেক্সট কালার পরিবর্তন করা হয়েছে
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            }
+                            return label;
+                        }
+                    },
+                    titleFont: { family: "'Tiro Bangla', serif" }, // ফন্ট পরিবর্তন করা হয়েছে
+                    bodyFont: { family: "'Tiro Bangla', serif" } // ফন্ট পরিবর্তন করা হয়েছে
+                }
+            }
+        };
+        
+        // Initialize HTML Structure Chart (Doughnut Chart)
+        const htmlStructureCtx = document.getElementById('htmlStructureChart').getContext('2d');
+        new Chart(htmlStructureCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['<body> (দৃশ্যমান অংশ)', '<head> (পেছনের তথ্য)', '<html> (মূল কাঠামো)'],
+                datasets: [{
+                    label: 'HTML পাতার গঠন',
+                    data: [70, 20, 10],
+                    backgroundColor: ['#037E8C', '#025373', '#A66224'], // আপনার থিমের রঙের সাথে মিলিয়ে পরিবর্তন করা হয়েছে
+                    borderColor: '#ffffff',
+                    borderWidth: 3,
+                    hoverOffset: 4
+                }]
+            },
+            options: { ...defaultChartOptions,
+                plugins: { ...defaultChartOptions.plugins, tooltip: {...defaultChartOptions.plugins.tooltip}, legend: { position: 'bottom' } },
+                cutout: '60%'
+            }
+        });
+
+        // Initialize Mobile Editor Chart (Horizontal Bar Chart)
+        const mobileEditorCtx = document.getElementById('mobileEditorChart').getContext('2d');
+        new Chart(mobileEditorCtx, {
+            type: 'bar',
+            data: {
+                labels: ['TrebEdit', 'Spck Editor', 'anWriter', 'Koder (iOS)'],
+                datasets: [{
+                    label: 'ব্যবহারে সহজ (১০ এর মধ্যে)',
+                    data: [9, 8, 7.5, 8.5],
+                    backgroundColor: ['#037E8C', '#025373', '#F29E38', '#A66224'], // আপনার থিমের রঙের সাথে মিলিয়ে পরিবর্তন করা হয়েছে
+                    borderRadius: 5
+                }]
+            },
+            options: { ...defaultChartOptions,
+                indexAxis: 'y', // Make it a horizontal bar chart
+                scales: {
+                    x: { beginAtZero: true, max: 10, ticks: { font: { family: "'Tiro Bangla', serif" }, color: '#041B2D' } }, // ফন্ট ও কালার পরিবর্তন করা হয়েছে
+                    y: { ticks: { font: { family: "'Tiro Bangla', serif" }, color: '#041B2D' } } // ফন্ট ও কালার পরিবর্তন করা হয়েছে
+                },
+                plugins: { ...defaultChartOptions.plugins, legend: { display: false } }
+            }
+        });
+
+        // Dropdown functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownToggles = document.querySelectorAll('.dropdown-container .dropdown-toggle'); // শুধুমাত্র কার্ডের ভিতরের ড্রপডাউন টগলগুলো সিলেক্ট করা হয়েছে
+
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const content = toggle.nextElementSibling; // Get the sibling dropdown-content
+                    
+                    // Toggle the 'active' class on the toggle button
+                    toggle.classList.toggle('active');
+
+                    // Toggle the 'active' class on the content for display/hide
+                    if (content.classList.contains('active')) {
+                        content.classList.remove('active');
+                        content.style.display = 'none'; // Explicitly hide
+                        toggle.setAttribute('aria-expanded', 'false');
+                    } else {
+                        // Close all other open dropdowns
+                        dropdownToggles.forEach(otherToggle => {
+                            if (otherToggle !== toggle && otherToggle.classList.contains('active')) {
+                                otherToggle.classList.remove('active');
+                                otherToggle.nextElementSibling.classList.remove('active');
+                                otherToggle.nextElementSibling.style.display = 'none';
+                                otherToggle.setAttribute('aria-expanded', 'false');
+                            }
+                        });
+
+                        content.classList.add('active');
+                        content.style.display = 'block'; // Explicitly show
+                        toggle.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+
+            // PIN protection logic
+            const correctPin = "1234"; // আপনার পিন কোড এখানে সেট করুন
+            const pinInput = document.getElementById('pin-input');
+            const submitButton = document.getElementById('submit-pin');
+            const errorMessage = document.getElementById('error-message');
+            const pinEntrySection = document.getElementById('pin-entry-section');
+            const protectedContent = document.getElementById('protected-content');
+
+            submitButton.addEventListener('click', function() {
+                const enteredPin = pinInput.value;
+                if (enteredPin === correctPin) {
+                    pinEntrySection.classList.add('hidden'); // পিন এন্ট্রি সেকশন লুকান
+                    protectedContent.classList.remove('hidden'); // সুরক্ষিত কন্টেন্ট দেখান
+                    errorMessage.classList.add('hidden'); // এরর মেসেজ লুকান
+                } else {
+                    errorMessage.classList.remove('hidden'); // এরর মেসেজ দেখান
+                    pinInput.value = ''; // ইনপুট ফিল্ড খালি করুন
+                }
+            });
+
+            // এন্টার কী প্রেস করলে পিন সাবমিট করার জন্য
+            pinInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    submitButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

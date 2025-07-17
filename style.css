@@ -1,0 +1,194 @@
+/* সাধারণ বডি স্টাইল */
+body {
+    font-family: 'Tiro Bangla', serif; /* বাংলার জন্য প্রধান ফন্ট */
+    background-color: #F8F4F0; /* হালকা বেইজ/অফ-হোয়াইট */
+    color: #041B2D; /* খুব গাঢ় নীল/প্রায় কালো */
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Tiro Bangla', serif; /* হেডিং এর জন্য তিরো বাংলা ফন্ট */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* চার্ট কন্টেইনার স্টাইল */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 350px;
+    }
+}
+
+/* সেকশনের জন্য গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড */
+.gradient-bg {
+    background: linear-gradient(135deg, #025373, #037E8C); /* গাঢ় নীল থেকে টিল নীল */
+}
+
+/* কেপিআই কার্ড স্টাইল */
+.kpi-card {
+    background-color: rgba(255, 255, 255, 0.1); /* সামান্য স্বচ্ছ সাদা */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+.kpi-card .kpi-number {
+    color: #F29E38; /* কেপিআই সংখ্যার জন্য কমলা */
+}
+
+/* সাদা সেকশনের জন্য সেকশন ব্যাকগ্রাউন্ড */
+.section-bg-white {
+    background-color: #FFFFFF; /* সেকশনের জন্য সাদা ব্যাকগ্রাউন্ড */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem; /* টেলউইন্ডের rounded-lg */
+    padding: 1.5rem; /* টেলউইন্ডের p-6 */
+}
+
+/* ফ্লোচার্ট স্টেপ স্টাইল (বিজ্ঞান অলিম্পিয়াড) */
+.flowchart-step {
+    border: 2px solid #037E8C; /* টিল নীল বর্ডার */
+    background-color: #E6F3F2; /* হালকা টিল ব্যাকগ্রাউন্ড */
+    color: #041B2D; /* গাঢ় টেক্সট */
+    padding: 1rem; /* p-4 */
+    border-radius: 0.5rem; /* rounded-lg */
+    font-weight: 600; /* font-semibold */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* শ্যাডো */
+}
+.flowchart-arrow {
+    color: #F29E38; /* কমলা */
+}
+
+/* টাইমলাইন আইটেম স্টাইল (ওয়েব ডেভেলপমেন্ট প্রতিযোগিতা) */
+.timeline-line {
+    border-left: 2px dashed #037E8C; /* টিল নীল ড্যাশড লাইন */
+}
+.timeline-item {
+    position: relative;
+    padding-left: 40px; /* ডটের জন্য স্থান */
+}
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -10px; /* লাইনের অবস্থানের উপর ভিত্তি করে সামঞ্জস্য করুন */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #F29E38; /* টাইমলাইন ডটের জন্য কমলা */
+    border: 3px solid #F8F4F0; /* বডি ব্যাকগ্রাউন্ডের সাথে মিলে যায় */
+}
+
+/* বাটন স্টাইল */
+.btn-primary {
+    background-color: #F29E38; /* কমলা প্রধান বাটন */
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(242, 158, 56, 0.3);
+}
+.btn-primary:hover {
+    background-color: #A66224; /* গাঢ় কমলা */
+    transform: translateY(-2px);
+}
+
+/* ইনপুট ফিল্ড স্টাইল */
+.input-field {
+    border: 2px solid #037E8C; /* টিল নীল বর্ডার */
+    border-radius: 10px;
+    padding: 12px 16px;
+    width: 100%;
+    font-size: 1rem;
+    color: #041B2D;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.input-field:focus {
+    outline: none;
+    border-color: #F29E38; /* ফোকাসে কমলা */
+    box-shadow: 0 0 0 3px rgba(242, 158, 56, 0.3);
+}
+
+/* ট্যাগ স্টাইল (ওয়েব ডেভেলপমেন্ট প্রতিযোগিতা) */
+.tag-html { background-color: #025373; } /* গাঢ় নীল */
+.tag-css { background-color: #037E8C; } /* টিল নীল */
+.tag-js { background-color: #F29E38; } /* কমলা */
+.tag-misc { background-color: #A66224; } /* গাঢ় কমলা */
+
+/* চেকমার্ক আইকন রঙ */
+.checkmark-icon {
+    color: #F29E38; /* চেকমার্কের জন্য কমলা */
+}
+
+/* অ্যাক্সেসিবিলিটির জন্য লুকানো ক্রেডিট */
+.hidden-credit {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+/* হোমপেজ নির্দিষ্ট স্টাইল */
+.school-logo {
+    max-width: 150px;
+    height: auto;
+    /* এই লাইনগুলো মুছে ফেলা হয়েছে যাতে লোগো গোলাকার না হয় এবং না কাটে */
+    /* border-radius: 50%; */
+    /* box-shadow: 0 4px 8px rgba(0,0,0,0.2); */
+}
+
+.contest-card {
+    background-color: #FFFFFF;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.contest-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+.contest-card img {
+    max-width: 100px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+/* উক্তি স্টাইল */
+.quote-text {
+    font-style: italic;
+    color: #037E8C; /* উক্তির জন্য টিল নীল */
+    font-weight: 500;
+}
+
+/* বিস্তারিত জানতে ক্লিক করুন লেখাটির স্টাইল */
+.click-for-details {
+    font-size: 0.9rem;
+    color: #F29E38; /* কমলা রঙ */
+    font-weight: 600;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <title>ALSMM Science Olympiad, July 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <!-- ছবির লিঙ্ক পরিবর্তন করা হয়েছে -->
+            <img src="images/science_olympiad_logo.png" alt="ALSMM Science Olympiad Logo" class="max-w-xs mx-auto mb-4 rounded-full">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#025373]">ALSMM Science Olympiad, July 2025</h1>
+            <p class="mt-4 text-lg text-[#037E8C]">১ম থেকে ১০ম শ্রেণির সকল শিক্ষার্থীর জন্য একটি সমন্বিত ও অনুপ্রেরণামূলক উদ্যোগ</p>
+        </header>
+
+        <main>
+            <section id="vision" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]">আমাদের মূল দর্শন</h2>
+                <p class="max-w-3xl mx-auto text-center text-gray-700 mb-10">
+                    এই অলিম্পিয়াডের লক্ষ্য শুধু সেরা মেধাবীদের খুঁজে বের করা নয়, বরং প্রতিটি শিক্ষার্থীর মধ্যে বিজ্ঞানের প্রতি আগ্রহ, সমালোচনামূলক চিন্তাভাবনা এবং সমস্যা সমাধানের দক্ষতা তৈরি করা। আমরা একটি সার্বজনীন বিজ্ঞান সাক্ষরতার সংস্কৃতি গড়ে তুলতে চাই।
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="kpi-card">
+                        <div class="text-5xl mb-4 kpi-number">🎯</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#037E8C]">সার্বজনীন অংশগ্রহণ</h3>
+                        <p class="text-gray-600">১ম থেকে ১০ম শ্রেণির <span class="font-bold text-2xl kpi-number">১০০%</span> শিক্ষার্থীর বাধ্যতামূলক অংশগ্রহণ নিশ্চিত করা।</p>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="text-5xl mb-4 kpi-number">🧠</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#037E8C]">দক্ষতা বৃদ্ধি</h3>
+                        <p class="text-gray-600">সমালোচনামূলক চিন্তাভাবনা এবং বাস্তব সমস্যা সমাধানের দক্ষতা বাড়ানো।</p>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="text-5xl mb-4 kpi-number">🔬</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#037E8C]">বিজ্ঞানমনস্কতা তৈরি</h3>
+                        <p class="text-gray-600">মুখস্থবিদ্যার পরিবর্তে ধারণাগত বোঝাপড়া ও অনুসন্ধিৎসু মনন তৈরি করা।</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="structure" class="mb-16 section-bg-white">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]">অংশগ্রহণকারীদের কাঠামো</h2>
+                <p class="max-w-3xl mx-auto text-center text-gray-700 mb-10">
+                    শিক্ষার্থীদের বয়স ও শ্রেণি অনুযায়ী তিনটি প্রধান বিভাগে ভাগ করা হয়েছে। প্রতিটি বিভাগের জন্য রয়েছে নির্দিষ্ট পাঠ্যক্রম ও পরীক্ষার ধরণ, যা তাদের শেখার প্রক্রিয়াকে আরও কার্যকর করে তুলবে।
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#037E8C]">শিক্ষার্থী বিভাগ</h3>
+                        <div class="chart-container">
+                            <canvas id="divisionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#037E8C]">শিক্ষার্থীর সংখ্যা</h3>
+                        <div class="chart-container">
+                            <canvas id="classCountChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="curriculum" class="mb-16 section-bg-white">
+                <h2 class="text-3xl font-bold text-center mb-12 text-[#025373]">সিলেবাসের রূপরেখা: বিভাগভিত্তিক ফোকাস</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#037E8C]">প্রাথমিক ও মাধ্যমিক 'ক' বিভাগ</h3>
+                         <p class="text-center text-gray-600 mb-4">প্রাথমিক স্তরে সাধারণ বিজ্ঞান এবং মাধ্যমিক 'ক' স্তরে সমন্বিত বিজ্ঞানের উপর জোর দেওয়া হয়।</p>
+                        <div class="chart-container mx-auto">
+                            <canvas id="primaryRadarChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#037E8C]">মাধ্যমিক 'খ' বিভাগ (বিজ্ঞান ও মানবিক)</h3>
+                        <p class="text-center text-gray-600 mb-4">এই স্তরে বিজ্ঞান ও মানবিক শাখার জন্য পৃথক পাঠ্যক্রম, যা তাদের নিজ নিজ ক্ষেত্রের গভীরতা বাড়ায়।</p>
+                        <div class="chart-container mx-auto">
+                            <canvas id="secondaryRadarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="exam-model" class="mb-16 section-bg-white">
+                 <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]">পরীক্ষার মডেল ও প্রশ্নপত্রের ধরণ</h2>
+                 <p class="max-w-3xl mx-auto text-center text-gray-700 mb-10">
+                    আমাদের পরীক্ষার মডেলটি শিক্ষার্থীদের বিভিন্ন দক্ষতা মূল্যায়নের জন্য ডিজাইন করা হয়েছে। প্রশ্নপত্রে যৌক্তিক বিশ্লেষণ, বিষয়ভিত্তিক জ্ঞান এবং উচ্চতর চিন্তাভাবনার সমন্বয় ঘটানো হয়েছে।
+                </p>
+                <div class="p-8">
+                    <!-- New section for exam details added here -->
+                    <h3 class="text-xl font-bold text-center mb-6 text-[#037E8C]">পরীক্ষার বিবরণ</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center mb-10">
+                        <div class="p-4 border rounded-lg shadow-sm">
+                            <p class="text-gray-500 text-sm">মোট প্রশ্ন</p>
+                            <p class="text-2xl font-bold text-[#025373]">৫০</p>
+                        </div>
+                        <div class="p-4 border rounded-lg shadow-sm">
+                            <p class="text-gray-500 text-sm">প্রশ্নের ধরণ</p>
+                            <p class="text-2xl font-bold text-[#025373]">MCQ</p>
+                        </div>
+                        <div class="p-4 border rounded-lg shadow-sm">
+                            <p class="text-gray-500 text-sm">ভুল উত্তরের জন্য নম্বর কর্তন</p>
+                            <p class="text-2xl font-bold text-[#025373]">০.২৫</p>
+                        </div>
+                        <div class="p-4 border rounded-lg shadow-sm">
+                            <p class="text-gray-500 text-sm">পরীক্ষার সময়</p>
+                            <p class="text-2xl font-bold text-[#025373]">৪০ মিনিট</p>
+                        </div>
+                    </div>
+                    <!-- End of new section for exam details -->
+
+                    <h3 class="text-xl font-bold text-center mb-6 text-[#037E8C]">প্রশ্নপত্রের কাঠামো</h3>
+                    <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="flowchart-step">১. যৌক্তিক বিশ্লেষণ</div>
+                        <div class="flowchart-arrow text-3xl font-bold transform md:-rotate-0 rotate-90">➔</div>
+                        <div class="flowchart-step">২. মূল বিজ্ঞান</div>
+                         <div class="flowchart-arrow text-3xl font-bold transform md:-rotate-0 rotate-90">➔</div>
+                        <div class="flowchart-step">৩. অ্যাচিভার্স সেকশন (উচ্চতর চিন্তা)</div>
+                    </div>
+                    <div class="mt-10">
+                         <h3 class="text-xl font-bold text-center mb-4 text-[#037E8C]">সিলেবাসের উৎস (মাধ্যমিক বিভাগ)</h3>
+                         <div class="chart-container h-64 max-h-64">
+                            <canvas id="syllabusSourceChart"></canvas>
+                        </div>
+                        <p class="text-center text-gray-600 mt-4">
+                            প্রশ্নপত্রের একটি বড় অংশ বর্তমান শ্রেণির পাঠ্যক্রম থেকে এবং বাকি অংশ ডাইভেনশন ম্যাগাজিন এর ধারণা থেকে আসবে, যা শেখার ধারাবাহিকতা নিশ্চিত করবে।
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <footer class="text-center mt-12 pt-8 border-t border-gray-300">
+                <p class="text-gray-600">আপাতত এটি একটি প্রাথমিক পরিকল্পনা। ALSMM Science Olympiad, July 2025-কে সফল করতে প্রয়োজন অনুসারে এটি যেকোনো সময় পরিবর্তিত হতে পারে।</p>
+                <p class="text-sm text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p>
+            
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Ensure all Chart.js initializations run after the entire page is loaded
+        window.onload = function() {
+            const chartColors = {
+                deepBlue: '#025373',
+                tealBlue: '#037E8C',
+                orange: '#F29E38',
+                darkOrange: '#A66224',
+                lightBackground: '#F8F4F0',
+                textColor: '#041B2D',
+                grayBorder: '#ccc'
+            };
+
+            const hindSiliguriFont = {
+                family: 'Hind Siliguri',
+                size: 13,
+                weight: '500'
+            };
+
+            const commonTooltipConfig = {
+                plugins: {
+                    tooltip: {
+                        titleFont: { ...hindSiliguriFont, weight: '700' },
+                        bodyFont: { ...hindSiliguriFont },
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            function wrapLabels(label, maxLength) {
+                if (label.length <= maxLength) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + ' ' + word).trim().length > maxLength && currentLine.length > 0) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                });
+                if (currentLine.length > 0) lines.push(currentLine);
+                return lines;
+            }
+
+            const divisionChartCtx = document.getElementById('divisionChart').getContext('2d');
+            new Chart(divisionChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['প্রাথমিক (১ম-৫ম)', 'মাধ্যমিক \'ক\' (৬ষ্ঠ-৮ম)', 'মাধ্যমিক \'খ\' (৯ম-১০ম)'],
+                    datasets: [{
+                        label: 'শিক্ষার্থী বিভাগ',
+                        data: [50, 30, 20],
+                        backgroundColor: [chartColors.deepBlue, chartColors.tealBlue, chartColors.orange],
+                        borderColor: '#ffffff',
+                        borderWidth: 3,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        ...commonTooltipConfig.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: hindSiliguriFont }
+                        }
+                    }
+                }
+            });
+            
+            const classCountChartCtx = document.getElementById('classCountChart').getContext('2d');
+            new Chart(classCountChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['প্রাথমিক', 'মাধ্যমিক \'ক\'', 'মাধ্যমিক \'খ\''],
+                    datasets: [{
+                        label: 'শিক্ষার্থীর সংখ্যা',
+                        data: [400, 350, 250],
+                        backgroundColor: [chartColors.deepBlue, chartColors.tealBlue, chartColors.orange],
+                        borderColor: chartColors.deepBlue,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { font: hindSiliguriFont, stepSize: 50 } 
+                        },
+                        x: { ticks: { font: hindSiliguriFont } }
+                    },
+                    plugins: {
+                        ...commonTooltipConfig.plugins,
+                        legend: { display: false }
+                    }
+                }
+            });
+
+            const radarLabels = ['ধারণাগত বোঝাপড়া', 'সমস্যা সমাধান', 'দৈনন্দিন জীবনে প্রয়োগ', 'ঐতিহাসিক প্রেক্ষাপট', 'সৃজনশীলতা'];
+            const primaryRadarChartCtx = document.getElementById('primaryRadarChart').getContext('2d');
+            new Chart(primaryRadarChartCtx, {
+                type: 'radar',
+                data: {
+                    labels: radarLabels,
+                    datasets: [
+                        {
+                            label: 'প্রাথমিক',
+                            data: [4, 3, 5, 2, 4],
+                            fill: true,
+                            backgroundColor: 'rgba(2, 83, 115, 0.2)', // deepBlue with transparency
+                            borderColor: chartColors.deepBlue,
+                            pointBackgroundColor: chartColors.deepBlue
+                        },
+                        {
+                            label: "মাধ্যমিক 'ক'",
+                            data: [5, 4, 4, 3, 4],
+                            fill: true,
+                            backgroundColor: 'rgba(3, 126, 140, 0.2)', // tealBlue with transparency
+                            borderColor: chartColors.tealBlue,
+                            pointBackgroundColor: chartColors.tealBlue
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: chartColors.grayBorder },
+                            grid: { color: chartColors.grayBorder },
+                            pointLabels: { font: { ...hindSiliguriFont, size: 11 } },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: chartColors.textColor,
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...commonTooltipConfig.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: hindSiliguriFont }
+                        }
+                    }
+                }
+            });
+
+            const secondaryRadarChartCtx = document.getElementById('secondaryRadarChart').getContext('2d');
+            new Chart(secondaryRadarChartCtx, {
+                type: 'radar',
+                data: {
+                    labels: radarLabels,
+                    datasets: [
+                        {
+                            label: 'বিজ্ঞান শাখা',
+                            data: [5, 5, 4, 2, 4],
+                            fill: true,
+                            backgroundColor: 'rgba(242, 158, 56, 0.2)', // orange with transparency
+                            borderColor: chartColors.orange,
+                            pointBackgroundColor: chartColors.orange
+                        },
+                        {
+                            label: 'মানবিক শাখা',
+                            data: [4, 3, 5, 5, 4],
+                            fill: true,
+                            backgroundColor: 'rgba(166, 98, 36, 0.2)', // darkOrange with transparency
+                            borderColor: chartColors.darkOrange,
+                            pointBackgroundColor: chartColors.darkOrange
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: chartColors.grayBorder },
+                            grid: { color: chartColors.grayBorder },
+                            pointLabels: { font: { ...hindSiliguriFont, size: 11 } },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: chartColors.textColor,
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...commonTooltipConfig.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: hindSiliguriFont }
+                        }
+                    }
+                }
+            });
+            
+            const syllabusSourceChartCtx = document.getElementById('syllabusSourceChart').getContext('2d');
+            new Chart(syllabusSourceChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: [wrapLabels('বর্তমান শ্রেণির পাঠ্যক্রম', 16), wrapLabels('ডাইভেনশন ম্যাগাজিন', 16)],
+                    datasets: [{
+                        label: 'সিলেবাসের উৎস (%)',
+                        data: [60, 40],
+                        backgroundColor: [chartColors.deepBlue, chartColors.grayBorder],
+                        barThickness: 50
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { 
+                            ticks: { font: hindSiliguriFont, callback: (value) => value + '%' } 
+                        },
+                        y: { ticks: { font: hindSiliguriFont } }
+                    },
+                    plugins: {
+                        ...commonTooltipConfig.plugins,
+                        legend: { display: false },
+                        title: { display: false }
+                    }
+                }
+            });
+        }; // End of window.onload
+    </script>
+</body>
+</html>
+
+

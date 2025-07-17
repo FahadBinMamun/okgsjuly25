@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-xicon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>ওয়েব ডেভেলপমেন্ট কুইজ</title>
+    <!-- Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Bengali text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <!-- আপনার বিদ্যমান style.css ফাইলটি লোড করা হচ্ছে -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom styles for the body and general elements */
+        body {
+            font-family: 'Tiro Bangla', serif;
+            background-color: #F8F4F0;
+            color: #041B2D;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Tiro Bangla', serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .pin-container, .form-container, .quiz-container {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .input-field {
+            border: 2px solid #037E8C;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.25rem;
+        }
+        .action-button {
+            background-color: #F29E38;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+        .action-button:hover {
+            background-color: #A66224;
+        }
+        .error-message {
+            color: #dc2626;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* Quiz specific styles */
+        #quiz-container button {
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        #quiz-container button.bg-green-200 { /* Correct answer background */
+            background-color: #d1fae5;
+            border-color: #34d399;
+        }
+        #quiz-container button.bg-red-200 { /* Incorrect answer background */
+            background-color: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        /* Dark Mode Styles */
+        body.light {
+            background-color: #F8F4F0;
+            color: #041B2D;
+        }
+        body.dark {
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .dark .pin-container, .dark .form-container, .dark .quiz-container {
+            background-color: #2d3748;
+        }
+        .dark .input-field {
+            border-color: #F29E38;
+            background-color: #4a5568;
+            color: #e2e8f0;
+        }
+        .dark .action-button {
+            background-color: #F29E38;
+        }
+        .dark .action-button:hover {
+            background-color: #A66224;
+        }
+        .dark h1, .dark h2, .dark h3 {
+            color: #F29E38;
+        }
+        .dark #quiz-container button {
+            background-color: #4a5568;
+            border-color: #6b7280;
+            color: #e2e8f0;
+        }
+        .dark #quiz-container button.bg-green-200 {
+            background-color: #065f46;
+            border-color: #10b981;
+        }
+        .dark #quiz-container button.bg-red-200 {
+            background-color: #7f1d1d;
+            border-color: #dc2626;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8 relative z-10">
+
+        <header class="text-center mb-12">
+            <img src="images/school_logo.png" alt="স্কুলের লোগো" class="school-logo mx-auto mb-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#025373]">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি</h1>
+            <p class="text-xl mt-2 text-[#037E8C] quote-text">"ওয়েব ডেভেলপমেন্ট কুইজ"</p>
+        </header>
+
+        <main>
+            <!-- PIN Entry Section -->
+            <div id="pin-entry-section" class="pin-container">
+                <h2 class="text-2xl font-bold mb-4 text-[#025373]">কুইজে প্রবেশের জন্য পিন দিন</h2>
+                <input type="password" id="pin-input" class="input-field" placeholder="পিন কোড লিখুন" maxlength="4">
+                <button id="submit-pin" class="action-button">প্রবেশ করুন</button>
+                <p id="error-message-pin" class="error-message hidden">ভুল পিন কোড। আবার চেষ্টা করুন।</p>
+            </div>
+
+            <!-- Registration Form Section -->
+            <div id="registration-section" class="form-container hidden">
+                <h2 class="text-2xl font-bold mb-4 text-[#025373]">কুইজ শুরু করতে আপনার তথ্য দিন</h2>
+                <form id="registration-form" class="space-y-4">
+                    <input type="text" id="student-name" class="input-field" placeholder="আপনার নাম" required>
+                    <input type="text" id="student-class" class="input-field" placeholder="আপনার শ্রেণি" required>
+                    <input type="text" id="student-roll" class="input-field" placeholder="আপনার রোল" required>
+                    <button type="submit" class="action-button">কুইজ শুরু করুন</button>
+                    <p id="error-message-reg" class="error-message hidden">সব তথ্য পূরণ করুন।</p>
+                </form>
+            </div>
+
+            <!-- Quiz Section -->
+            <section id="quiz-section" class="quiz-container hidden">
+                <h2 class="text-2xl md:text-3xl font-bold text-center text-[#2a9d8f] dark:text-[#F29E38] mb-6">ওয়েব ডেভেলপমেন্ট কুইজ</h2>
+                <div id="quiz-content" class="max-w-2xl mx-auto bg-white dark:bg-gray-700 p-6 rounded-lg shadow-md">
+                    <div id="question-display" class="mb-6">
+                        <p class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4" id="question-text"></p>
+                        <div id="answer-options" class="space-y-3">
+                            <!-- উত্তর অপশনগুলো জাভাস্ক্রিপ্ট দিয়ে এখানে লোড হবে -->
+                        </div>
+                        <p id="feedback-message" class="mt-4 text-center font-medium hidden"></p>
+                    </div>
+                    <div class="flex justify-between items-center mt-6">
+                        <button id="next-question-btn" class="bg-[#2a9d8f] hover:bg-[#217d74] text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                            পরবর্তী প্রশ্ন
+                        </button>
+                        <span id="score-display" class="text-gray-700 dark:text-gray-300 font-semibold text-lg">স্কোর: 0/0</span>
+                    </div>
+                    <div id="quiz-result" class="mt-8 text-center hidden">
+                        <h3 class="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">আপনার কুইজের ফলাফল</h3>
+                        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4" id="final-score"></p>
+                        <button id="retake-quiz-btn" class="mt-4 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                            কুইজ আবার নিন
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-300">
+            <nav class="mb-4">
+                <ul class="flex flex-wrap justify-center gap-4 text-lg">
+                    <li><a href="index.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">হোম</a></li>
+                    <li><a href="contest-science_olympiad-july24.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
+                    <li><a href="contest-web_development_contest-july24.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
+                    <li><a href="web_dev_guide.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট গাইড</a></li>
+                    <li><a href="quiz.html" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">কুইজ</a></li> <!-- নতুন কুইজ লিঙ্ক -->
+                    <li><a href="#privacy-policy" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">গোপনীয়তা নীতি</a></li>
+                    <li><a href="#terms-of-service" class="text-gray-700 hover:text-[#F29E38] transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
+                </ul>
+            </nav>
+            <p class="text-gray-600">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
+            <p class="text-sm text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p>
+        </footer>
+
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="theme-toggle" class="fixed bottom-4 right-4 bg-[#2a9d8f] hover:bg-[#217d74] text-white p-3 rounded-full shadow-lg z-50">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+        </svg>
+    </button>
+
+    <!-- JavaScript for Quiz Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dark Mode Toggle Logic
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme) {
+                body.classList.add(currentTheme);
+            } else {
+                body.classList.add('light');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                if (body.classList.contains('dark')) {
+                    body.classList.remove('dark');
+                    body.classList.add('light');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    body.classList.remove('light');
+                    body.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // PIN protection logic for quiz.html
+            const correctPin = "1234"; // আপনার পিন কোড এখানে সেট করুন
+            const pinInput = document.getElementById('pin-input');
+            const submitPinBtn = document.getElementById('submit-pin');
+            const errorMessagePin = document.getElementById('error-message-pin');
+            const pinEntrySection = document.getElementById('pin-entry-section');
+            const registrationSection = document.getElementById('registration-section');
+            const quizSection = document.getElementById('quiz-section');
+
+            submitPinBtn.addEventListener('click', function() {
+                const enteredPin = pinInput.value;
+                if (enteredPin === correctPin) {
+                    pinEntrySection.classList.add('hidden');
+                    registrationSection.classList.remove('hidden'); // পিন সঠিক হলে রেজিস্ট্রেশন ফর্ম দেখান
+                    errorMessagePin.classList.add('hidden');
+                } else {
+                    errorMessagePin.classList.remove('hidden');
+                    pinInput.value = '';
+                }
+            });
+
+            pinInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    submitPinBtn.click();
+                }
+            });
+
+            // Registration Form Logic
+            const registrationForm = document.getElementById('registration-form');
+            const studentNameInput = document.getElementById('student-name');
+            const studentClassInput = document.getElementById('student-class');
+            const studentRollInput = document.getElementById('student-roll');
+            const errorMessageReg = document.getElementById('error-message-reg');
+
+            let studentInfo = {};
+            let quizSessionId = '';
+            let quizStarted = false; // কুইজ শুরু হয়েছে কিনা ট্র্যাক করার জন্য
+
+            registrationForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const name = studentNameInput.value.trim();
+                const studentClass = studentClassInput.value.trim();
+                const roll = studentRollInput.value.trim();
+
+                if (!name || !studentClass || !roll) {
+                    errorMessageReg.classList.remove('hidden');
+                    return;
+                }
+
+                errorMessageReg.classList.add('hidden');
+                studentInfo = { name, class: studentClass, roll };
+                quizSessionId = Date.now().toString() + Math.random().toString(36).substring(2, 9); // ইউনিক সেশন আইডি
+                
+                // কুইজ শুরুর ইমেইল পাঠান
+                await sendQuizEmail('started', studentInfo.name, studentInfo.class, studentInfo.roll, 0, NUMBER_OF_QUIZ_QUESTIONS, quizSessionId);
+
+                registrationSection.classList.add('hidden');
+                quizSection.classList.remove('hidden'); // রেজিস্ট্রেশন সফল হলে কুইজ সেকশন দেখান
+                quizStarted = true; // কুইজ শুরু হয়েছে চিহ্নিত করুন
+                startQuiz(); // কুইজ শুরু করুন
+            });
+
+            // কুইজের প্রশ্নগুলো (এখানে মোট ২০টি প্রশ্ন যোগ করা হয়েছে)
+            const quizQuestions = [
+                {
+                    question: "HTML এর পূর্ণরূপ কী এবং এটি ওয়েব ডেভেলপমেন্টে কোন কাজে ব্যবহৃত হয়?",
+                    options: [
+                        "হাইপারটেক্সট মার্কআপ ল্যাংগুয়েজ; ওয়েবপেজের কাঠামো তৈরি করা",
+                        "হাইপারটেক্সট মার্কআপ ল্যাংগুয়েজ; ওয়েবপেজের ডিজাইন ও স্টাইল করা",
+                        "হাইপারটেক্সট ম্যানেজমেন্ট ল্যাংগুয়েজ; ডেটাবেজ ম্যানেজ করা",
+                        "হাইপারটেক্সট মডিউলেশন ল্যাংগুয়েজ; সার্ভার তৈরি করা",
+                        "হাইপারটেক্সট মেকিং ল্যাংগুয়েজ; ডেটা প্রসেসিং করা"
+                    ],
+                    answer: "হাইপারটেক্সট মার্কআপ ল্যাংগুয়েজ; ওয়েবপেজের কাঠামো তৈরি করা",
+                    feedback: {
+                        correct: "সঠিক! HTML ওয়েবপেজের মূল কাঠামো তৈরি করে।",
+                        incorrect: "ভুল উত্তর। HTML একটি ওয়েবপেজের কাঠামো তৈরি করতে ব্যবহৃত হয়।"
+                    }
+                },
+                {
+                    question: "ওয়েব ব্রাউজার কী?",
+                    options: [
+                        "একটি প্রোগ্রাম যা ব্যবহারকারীদের ওয়েবসাইট দেখার সুযোগ করে",
+                        "ওয়েবসাইট তৈরি করার একটি ভাষা",
+                        "ইন্টারনেটে ডেটা সংরক্ষণের একটি স্থান",
+                        "কম্পিউটারের অপারেটিং সিস্টেম",
+                        "একটি হার্ডওয়্যার ডিভাইস"
+                    ],
+                    answer: "একটি প্রোগ্রাম যা ব্যবহারকারীদের ওয়েবসাইট দেখার সুযোগ করে",
+                    feedback: {
+                        correct: "ঠিক আছে! ওয়েব ব্রাউজার হলো ওয়েবসাইট দেখার জন্য ব্যবহৃত সফটওয়্যার।",
+                        incorrect: "এটি ভুল উত্তর। ওয়েব ব্রাউজার ওয়েবসাইট লোড করে দেখানোর জন্য ব্যবহৃত হয়।"
+                    }
+                },
+                {
+                    question: "ওয়েবপেজের চেহারা বা স্টাইল নিয়ন্ত্রণ করতে সাধারণত কোন প্রযুক্তি ব্যবহার করা হয়?",
+                    options: [
+                        "CSS (Cascading Style Sheets)",
+                        "HTML (HyperText Markup Language)",
+                        "JavaScript",
+                        "Python",
+                        "SQL"
+                    ],
+                    answer: "CSS (Cascading Style Sheets)",
+                    feedback: {
+                        correct: "হ্যাঁ, সঠিক! CSS ওয়েবপেজকে সুন্দরভাবে সাজাতে সাহায্য করে।",
+                        incorrect: "দুঃখিত, এটি ভুল। ওয়েবপেজের স্টাইলিংয়ের জন্য CSS ব্যবহৃত হয়।"
+                    }
+                },
+                {
+                    question: "একটি ওয়েবসাইটের জন্য ব্যবহৃত প্রধান কোডিং ভাষা কোনটি যা গতিশীলতা এবং ইন্টারঅ্যাক্টিভিটি যোগ করে?",
+                    options: [
+                        "HTML",
+                        "CSS",
+                        "JavaScript",
+                        "PHP",
+                        "SQL"
+                    ],
+                    answer: "JavaScript",
+                    feedback: {
+                        correct: "সঠিক! জাভাস্ক্রিপ্ট ওয়েবপেজকে ইন্টারঅ্যাক্টিভ করে তোলে।",
+                        incorrect: "ভুল। জাভাস্ক্রিপ্ট ইন্টারঅ্যাক্টিভিটির জন্য ব্যবহৃত হয়।"
+                    }
+                },
+                {
+                    question: "নিচের কোনটি একটি ব্রাউজার?",
+                    options: [
+                        "Microsoft Word",
+                        "Google Chrome",
+                        "Adobe Photoshop",
+                        "Microsoft Excel",
+                        "VLC Media Player"
+                    ],
+                    answer: "Google Chrome",
+                    feedback: {
+                        correct: "সঠিক! Google Chrome একটি জনপ্রিয় ওয়েব ব্রাউজার।",
+                        incorrect: "ভুল। Google Chrome হলো একটি ব্রাউজার।"
+                    }
+                },
+                {
+                    question: "ওয়েবসাইটের মৌলিক ফাইলগুলো কোথায় থাকে?",
+                    options: [
+                        "ওয়েব ব্রাউজারের ক্যাশে",
+                        "ওয়েব সার্ভার",
+                        "ব্যবহারকারীর হার্ড ডিস্কে",
+                        "মোবাইল ফোনের সিম কার্ডে",
+                        "ইমেইল ইনবক্সে"
+                    ],
+                    answer: "ওয়েব সার্ভার",
+                    feedback: {
+                        correct: "সঠিক! ওয়েবসাইট ফাইলগুলো ওয়েব সার্ভারে সংরক্ষিত থাকে।",
+                        incorrect: "ভুল। ওয়েব সার্ভারে ওয়েবসাইটের ফাইলগুলো হোস্ট করা হয়।"
+                    }
+                },
+                {
+                    question: "ওয়েব ডেভেলপমেন্টে 'ফ্রন্টএন্ড' বলতে কী বোঝায়?",
+                    options: [
+                        "ওয়েবসাইটের সার্ভার-সাইড অংশ",
+                        "ওয়েবসাইটের ডেটাবেজ ম্যানেজমেন্ট",
+                        "ব্যবহারকারীরা ওয়েবসাইটে যা দেখতে ও ইন্টারঅ্যাক্ট করতে পারে",
+                        "ওয়েবসাইট হোস্টিং প্রক্রিয়া",
+                        "নে트워크 সিকিউরিটি"
+                    ],
+                    answer: "ব্যবহারকারীরা ওয়েবসাইটে যা দেখতে ও ইন্টারঅ্যাক্ট করতে পারে",
+                    feedback: {
+                        correct: "সঠিক! ফ্রন্টএন্ড হলো ওয়েবসাইটের ইউজার ইন্টারফেস।",
+                        incorrect: "ভুল। ফ্রন্টএন্ড ব্যবহারকারীর কাছে দৃশ্যমান অংশ।"
+                    }
+                },
+                {
+                    question: "ওয়েব ডেভেলপমেন্টে 'ব্যাকএন্ড' বলতে কী বোঝায়?",
+                    options: [
+                        "ওয়েবসাইটের ডিজাইন অংশ",
+                        "ওয়েবসাইটের ইউজার ইন্টারফেস",
+                        "সার্ভার, অ্যাপ্লিকেশন এবং ডেটাবেজ",
+                        "ব্রাউজারের কাজ করার পদ্ধতি",
+                        "ওয়েবপেজের স্টাইল"
+                    ],
+                    answer: "সার্ভার, অ্যাপ্লিকেশন এবং ডেটাবেজ",
+                    feedback: {
+                        correct: "সঠিক! ব্যাকএন্ড ওয়েবসাইটের সার্ভার-সাইড লজিক হ্যান্ডেল করে।",
+                        incorrect: "ভুল। ব্যাকএন্ড সার্ভার-সাইড অপারেশন নিয়ে কাজ করে।"
+                    }
+                },
+                {
+                    question: "একটি নতুন ওয়েবপেজ তৈরি করতে নিচের কোন ট্যাগটি দিয়ে শুরু করা উচিত?",
+                    options: [
+                        "<body>",
+                        "<head>",
+                        "<!DOCTYPE html>",
+                        "<html>",
+                        "<title>"
+                    ],
+                    answer: "<!DOCTYPE html>",
+                    feedback: {
+                        correct: "সঠিক! এটি ডকুমেন্ট টাইপ ঘোষণা করে।",
+                        incorrect: "ভুল। <!DOCTYPE html> হলো সঠিক শুরু।"
+                    }
+                },
+                {
+                    question: "ওয়েবপেজে ছবি যোগ করার জন্য কোন HTML ট্যাগ ব্যবহার করা হয়?",
+                    options: [
+                        "<image>",
+                        "<pic>",
+                        "<img>",
+                        "<picture>",
+                        "<photo>"
+                    ],
+                    answer: "<img>",
+                    feedback: {
+                        correct: "সঠিক! <img> ট্যাগ ছবি যোগ করতে ব্যবহৃত হয়।",
+                        incorrect: "ভুল। <img> ট্যাগটি ছবি প্রদর্শনের জন্য।"
+                    }
+                },
+                {
+                    question: "ওয়েবপেজে একটি লিংক তৈরি করতে কোন HTML ট্যাগ ব্যবহার করা হয়?",
+                    options: [
+                        "<link>",
+                        "<a>",
+                        "<href>",
+                        "<url>",
+                        "<anchor>"
+                    ],
+                    answer: "<a>",
+                    feedback: {
+                        correct: "সঠিক! <a> ট্যাগ হাইপারলিংক তৈরি করে।",
+                        incorrect: "ভুল। <a> ট্যাগটি লিংক তৈরির জন্য।"
+                    }
+                },
+                {
+                    question: "CSS এর প্রধান কাজ কী?",
+                    options: [
+                        "ওয়েবপেজের গঠন তৈরি করা",
+                        "ওয়েবপেজে ইন্টারঅ্যাক্টিভিটি যোগ করা",
+                        "ওয়েবপেজের স্টাইল এবং লেআউট নিয়ন্ত্রণ করা",
+                        "ডেটাবেজ তৈরি করা",
+                        "সার্ভার কনফিগার করা"
+                    ],
+                    answer: "ওয়েবপেজের স্টাইল এবং লেআউট নিয়ন্ত্রণ করা",
+                    feedback: {
+                        correct: "সঠিক! CSS ওয়েবপেজকে দৃশ্যমান করে।",
+                        incorrect: "ভুল। CSS স্টাইলিংয়ের জন্য ব্যবহৃত হয়।"
+                    }
+                },
+                {
+                    question: "মোবাইল ডিভাইসের জন্য ওয়েবসাইট অপটিমাইজেশনকে কী বলে?",
+                    options: [
+                        "স্ট্যাটিক ডিজাইন",
+                        "রেসপনসিভ ডিজাইন",
+                        "ফিক্সড ডিজাইন",
+                        "ট্যাবলেট ডিজাইন",
+                        "ডেস্কটপ অপটিমাইজেশন"
+                    ],
+                    answer: "রেসপনসিভ ডিজাইন",
+                    feedback: {
+                        correct: "সঠিক! রেসপনসিভ ডিজাইন সব স্ক্রিনে ভালো দেখায়।",
+                        incorrect: "ভুল। রেসপনসিভ ডিজাইন মোবাইল অপটিমাইজেশনের জন্য।"
+                    }
+                },
+                {
+                    question: "একটি ওয়েবপেজের টাইটেল ট্যাগের কাজ কী?",
+                    options: [
+                        "ব্রাউজারের ট্যাবে পেজের শিরোনাম দেখায়",
+                        "পেজের প্রধান হেডিং সেট করে",
+                        "সার্চ ইঞ্জিনের জন্য মেটা ডেটা যোগ করে",
+                        "পেজের ফন্ট স্টাইল নিয়ন্ত্রণ করে",
+                        "ছবি যোগ করে"
+                    ],
+                    answer: "ব্রাউজারের ট্যাবে পেজের শিরোনাম দেখায়",
+                    feedback: {
+                        correct: "সঠিক! টাইটেল ট্যাগ ব্রাউজার ট্যাবে শিরোনাম দেখায়।",
+                        incorrect: "ভুল। টাইটেল ট্যাগ ব্রাউজার ট্যাবের জন্য।"
+                    }
+                },
+                {
+                    question: "JavaScript সাধারণত কোন ক্ষেত্রে ব্যবহৃত হয়?",
+                    options: [
+                        "ওয়েব সার্ভার তৈরি করতে",
+                        "মোবাইল অ্যাপ ডেভেলপমেন্টে",
+                        "ওয়েবপেজে গতিশীলতা যোগ করতে",
+                        "ডেটাবেজ ম্যানেজমেন্টে",
+                        "শুধুমাত্র এনিমেশন তৈরি করতে"
+                    ],
+                    answer: "ওয়েবপেজে গতিশীলতা যোগ করতে",
+                    feedback: {
+                        correct: "সঠিক! JavaScript ওয়েবপেজে ইন্টারেক্টিভিটি যোগ করে।",
+                        incorrect: "ভুল। JavaScript গতিশীলতার জন্য ব্যবহৃত হয়।"
+                    }
+                },
+                {
+                    question: "কম্পিউটারের যে অংশগুলো ছোঁয়া যায়, সেগুলোকে কী বলে?",
+                    options: [
+                        "সফটওয়্যার",
+                        "অপারেটিং সিস্টেম",
+                        "হার্ডওয়্যার",
+                        "প্রোগ্রাম",
+                        "অ্যাপ্লিকেশন"
+                    ],
+                    answer: "হার্ডওয়্যার",
+                    feedback: {
+                        correct: "সঠিক! কম্পিউটারের ভৌত উপাদানগুলো হার্ডওয়্যার।",
+                        incorrect: "ভুল। হার্ডওয়্যার হলো কম্পিউটারের স্পর্শযোগ্য অংশ।"
+                    }
+                },
+                {
+                    question: "কম্পিউটারের নির্দেশ বা প্রোগ্রাম, যা হার্ডওয়্যারকে চালায়, তাকে কী বলে?",
+                    options: [
+                        "হার্ডওয়্যার",
+                        "সফটওয়্যার",
+                        "সিপিইউ",
+                        "র‍্যাম",
+                        "মাদারবোর্ড"
+                    ],
+                    answer: "সফটওয়্যার",
+                    feedback: {
+                        correct: "সঠিক! সফটওয়্যার হার্ডওয়্যারকে কাজ করতে নির্দেশ দেয়।",
+                        incorrect: "ভুল। সফটওয়্যার হলো প্রোগ্রামের সমষ্টি।"
+                    }
+                },
+                {
+                    question: "একটি `.mp3` ফাইল সাধারণত কোন ধরনের সফটওয়্যার দিয়ে খোলা হয়?",
+                    options: [
+                        "ওয়েব ব্রাউজার",
+                        "পিডিএফ রিডার",
+                        "মিডিয়া প্লেয়ার",
+                        "টেক্সট এডিটর",
+                        "ছবি দেখার সফটওয়্যার"
+                    ],
+                    answer: "মিডিয়া প্লেয়ার",
+                    feedback: {
+                        correct: "সঠিক! .mp3 ফাইল মিডিয়া প্লেয়ার দিয়ে খোলা হয়।",
+                        incorrect: "ভুল। .mp3 একটি অডিও ফাইল, যা মিডিয়া প্লেয়ার দিয়ে চলে।"
+                    }
+                },
+                {
+                    question: "ওয়েব ব্রাউজার যখন একটি ওয়েবসাইটের ঠিকানা টাইপ করার পর সার্ভারকে অনুরোধ পাঠায়, তখন সার্ভার ব্রাউজারের কাছে কী পাঠায়?",
+                    options: [
+                        "একটি ভিডিও ফাইল",
+                        "একটি অডিও ফাইল",
+                        "HTML, CSS, JavaScript কোড",
+                        "একটি ছবি ফাইল",
+                        "একটি পিডিএফ ফাইল"
+                    ],
+                    answer: "HTML, CSS, JavaScript কোড",
+                    feedback: {
+                        correct: "সঠিক! ব্রাউজার এই কোডগুলো দিয়ে ওয়েবপেজ তৈরি করে।",
+                        incorrect: "ভুল। সার্ভার ওয়েবপেজের কোড পাঠায়।"
+                    }
+                },
+                {
+                    question: "একটি ওয়েবসাইটের একাধিক ওয়েবপেজ মিলে কী তৈরি হয়?",
+                    options: [
+                        "একটি প্রোগ্রাম",
+                        "একটি সফটওয়্যার",
+                        "একটি অপারেটিং সিস্টেম",
+                        "একটি ওয়েবসাইট",
+                        "একটি অ্যাপ্লিকেশন"
+                    ],
+                    answer: "একটি ওয়েবসাইট",
+                    feedback: {
+                        correct: "সঠিক! অনেকগুলো ওয়েবপেজ মিলে একটি ওয়েবসাইট তৈরি হয়।",
+                        incorrect: "ভুল। অনেক ওয়েবপেজ মিলে একটি ওয়েবসাইট হয়।"
+                    }
+                },
+                {
+                    question: "স্ট্যাটিক ওয়েবপেজ তৈরি করতে ব্যবহৃত প্রধান ৩টি প্রযুক্তি কী কী?",
+                    options: [
+                        "Python, Java, C++",
+                        "HTML, CSS, JavaScript",
+                        "SQL, PHP, Ruby",
+                        "Swift, Kotlin, Dart",
+                        "React, Angular, Vue"
+                    ],
+                    answer: "HTML, CSS, JavaScript",
+                    feedback: {
+                        correct: "সঠিক! এই তিনটি ফ্রন্ট-এন্ডের মূল ভিত্তি।",
+                        incorrect: "ভুল। HTML, CSS, JavaScript স্ট্যাটিক ওয়েবপেজের জন্য ব্যবহৃত হয়।"
+                    }
+                },
+                 {
+                    question: "মোবাইলে কোডিং শেখার জন্য Android ব্যবহারকারীদের জন্য একটি জনপ্রিয় অ্যাপের নাম কী?",
+                    options: [
+                        "Microsoft Word",
+                        "TrebEdit",
+                        "Adobe Photoshop",
+                        "VLC Media Player",
+                        "Google Chrome"
+                    ],
+                    answer: "TrebEdit",
+                    feedback: {
+                        correct: "সঠিক! TrebEdit একটি চমৎকার মোবাইল কোড এডিটর।",
+                        incorrect: "ভুল। TrebEdit একটি মোবাইল কোড এডিটর।"
+                    }
+                },
+                {
+                    question: "একটি কোড এডিটরের প্রধান সুবিধা কী?",
+                    options: [
+                        "গেম খেলা",
+                        "ভিডিও দেখা",
+                        "কোডের ভুল ধরতে সাহায্য করা এবং কোডকে সুন্দর করে সাজানো",
+                        "গান শোনা",
+                        "ছবি এডিট করা"
+                    ],
+                    answer: "কোডের ভুল ধরতে সাহায্য করা এবং কোডকে সুন্দর করে সাজানো",
+                    feedback: {
+                        correct: "সঠিক! কোড এডিটর কোডিংকে সহজ করে তোলে।",
+                        incorrect: "ভুল। কোড এডিটর কোডিংয়ের জন্য বিশেষ সুবিধা দেয়।"
+                    }
+                },
+                {
+                    question: "VS Code এর একটি প্রধান অসুবিধা কী?",
+                    options: [
+                        "এটি বিনামূল্যে নয়",
+                        "এটি শুধুমাত্র একটি ভাষা সমর্থন করে",
+                        "এটি মোবাইলে ভালোভাবে কাজ করে না, সাধারণত কম্পিউটার প্রয়োজন",
+                        "এটি খুব ধীর",
+                        "এটি খুব কম ফিচার দেয়"
+                    ],
+                    answer: "এটি মোবাইলে ভালোভাবে কাজ করে না, সাধারণত কম্পিউটার প্রয়োজন",
+                    feedback: {
+                        correct: "সঠিক! VS Code মূলত ডেস্কটপ ব্যবহারের জন্য ডিজাইন করা।",
+                        incorrect: "ভুল। VS Code সাধারণত কম্পিউটারে ব্যবহৃত হয়।"
+                    }
+                },
+                {
+                    question: "CodePen এর একটি প্রধান সুবিধা কী?",
+                    options: [
+                        "ইন্টারনেট সংযোগ ছাড়াই কাজ করে",
+                        "বড় এবং জটিল প্রজেক্টের জন্য সেরা",
+                        "কোনো সফটওয়্যার ডাউনলোড বা ইনস্টল করার ঝামেলা নেই",
+                        "শুধুমাত্র ব্যাকএন্ড কোডিং সমর্থন করে",
+                        "ডেটাবেজ ম্যানেজমেন্টের জন্য ব্যবহৃত হয়"
+                    ],
+                    answer: "কোনো সফটওয়্যার ডাউনলোড বা ইনস্টল করার ঝামেলা নেই",
+                    feedback: {
+                        correct: "সঠিক! CodePen একটি অনলাইন প্ল্যাটফর্ম।",
+                        incorrect: "ভুল। CodePen একটি অনলাইন কোডিং টুল।"
+                    }
+                }
+            ];
+
+            const NUMBER_OF_QUIZ_QUESTIONS = 20; // কুইজে মোট কতটি প্রশ্ন থাকবে (১৫ থেকে ২০টি)
+
+            let currentQuizQuestions = []; // বর্তমান কুইজের জন্য নির্বাচিত প্রশ্নগুলো
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let quizCompleted = false; // কুইজ শেষ হয়েছে কিনা ট্র্যাক করার জন্য
+
+            // DOM এলিমেন্টস
+            const quizContentDiv = document.getElementById('quiz-content');
+            const questionText = document.getElementById('question-text');
+            const answerOptionsDiv = document.getElementById('answer-options');
+            const nextQuestionBtn = document.getElementById('next-question-btn');
+            const scoreDisplay = document.getElementById('score-display');
+            const feedbackMessage = document.getElementById('feedback-message');
+            const quizResultDiv = document.getElementById('quiz-result');
+            const finalScoreDisplay = document.getElementById('final-score');
+            const retakeQuizBtn = document.getElementById('retake-quiz-btn');
+
+            // কুইজ শুরু করার ফাংশন
+            function startQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                quizCompleted = false;
+                scoreDisplay.textContent = `স্কোর: 0/${NUMBER_OF_QUIZ_QUESTIONS}`;
+                quizResultDiv.classList.add('hidden');
+                quizContentDiv.classList.remove('hidden'); // কুইজ কন্টেইনার দেখান
+
+                // র্যান্ডম প্রশ্ন নির্বাচন
+                const shuffledQuestions = [...quizQuestions].sort(() => 0.5 - Math.random());
+                currentQuizQuestions = shuffledQuestions.slice(0, NUMBER_OF_QUIZ_QUESTIONS);
+
+                displayQuestion();
+            }
+
+            // প্রশ্ন প্রদর্শনের ফাংশন
+            function displayQuestion() {
+                if (currentQuestionIndex >= currentQuizQuestions.length) {
+                    showQuizResult(); // সব প্রশ্ন শেষ হলে ফলাফল দেখান
+                    return;
+                }
+
+                const questionData = currentQuizQuestions[currentQuestionIndex];
+                
+                questionText.textContent = `${currentQuestionIndex + 1}. ${questionData.question}`;
+                answerOptionsDiv.innerHTML = ''; // পূর্ববর্তী অপশনগুলো মুছে ফেলো
+                feedbackMessage.classList.add('hidden'); // ফিডব্যাক মেসেজ লুকান
+                feedbackMessage.textContent = ''; // ফিডব্যাক মেসেজ খালি করো
+                nextQuestionBtn.textContent = 'পরবর্তী প্রশ্ন'; // বাটনের টেক্সট রিসেট
+
+                // অপশনগুলো র্যান্ডমলি সাজানো
+                const shuffledOptions = [...questionData.options].sort(() => 0.5 - Math.random());
+
+                shuffledOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = option;
+                    button.classList.add(
+                        'block', 'w-full', 'text-left', 'p-3', 'rounded-md', 'border', 'border-gray-300',
+                        'hover:bg-[#e0f2f0]', 'dark:hover:bg-gray-600', 'transition', 'duration-200', 'text-gray-800', 'dark:text-gray-100',
+                        'bg-white', 'dark:bg-gray-700'
+                    );
+                    button.onclick = () => selectAnswer(option, questionData.answer, questionData.feedback);
+                    answerOptionsDiv.appendChild(button);
+                });
+
+                // সব অপশন বাটনকে আবার সক্রিয় করো
+                answerOptionsDiv.querySelectorAll('button').forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove('bg-green-200', 'bg-red-200', 'dark:bg-green-800', 'dark:bg-red-800', 'border-green-500', 'border-red-500');
+                    btn.classList.add('hover:bg-[#e0f2f0]', 'dark:hover:bg-gray-600');
+                });
+            }
+
+            // উত্তর নির্বাচন ফাংশন
+            function selectAnswer(selectedOption, correctAnswer, feedback) {
+                // একবার উত্তর সিলেক্ট করার পর অন্যান্য বাটন ডিসেবল করে দাও
+                answerOptionsDiv.querySelectorAll('button').forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.textContent === correctAnswer) {
+                        btn.classList.add('bg-green-200', 'dark:bg-green-800', 'border-green-500');
+                    } else if (btn.textContent === selectedOption) {
+                        btn.classList.add('bg-red-200', 'dark:bg-red-800', 'border-red-500');
+                    }
+                    btn.classList.remove('hover:bg-[#e0f2f0]', 'dark:hover:bg-gray-600');
+                });
+
+                if (selectedOption === correctAnswer) {
+                    score++;
+                    feedbackMessage.textContent = feedback.correct;
+                    feedbackMessage.classList.remove('text-red-600');
+                    feedbackMessage.classList.add('text-green-600');
+                } else {
+                    feedbackMessage.textContent = feedback.incorrect;
+                    feedbackMessage.classList.remove('text-green-600');
+                    feedbackMessage.classList.add('text-red-600');
+                }
+                feedbackMessage.classList.remove('hidden');
+                updateScoreDisplay();
+            }
+
+            // স্কোর আপডেট ফাংশন
+            function updateScoreDisplay() {
+                scoreDisplay.textContent = `স্কোর: ${score}/${currentQuestionIndex + 1}`;
+            }
+
+            // কুইজের ফলাফল দেখানোর ফাংশন
+            async function showQuizResult() {
+                quizContentDiv.classList.add('hidden'); // কুইজ কন্টেইনার লুকান
+                quizResultDiv.classList.remove('hidden'); // ফলাফল সেকশন দেখান
+                finalScoreDisplay.textContent = `আপনি মোট ${currentQuizQuestions.length}টি প্রশ্নের মধ্যে ${score}টি প্রশ্নের সঠিক উত্তর দিয়েছেন। আপনার স্কোর: ${score}/${currentQuizQuestions.length}`;
+                
+                quizCompleted = true; // কুইজ শেষ হয়েছে চিহ্নিত করুন
+
+                // কুইজ শেষের ইমেইল পাঠান
+                await sendQuizEmail('completed', studentInfo.name, studentInfo.class, studentInfo.roll, score, currentQuizQuestions.length, quizSessionId);
+            }
+
+            // ইমেইল পাঠানোর জন্য Netlify Function কল করার ফাংশন
+            async function sendQuizEmail(type, name, studentClass, roll, currentScore, totalQuestions, sessionId) {
+                try {
+                    // Fix: Construct an absolute URL for the Netlify function
+                    const functionUrl = new URL('/.netlify/functions/send-quiz-result', window.location.href).toString();
+
+                    const response = await fetch(functionUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            type: type, // 'started', 'abandoned', 'completed'
+                            name: name,
+                            class: studentClass,
+                            roll: roll,
+                            score: currentScore,
+                            total: totalQuestions,
+                            sessionId: sessionId,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error(`Failed to send ${type} email:`, errorData.message || response.statusText);
+                    }
+                } catch (error) {
+                    console.error(`Error sending ${type} email:`, error);
+                }
+            }
+
+            // ইভেন্ট লিসেনার
+            nextQuestionBtn.addEventListener('click', () => {
+                currentQuestionIndex++;
+                displayQuestion();
+            });
+            retakeQuizBtn.addEventListener('click', () => {
+                quizSection.classList.add('hidden'); // কুইজ সেকশন লুকান
+                pinEntrySection.classList.remove('hidden'); // পিন এন্ট্রি সেকশন আবার দেখান
+                // রেজিস্ট্রেশন ফর্ম রিসেট
+                registrationForm.reset();
+                studentInfo = {};
+                quizSessionId = '';
+                quizStarted = false;
+            });
+
+            // ব্রাউজার বন্ধ বা পেজ রিলোড করার সময় ইমেইল পাঠানোর জন্য
+            window.addEventListener('beforeunload', async (event) => {
+                if (quizStarted && !quizCompleted) { // যদি কুইজ শুরু হয়ে থাকে কিন্তু শেষ না হয়
+                    const data = {
+                        type: 'abandoned',
+                        name: studentInfo.name,
+                        class: studentInfo.class,
+                        roll: studentInfo.roll,
+                        score: score,
+                        total: currentQuizQuestions.length,
+                        sessionId: quizSessionId,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    // Fix: Construct an absolute URL for the Netlify function for sendBeacon as well
+                    const functionUrl = new URL('/.netlify/functions/send-quiz-result', window.location.href).toString();
+
+                    // fetch with keepalive is more reliable than plain fetch on unload
+                    fetch(functionUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                        keepalive: true // এটি নিশ্চিত করে যে ব্রাউজার বন্ধ হলেও রিকোয়েস্টটি শেষ হবে
+                    }).catch(e => console.error("Error sending abandon email with fetch:", e));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
