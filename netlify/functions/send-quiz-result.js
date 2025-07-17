@@ -1,7 +1,6 @@
 // এই Netlify Function ফাইলটি কুইজ থেকে ডেটা গ্রহণ করবে এবং Gmail ব্যবহার করে ইমেইল পাঠাবে।
 
 // Nodemailer লাইব্রেরি ইম্পোর্ট করুন।
-// আপনাকে এই লাইব্রেরিটি ইনস্টল করতে হবে: npm install nodemailer
 const nodemailer = require('nodemailer');
 
 exports.handler = async (event, context) => {
@@ -17,24 +16,25 @@ exports.handler = async (event, context) => {
     try {
         // রিকোয়েস্ট বডি থেকে ডেটা পার্স করুন
         const data = JSON.parse(event.body);
+        // ডেটা থেকে প্রয়োজনীয় তথ্যগুলো নিন
         const { type, name, studentClass, roll, score, total, sessionId, timestamp } = data;
 
         let subject = '';
         let emailBody = '';
 
-        // --- এখানে আপনার পরিবর্তন করতে হবে ---
-        // ১. আপনার Gmail অ্যাড্রেস দিন, যেখান থেকে ইমেইল পাঠানো হবে।
+        // --- এখানে আপনার Gmail অ্যাড্রেস এবং App Password Netlify Environment Variable থেকে আসবে ---
         const senderEmail = process.env.GMAIL_USER; // এটি Netlify Environment Variable থেকে আসবে
-        // ২. আপনার Gmail App Password দিন। (Netlify Environment Variable থেকে আসবে)
         const senderAppPassword = process.env.GMAIL_APP_PASSWORD; // এটি Netlify Environment Variable থেকে আসবে
-        // ৩. আপনার অ্যাডমিন ইমেইল অ্যাড্রেস দিন, যেখানে নোটিফিকেশনগুলো যাবে।
-        const adminEmail = 'morbiusnorway@gmail.com'; // <--- এখানে আপনার অ্যাডমিন Gmail আইডি দিন
+
+        // --- এখানে আপনার অ্যাডমিন ইমেইল অ্যাড্রেস বসানো হয়েছে ---
+        const adminEmail = 'optimussentry01@gmail.com'; // <--- আপনার অ্যাডমিন Gmail আইডি এখানে বসানো হয়েছে
 
         // নিশ্চিত করুন যে প্রয়োজনীয় ভেরিয়েবলগুলো সেট করা আছে
         if (!senderEmail || !senderAppPassword) {
+            console.error('Environment variables GMAIL_USER or GMAIL_APP_PASSWORD are not set.');
             return {
                 statusCode: 500,
-                body: 'Sender email or app password not configured.'
+                body: 'Sender email or app password not configured in Netlify Environment Variables.'
             };
         }
 
@@ -93,9 +93,10 @@ exports.handler = async (event, context) => {
                     <li><strong>সময়:</strong> ${new Date(timestamp).toLocaleString('bn-BD')}</li>
                 </ul>
                 <p>শিক্ষার্থীকে কুইজ সম্পন্ন করার জন্য উৎসাহিত করা যেতে পারে।</p>
-                <p>ধন্যবাদ,<br>আপনার কুইজ সিস্টেম</p>
+                    <p>ধন্যবাদ,<br>আপনার কুইজ সিস্টেম</p>
             `;
         } else {
+            console.warn('Received invalid email type:', type);
             return {
                 statusCode: 400,
                 body: 'Invalid email type provided.'
@@ -104,8 +105,8 @@ exports.handler = async (event, context) => {
 
         // ইমেইল পাঠানোর অপশন সেট করুন
         const mailOptions = {
-            from: senderEmail, // যে Gmail আইডি থেকে ইমেইল যাবে
-            to: adminEmail,    // যে Gmail আইডিতে ইমেইল যাবে
+            from: senderEmail, // যে Gmail আইডি থেকে ইমেইল যাবে (Netlify Environment Variable থেকে)
+            to: adminEmail,    // যে Gmail আইডিতে ইমেইল যাবে (optimussentry01@gmail.com)
             subject: subject,
             html: emailBody,
         };
@@ -120,7 +121,7 @@ exports.handler = async (event, context) => {
         };
 
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error sending email:', error); // ত্রুটি কনসোলে দেখাবে
         // ত্রুটি হলে প্রতিক্রিয়া পাঠান
         return {
             statusCode: 500,
@@ -128,4 +129,3 @@ exports.handler = async (event, context) => {
         };
     }
 };
-
