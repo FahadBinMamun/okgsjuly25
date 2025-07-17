@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico" type="image/x-xicon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-xicon">
     <title>ওয়েব ডেভেলপমেন্ট কুইজ</title>
     <!-- Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -223,6 +223,56 @@
             background-color: #F29E38;
             color: #041B2D;
         }
+
+        /* Tab Switch Warning Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            color: #041B2D;
+        }
+        body.dark-mode .modal-content {
+            background-color: #112A46;
+            color: #F8F4F0;
+        }
+        .modal-content h3 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #EF476F; /* লাল */
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-content button {
+            background-color: #F29E38;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .modal-content button:hover {
+            background-color: #A66224;
+        }
     </style>
     <!-- EmailJS CDN যোগ করা হয়েছে -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -268,6 +318,8 @@
         <div id="quiz-section" class="quiz-card hidden">
             <div class="flex justify-between items-center mb-4">
                 <p class="score-display">স্কোর: <span id="current-score">0</span> / <span id="total-questions">0</span></p>
+                <!-- নতুন টাইমার ডিসপ্লে যোগ করা হয়েছে -->
+                <p class="text-lg font-semibold text-[#037E8C]">সময় বাকি: <span id="time-left">10</span> সেকেন্ড</p>
                 <p class="text-lg font-semibold text-[#037E8C]">প্রশ্ন <span id="question-number">1</span></p>
             </div>
             <h2 id="question-text" class="text-2xl font-bold mb-6 text-[#025373]">প্রশ্ন এখানে থাকবে?</h2>
@@ -284,6 +336,15 @@
             <p class="text-2xl font-bold text-center mb-4 text-[#037E8C]">আপনার ফাইনাল স্কোর: <span id="final-score">0</span> / <span id="final-total">0</span></p>
             <p id="result-message" class="text-lg text-center mb-8 text-gray-700"></p>
             <button id="restart-button" class="action-button">আবার কুইজ দিন</button>
+        </div>
+    </div>
+
+    <!-- Tab Switch Warning Modal -->
+    <div id="tab-switch-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>সতর্কতা!</h3>
+            <p>আপনি কুইজ চলাকালীন অন্য ট্যাবে চলে গিয়েছিলেন। আপনার কুইজ পুনরায় শুরু হবে।</p>
+            <button id="modal-restart-button">কুইজ পুনরায় শুরু করুন</button>
         </div>
     </div>
 
@@ -320,127 +381,127 @@
         const allQuestions = [
             {
                 question: "HTML এর পূর্ণরূপ কী?",
-                options: ["HyperText Markup Language", "Hyperlink and Text Markup Language", "High-level Text Machine Language", "Home Tool Markup Language"],
+                options: ["HyperText Markup Language", "Hyperlink and Text Markup Language", "High-level Text Machine Language", "Home Tool Markup Language", "অন্যান্য"],
                 answer: "HyperText Markup Language"
             },
             {
                 question: "ওয়েবপেজের কাঠামো তৈরি করতে কোনটি ব্যবহৃত হয়?",
-                options: ["CSS", "JavaScript", "HTML", "Python"],
+                options: ["CSS", "JavaScript", "HTML", "Python", "অন্যান্য"],
                 answer: "HTML"
             },
             {
                 question: "একটি প্যারাগ্রাফ ট্যাগ কোনটি?",
-                options: ["<p>", "<h>", "<a>", "<div>"],
+                options: ["<p>", "<h>", "<a>", "<div>", "<span>"],
                 answer: "<p>"
             },
             {
                 question: "ছবি যোগ করার জন্য কোন ট্যাগ ব্যবহৃত হয়?",
-                options: ["<image>", "<img>", "<pic>", "<photo>"],
+                options: ["<image>", "<img>", "<pic>", "<photo>", "<picture>"],
                 answer: "<img>"
             },
             {
                 question: "অন্য পেজে লিঙ্ক করার জন্য কোন অ্যাট্রিবিউট ব্যবহৃত হয়?",
-                options: ["src", "href", "link", "url"],
+                options: ["src", "href", "link", "url", "target"],
                 answer: "href"
             },
             {
                 question: "ওয়েবপেজকে স্টাইল করার জন্য কোনটি ব্যবহৃত হয়?",
-                options: ["HTML", "JavaScript", "CSS", "Python"],
+                options: ["HTML", "JavaScript", "CSS", "Python", "SQL"],
                 answer: "CSS"
             },
             {
                 question: "ওয়েবপেজকে ইন্টারেক্টিভ করার জন্য কোনটি ব্যবহৃত হয়?",
-                options: ["HTML", "CSS", "JavaScript", "PHP"],
+                options: ["HTML", "CSS", "JavaScript", "PHP", "Ruby"],
                 answer: "JavaScript"
             },
             {
                 question: "সবচেয়ে বড় হেডিং ট্যাগ কোনটি?",
-                options: ["<h1>", "<h6>", "<head>", "<heading>"],
+                options: ["<h1>", "<h6>", "<head>", "<heading>", "<title>"],
                 answer: "<h1>"
             },
             {
                 question: "একটি আনঅর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?",
-                options: ["<ol>", "<li>", "<ul>", "<list>"],
+                options: ["<ol>", "<li>", "<ul>", "<list>", "<dl>"],
                 answer: "<ul>"
             },
             {
                 question: "একটি অর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?",
-                options: ["<ul>", "<li>", "<ol>", "<list>"],
+                options: ["<ul>", "<li>", "<ol>", "<list>", "<dt>"],
                 answer: "<ol>"
             },
             {
                 question: "ওয়েব ব্রাউজার কী?",
-                options: ["একটি অপারেটিং সিস্টেম", "একটি প্রোগ্রামিং ভাষা", "ইন্টারনেট দেখার সফটওয়্যার", "একটি হার্ডওয়্যার ডিভাইস"],
+                options: ["একটি অপারেটিং সিস্টেম", "একটি প্রোগ্রামিং ভাষা", "ইন্টারনেট দেখার সফটওয়্যার", "একটি হার্ডওয়্যার ডিভাইস", "একটি ডেটাবেস"],
                 answer: "ইন্টারনেট দেখার সফটওয়্যার"
             },
             {
                 question: "কম্পিউটারের 'মস্তিষ্ক' কোনটি?",
-                options: ["RAM", "CPU", "Hard Disk", "Monitor"],
+                options: ["RAM", "CPU", "Hard Disk", "Monitor", "GPU"],
                 answer: "CPU"
             },
             {
                 question: "মোবাইলে কোড লেখার জন্য কোন অ্যাপ ব্যবহার করা যেতে পারে?",
-                options: ["Microsoft Word", "TrebEdit", "VLC Player", "Adobe Reader"],
+                options: ["Microsoft Word", "TrebEdit", "VLC Player", "Adobe Reader", "Calculator"],
                 answer: "TrebEdit"
             },
             {
                 question: "ফাইলের এক্সটেনশন কী নির্দেশ করে?",
-                options: ["ফাইলের আকার", "ফাইলের তৈরির তারিখ", "ফাইলের ধরণ", "ফাইলের নাম"],
+                options: ["ফাইলের আকার", "ফাইলের তৈরির তারিখ", "ফাইলের ধরণ", "ফাইলের নাম", "ফাইলের মালিক"],
                 answer: "ফাইলের ধরণ"
             },
             {
                 question: "একটি `.pdf` ফাইল খোলার জন্য কোন ধরনের সফটওয়্যার প্রয়োজন?",
-                options: ["ওয়েব ব্রাউজার", "মিডিয়া প্লেয়ার", "পিডিএফ রিডার", "কোড এডিটর"],
+                options: ["ওয়েব ব্রাউজার", "মিডিয়া প্লেয়ার", "পিডিএফ রিডার", "কোড এডিটর", "স্প্রেডশীট সফটওয়্যার"],
                 answer: "পিডিএফ রিডার"
             },
             {
                 question: "HTML ট্যাগের মধ্যে `<` এবং `>` চিহ্নকে কী বলা হয়?",
-                options: ["অ্যাঙ্গেল ব্র্যাকেট", "কার্লি ব্র্যাকেট", "স্কয়ার ব্র্যাকেট", "প্যারেন্থেসিস"],
+                options: ["অ্যাঙ্গেল ব্র্যাকেট", "কার্লি ব্র্যাকেট", "স্কয়ার ব্র্যাকেট", "প্যারেন্থেসিস", "কোটেশন মার্ক"],
                 answer: "অ্যাঙ্গেল ব্র্যাকেট"
             },
             {
                 question: "কোন HTML ট্যাগটি একটি লাইন ব্রেক তৈরি করে?",
-                options: ["<br>", "<lb>", "<break>", "<line>"],
+                options: ["<br>", "<lb>", "<break>", "<line>", "<newline>"],
                 answer: "<br>"
             },
             {
                 question: "ওয়েবপেজে একটি লিঙ্ক তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?",
-                options: ["<link>", "<href>", "<a>", "<url>"],
+                options: ["<link>", "<href>", "<a>", "<url>", "<navigate>"],
                 answer: "<a>"
             },
             {
                 question: "কোনটি একটি ইনপুট ডিভাইস?",
-                options: ["মনিটর", "প্রিন্টার", "কীবোর্ড", "স্পিকার"],
+                options: ["মনিটর", "প্রিন্টার", "কীবোর্ড", "স্পিকার", "প্রজেক্টর"],
                 answer: "কীবোর্ড"
             },
             {
                 question: "কম্পিউটারের স্থায়ী তথ্য সংরক্ষণের জন্য কোনটি ব্যবহৃত হয়?",
-                options: ["RAM", "CPU", "Hard Disk", "Cache"],
+                options: ["RAM", "CPU", "Hard Disk", "Cache", "Processor"],
                 answer: "Hard Disk"
             },
             {
                 question: "ওয়েবসাইট এবং ওয়েবপেজের মধ্যে প্রধান পার্থক্য কী?",
-                options: ["ওয়েবসাইট একটি একক পৃষ্ঠা, ওয়েবপেজ অনেক পৃষ্ঠার সমষ্টি", "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা", "তাদের মধ্যে কোনো পার্থক্য নেই", "ওয়েবসাইট শুধুমাত্র ছবিতে থাকে"],
+                options: ["ওয়েবসাইট একটি একক পৃষ্ঠা, ওয়েবপেজ অনেক পৃষ্ঠার সমষ্টি", "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা", "তাদের মধ্যে কোনো পার্থক্য নেই", "ওয়েবসাইট শুধুমাত্র ছবিতে থাকে", "ওয়েবপেজ শুধুমাত্র টেক্সটে থাকে"],
                 answer: "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা"
             },
             {
                 question: "স্ট্যাটিক ওয়েবপেজের বৈশিষ্ট্য কী?",
-                options: ["এটি ব্যবহারকারীর ইনপুটের উপর ভিত্তি করে পরিবর্তিত হয়", "এর বিষয়বস্তু সবার জন্য একই থাকে", "এটি ডেটাবেস থেকে তথ্য লোড করে", "এটি নিয়মিত আপডেট হয়"],
+                options: ["এটি ব্যবহারকারীর ইনপুটের উপর ভিত্তি করে পরিবর্তিত হয়", "এর বিষয়বস্তু সবার জন্য একই থাকে", "এটি ডেটাবেস থেকে তথ্য লোড করে", "এটি নিয়মিত আপডেট হয়", "এটি সার্ভার-সাইড কোড দিয়ে তৈরি হয়"],
                 answer: "এর বিষয়বস্তু সবার জন্য একই থাকে"
             },
             {
                 question: "কোনটি ফ্রন্ট-এন্ড ডেভেলপমেন্টের অংশ নয়?",
-                options: ["HTML", "CSS", "JavaScript", "Python (সার্ভার-সাইড)"],
+                options: ["HTML", "CSS", "JavaScript", "Python (সার্ভার-সাইড)", "React"],
                 answer: "Python (সার্ভার-সাইড)"
             },
             {
                 question: "VS Code কী?",
-                options: ["একটি ওয়েব ব্রাউজার", "একটি অপারেটিং সিস্টেম", "একটি কোড এডিটর", "একটি গেম"],
+                options: ["একটি ওয়েব ব্রাউজার", "একটি অপারেটিং সিস্টেম", "একটি কোড এডিটর", "একটি গেম", "একটি অ্যান্টিভাইরাস"],
                 answer: "একটি কোড এডিটর"
             },
             {
                 question: "CodePen এর প্রধান সুবিধা কী?",
-                options: ["অফলাইনে কাজ করে", "বড় প্রজেক্টের জন্য সেরা", "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়", "শুধুমাত্র ব্যাকএন্ড ডেভেলপমেন্টের জন্য"],
+                options: ["অফলাইনে কাজ করে", "বড় প্রজেক্টের জন্য সেরা", "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়", "শুধুমাত্র ব্যাকএন্ড ডেভেলপমেন্টের জন্য", "খুব দ্রুত ফাইল সেভ করে"],
                 answer: "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়"
             }
         ];
@@ -453,6 +514,12 @@
         let studentInfo = {};
         let quizStarted = false; // Track if quiz has started
         let quizCompleted = false; // Track if quiz has completed
+        let tabSwitched = false; // ট্যাব সুইচ হয়েছে কিনা ট্র্যাক করার জন্য
+
+        // টাইমার ভেরিয়েবল
+        let timerInterval;
+        let countdown = 10;
+        const TIME_LIMIT = 10; // প্রতি প্রশ্নের জন্য সময় সীমা
 
         // DOM Elements
         const pinEntrySection = document.getElementById('pin-entry-section');
@@ -475,6 +542,7 @@
         const totalQuestionsSpan = document.getElementById('total-questions');
         const feedbackElement = document.getElementById('feedback');
         const nextButton = document.getElementById('next-button');
+        const timeLeftSpan = document.getElementById('time-left'); // নতুন টাইমার ডিসপ্লে
 
         const resultSection = document.getElementById('result-section');
         const finalScoreSpan = document.getElementById('final-score');
@@ -484,6 +552,10 @@
 
         const darkModeToggle = document.getElementById('dark-mode-toggle');
 
+        // Tab Switch Modal Elements
+        const tabSwitchModal = document.getElementById('tab-switch-modal');
+        const modalRestartButton = document.getElementById('modal-restart-button');
+
         // Event Listeners
         submitPinButton.addEventListener('click', checkPin);
         pinInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPin(); });
@@ -491,6 +563,7 @@
         nextButton.addEventListener('click', loadNextQuestion);
         restartButton.addEventListener('click', resetQuiz);
         darkModeToggle.addEventListener('click', toggleDarkMode);
+        modalRestartButton.addEventListener('click', handleModalRestart); // Modal restart button
 
         document.addEventListener('DOMContentLoaded', () => {
             loadDarkModePreference();
@@ -500,6 +573,37 @@
             quizSection.classList.add('hidden');
             resultSection.classList.add('hidden');
         });
+
+        // Tab Visibility API Event Listeners
+        document.addEventListener('visibilitychange', () => {
+            if (quizStarted && !quizCompleted) { // কুইজ শুরু হলে এবং শেষ না হলে
+                if (document.hidden) {
+                    // ট্যাব সুইচ করা হয়েছে (পেজ ফোকাস হারিয়েছে)
+                    tabSwitched = true;
+                    clearInterval(timerInterval); // টাইমার বন্ধ করুন
+                    showTabSwitchWarning(); // সতর্কতা দেখান
+                } else {
+                    // ট্যাব আবার ফোকাস পেয়েছে
+                    if (tabSwitched) {
+                        // যদি ট্যাব সুইচ করে ফিরে আসে, তাহলে কুইজ রিস্টার্ট করুন
+                        // handleModalRestart() ফাংশনটি modal থেকে কল হবে
+                    }
+                }
+            }
+        });
+
+        function showTabSwitchWarning() {
+            tabSwitchModal.classList.remove('hidden');
+            // কুইজ সেকশন লুকিয়ে দিন
+            quizSection.classList.add('hidden');
+        }
+
+        function handleModalRestart() {
+            tabSwitchModal.classList.add('hidden');
+            tabSwitched = false; // ফ্ল্যাগ রিসেট করুন
+            resetQuiz(); // কুইজ রিস্টার্ট করুন
+        }
+
 
         function checkPin() {
             const correctPin = "1234"; // আপনার পিন কোড এখানে সেট করুন
@@ -530,6 +634,7 @@
 
             quizStarted = true;
             quizCompleted = false;
+            tabSwitched = false; // কুইজ শুরু হলে ট্যাব সুইচ ফ্ল্যাগ রিসেট করুন
             quizSessionId = crypto.randomUUID(); // Generate a unique session ID
 
             // Select 20 random questions
@@ -542,6 +647,40 @@
 
             loadQuestion();
             sendEmailNotification('started'); // Email on quiz start
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval); // কোনো চলমান টাইমার থাকলে সেটি বন্ধ করুন
+            countdown = TIME_LIMIT; // টাইমার রিসেট করুন
+            timeLeftSpan.textContent = countdown; // ডিসপ্লে আপডেট করুন
+
+            timerInterval = setInterval(() => {
+                countdown--;
+                timeLeftSpan.textContent = countdown;
+
+                if (countdown <= 0) {
+                    clearInterval(timerInterval);
+                    // যদি সময় শেষ হয়ে যায় এবং উত্তর না দেওয়া হয়, তাহলে ভুল উত্তর হিসেবে ধরে পরবর্তী প্রশ্নে যান
+                    if (selectedOption === null) {
+                        const questionData = currentQuizQuestions[currentQuestionIndex];
+                        const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
+                        allOptionButtons.forEach(btn => {
+                            btn.classList.add('disabled'); // সব অপশন ডিজেবল করুন
+                            if (btn.textContent === questionData.answer) {
+                                btn.classList.add('correct'); // সঠিক উত্তর হাইলাইট করুন
+                            }
+                        });
+                        feedbackElement.textContent = "সময় শেষ! সঠিক উত্তর: " + questionData.answer;
+                        feedbackElement.classList.remove('feedback-correct', 'hidden');
+                        feedbackElement.classList.add('feedback-incorrect');
+                        // এখানে স্কোর বাড়ানো হবে না কারণ উত্তর দেওয়া হয়নি
+                    }
+                    // যদি ট্যাব সুইচ না হয়ে থাকে, তাহলেই পরবর্তী প্রশ্নে যান
+                    if (!tabSwitched) {
+                        loadNextQuestion();
+                    }
+                }
+            }, 1000); // প্রতি সেকেন্ডে আপডেট করুন
         }
 
         function loadQuestion() {
@@ -568,15 +707,19 @@
                 button.addEventListener('click', () => selectOption(button, option, questionData.answer));
                 optionsContainer.appendChild(button);
             });
+
+            startTimer(); // নতুন প্রশ্ন লোড হলে টাইমার শুরু করুন
         }
 
         function selectOption(button, option, correctAnswer) {
-            if (selectedOption !== null) return; // Prevent multiple selections
+            if (selectedOption !== null) return; // একাধিক নির্বাচন প্রতিরোধ করুন
+
+            clearInterval(timerInterval); // অপশন নির্বাচন করা হলে টাইমার বন্ধ করুন
 
             selectedOption = option;
             const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
             allOptionButtons.forEach(btn => {
-                btn.classList.add('disabled'); // Disable all buttons after selection
+                btn.classList.add('disabled'); // নির্বাচনের পর সব বাটন ডিজেবল করুন
                 if (btn === button) {
                     btn.classList.add('selected');
                 }
@@ -594,14 +737,28 @@
                 feedbackElement.textContent = "ভুল উত্তর। সঠিক উত্তর: " + correctAnswer;
                 feedbackElement.classList.remove('feedback-correct', 'hidden');
                 feedbackElement.classList.add('feedback-incorrect');
-                // Highlight correct answer if incorrect option was chosen
+                // ভুল উত্তর নির্বাচন করা হলে সঠিক উত্তর হাইলাইট করুন
                 allOptionButtons.forEach(btn => {
                     if (btn.textContent === correctAnswer) {
                         btn.classList.add('correct');
                     }
                 });
             }
-            nextButton.classList.remove('hidden');
+            // যদি শেষ প্রশ্ন না হয়, তাহলে পরবর্তী প্রশ্ন বাটনে ক্লিক করার জন্য 1 সেকেন্ড অপেক্ষা করুন
+            if (currentQuestionIndex < currentQuizQuestions.length - 1) {
+                setTimeout(() => {
+                    if (!tabSwitched) { // শুধুমাত্র যদি ট্যাব সুইচ না হয়ে থাকে
+                        loadNextQuestion();
+                    }
+                }, 1000); // 1 সেকেন্ড পর পরবর্তী প্রশ্ন লোড হবে
+            } else {
+                // শেষ প্রশ্ন হলে, ফলাফল দেখান
+                setTimeout(() => {
+                    if (!tabSwitched) { // শুধুমাত্র যদি ট্যাব সুইচ না হয়ে থাকে
+                        showResult();
+                    }
+                }, 1000);
+            }
         }
 
         function loadNextQuestion() {
@@ -610,6 +767,7 @@
         }
 
         function showResult() {
+            clearInterval(timerInterval); // কুইজ শেষ হলে টাইমার বন্ধ করুন
             quizSection.classList.add('hidden');
             resultSection.classList.remove('hidden');
             finalScoreSpan.textContent = score;
@@ -630,14 +788,16 @@
         }
 
         function resetQuiz() {
+            clearInterval(timerInterval); // কুইজ রিসেট হলে টাইমার বন্ধ করুন
             resultSection.classList.add('hidden');
-            pinInput.value = ''; // Clear PIN
-            studentNameInput.value = ''; // Clear student info
+            pinInput.value = ''; // PIN ক্লিয়ার করুন
+            studentNameInput.value = ''; // শিক্ষার্থীর তথ্য ক্লিয়ার করুন
             studentClassInput.value = '';
             studentRollInput.value = '';
-            pinEntrySection.classList.remove('hidden'); // Go back to PIN entry
+            pinEntrySection.classList.remove('hidden'); // PIN এন্ট্রি স্ক্রিনে ফিরে যান
             quizStarted = false;
             quizCompleted = false;
+            tabSwitched = false; // রিসেট করার সময় ট্যাব সুইচ ফ্ল্যাগও রিসেট করুন
         }
 
         function toggleDarkMode() {
@@ -669,6 +829,14 @@
                 sessionId: quizSessionId,
                 timestamp: new Date().toLocaleString('bn-BD') // বাংলা ফরম্যাটে সময়
             };
+
+            // Debugging logs to confirm IDs and parameters
+            console.log("Attempting to send email with EmailJS:");
+            console.log("Service ID:", EMAILJS_SERVICE_ID);
+            console.log("Template ID:", EMAILJS_TEMPLATE_ID);
+            console.log("User ID:", EMAILJS_USER_ID);
+            console.log("Template Parameters:", templateParams);
+
 
             try {
                 // EmailJS থেকে ইমেইল পাঠান
