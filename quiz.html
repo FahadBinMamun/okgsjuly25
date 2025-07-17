@@ -16,10 +16,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
-    <!-- আপনার বিদ্যমান style.css ফাইলটি লোড করা হচ্ছে -->
+    <!-- তোমার বিদ্যমান style.css ফাইলটি লোড করা হচ্ছে -->
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Custom styles for the body and general elements */
+        /* সাধারণ বডি স্টাইল */
         body {
             font-family: 'Tiro Bangla', serif;
             background-color: #F8F4F0;
@@ -143,19 +143,19 @@
             color: #EF476F; /* লাল */
         }
 
-        /* Dark Mode Styles */
+        /* ডার্ক মোড স্টাইল */
         body.dark-mode {
-            background-color: #041B2D; /* Dark blue background */
-            color: #F8F4F0; /* Light text color */
+            background-color: #041B2D; /* গাঢ় নীল ব্যাকগ্রাউন্ড */
+            color: #F8F4F0; /* হালকা টেক্সট কালার */
         }
         body.dark-mode .quiz-card,
         body.dark-mode .pin-container,
         body.dark-mode .registration-container {
-            background-color: #112A46; /* Darker card background */
+            background-color: #112A46; /* গাঢ় কার্ড ব্যাকগ্রাউন্ড */
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
         }
         body.dark-mode .option-button {
-            background-color: #2D4059; /* Darker option button */
+            background-color: #2D4059; /* গাঢ় অপশন বাটন */
             color: #F8F4F0;
             border-color: #037E8C;
         }
@@ -224,7 +224,7 @@
             color: #041B2D;
         }
 
-        /* Tab Switch Warning Modal Styles */
+        /* ট্যাব সুইচ ওয়ার্নিং মডেল স্টাইল */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -273,15 +273,51 @@
         .modal-content button:hover {
             background-color: #A66224;
         }
+
+        /* সেলিব্রেশন অ্যানিমেশন */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .celebration-message {
+            animation: pulse 1.5s infinite;
+            color: #06D6A0 !important; /* সবুজ */
+            font-size: 1.8rem !important; /* বড় ফন্ট */
+            font-weight: bold;
+        }
+        .secret-code-display {
+            background-color: #FFD166; /* হলুদ */
+            color: #041B2D;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        body.dark-mode .secret-code-display {
+            background-color: #F29E38; /* কমলা */
+            color: #F8F4F0;
+        }
+        .keep-secret-message {
+            font-size: 0.9rem;
+            color: #A66224; /* গাঢ় কমলা */
+            margin-top: 0.5rem;
+        }
+        body.dark-mode .keep-secret-message {
+            color: #FFD166;
+        }
     </style>
     <!-- EmailJS CDN যোগ করা হয়েছে -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript">
-        // EmailJS ইনিশিয়ালাইজ করুন আপনার User ID দিয়ে
-        // এটি আপনার EmailJS ড্যাশবোর্ডের Integration সেকশনে পাবেন (Public Key)
+        // EmailJS ইনিশিয়ালাইজ করো তোমার User ID দিয়ে
+        // এটি তোমার EmailJS ড্যাশবোর্ডের Integration সেকশনে পাবে (Public Key)
         (function() {
             emailjs.init({
-                publicKey: "C_N51dLfLvaR40WjY", // <--- আপনার EmailJS User ID এখানে বসানো হয়েছে
+                publicKey: "C_N51dLfLvaR40WjY", // <--- তোমার EmailJS User ID এখানে বসানো হয়েছে
             });
         })();
     </script>
@@ -293,58 +329,63 @@
         <header class="text-center mb-12">
             <img src="images/alpcg_logo.png" alt="ALPCG Logo" class="mx-auto mb-4" style="max-width: 150px; height: auto;">
             <h1 class="text-4xl md:text-5xl font-bold text-[#025373]">ওয়েব ডেভেলপমেন্ট কুইজ</h1>
-            <p class="text-xl mt-2 text-[#037E8C]">আপনার জ্ঞান যাচাই করুন এবং পুরস্কার জিতুন!</p>
+            <p class="text-xl mt-2 text-[#037E8C]">তোমার জ্ঞান যাচাই করো এবং পুরস্কার জেতো!</p>
         </header>
 
-        <!-- PIN Entry Section -->
+        <!-- পিন এন্ট্রি সেকশন -->
         <div id="pin-entry-section" class="pin-container">
-            <h2 class="text-2xl font-bold mb-4 text-[#025373]">কুইজে প্রবেশের জন্য পিন দিন</h2>
-            <input type="password" id="pin-input" class="input-field" placeholder="পিন কোড লিখুন" maxlength="4">
-            <button id="submit-pin" class="action-button">প্রবেশ করুন</button>
-            <p id="error-message" class="error-message hidden">ভুল পিন কোড। আবার চেষ্টা করুন।</p>
+            <h2 class="text-2xl font-bold mb-4 text-[#025373]">কুইজে প্রবেশের জন্য পিন দাও</h2>
+            <input type="password" id="pin-input" class="input-field" placeholder="পিন কোড লেখো" maxlength="4">
+            <button id="submit-pin" class="action-button">প্রবেশ করো</button>
+            <p id="error-message" class="error-message hidden">ভুল পিন কোড। আবার চেষ্টা করো।</p>
         </div>
 
-        <!-- Registration Section -->
+        <!-- রেজিস্ট্রেশন সেকশন -->
         <div id="registration-section" class="registration-container hidden">
             <h2 class="text-2xl font-bold mb-4 text-[#025373]">শিক্ষার্থীর তথ্য</h2>
-            <input type="text" id="student-name" class="input-field" placeholder="আপনার নাম লিখুন" required>
-            <input type="text" id="student-class" class="input-field" placeholder="আপনার শ্রেণি লিখুন" required>
-            <input type="text" id="student-roll" class="input-field" placeholder="আপনার রোল নম্বর লিখুন" required>
-            <button id="start-quiz-button" class="action-button">কুইজ শুরু করুন</button>
-            <p id="registration-error-message" class="error-message hidden">সব তথ্য পূরণ করুন।</p>
+            <input type="text" id="student-name" class="input-field" placeholder="তোমার নাম লেখো" required>
+            <input type="text" id="student-class" class="input-field" placeholder="তোমার শ্রেণি লেখো" required>
+            <input type="text" id="student-roll" class="input-field" placeholder="তোমার রোল নম্বর লেখো" required>
+            <button id="start-quiz-button" class="action-button">কুইজ শুরু করো</button>
+            <p id="registration-error-message" class="error-message hidden">সব তথ্য পূরণ করো।</p>
         </div>
 
-        <!-- Quiz Section -->
+        <!-- কুইজ সেকশন -->
         <div id="quiz-section" class="quiz-card hidden">
             <div class="flex justify-between items-center mb-4">
                 <p class="score-display">স্কোর: <span id="current-score">0</span> / <span id="total-questions">0</span></p>
-                <!-- নতুন টাইমার ডিসপ্লে যোগ করা হয়েছে -->
-                <p class="text-lg font-semibold text-[#037E8C]">সময় বাকি: <span id="time-left">10</span> সেকেন্ড</p>
+                <!-- টাইমার ডিসপ্লে -->
+                <p class="text-lg font-semibold text-[#037E8C]">সময় বাকি: <span id="time-left">10</span> সেকেন্ড</p>
                 <p class="text-lg font-semibold text-[#037E8C]">প্রশ্ন <span id="question-number">1</span></p>
             </div>
             <h2 id="question-text" class="text-2xl font-bold mb-6 text-[#025373]">প্রশ্ন এখানে থাকবে?</h2>
             <div id="options-container" class="grid grid-cols-1 gap-3">
-                <!-- Options will be loaded here by JavaScript -->
+                <!-- অপশনগুলো জাভাস্ক্রিপ্ট দিয়ে লোড হবে -->
             </div>
             <p id="feedback" class="feedback-message text-center hidden"></p>
             <button id="next-button" class="next-button hidden">পরবর্তী প্রশ্ন</button>
         </div>
 
-        <!-- Result Section -->
+        <!-- ফলাফল সেকশন -->
         <div id="result-section" class="quiz-card hidden">
             <h2 class="text-3xl font-bold text-center mb-6 text-[#025373]">কুইজ শেষ!</h2>
-            <p class="text-2xl font-bold text-center mb-4 text-[#037E8C]">আপনার ফাইনাল স্কোর: <span id="final-score">0</span> / <span id="final-total">0</span></p>
+            <p class="text-2xl font-bold text-center mb-4 text-[#037E8C]">তোমার ফাইনাল স্কোর: <span id="final-score">0</span> / <span id="final-total">0</span></p>
             <p id="result-message" class="text-lg text-center mb-8 text-gray-700"></p>
-            <button id="restart-button" class="action-button">আবার কুইজ দিন</button>
+            <!-- গোপন কোড প্রদর্শনের জন্য নতুন div -->
+            <div id="secret-code-container" class="hidden">
+                <div id="secret-code-display" class="secret-code-display"></div>
+                <p id="keep-secret-msg" class="keep-secret-message">তোমার পুরস্কার বুঝে নিতে এই গোপন কোডটি কাউকে দিও না!</p>
+            </div>
+            <button id="restart-button" class="action-button">আবার কুইজ দাও</button>
         </div>
     </div>
 
-    <!-- Tab Switch Warning Modal -->
+    <!-- ট্যাব সুইচ ওয়ার্নিং মডেল -->
     <div id="tab-switch-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3>সতর্কতা!</h3>
-            <p>আপনি কুইজ চলাকালীন অন্য ট্যাবে চলে গিয়েছিলেন। আপনার কুইজ পুনরায় শুরু হবে।</p>
-            <button id="modal-restart-button">কুইজ পুনরায় শুরু করুন</button>
+            <p>তুমি কুইজ চলাকালীন অন্য ট্যাবে চলে গিয়েছিলে। তোমার কুইজ পুনরায় শুরু হবে।</p>
+            <button id="modal-restart-button">কুইজ পুনরায় শুরু করো</button>
         </div>
     </div>
 
@@ -365,17 +406,17 @@
     </footer>
 
     <script>
-        // আপনার EmailJS User ID এখানে দিন।
-        // এটি আপনার EmailJS ড্যাশবোর্ডের Integration সেকশনে পাবেন (Public Key)।
-        const EMAILJS_USER_ID = "C_N51dLfLvaR40WjY"; // <--- আপনার EmailJS User ID এখানে বসানো হয়েছে
+        // তোমার EmailJS User ID এখানে দাও।
+        // এটি তোমার EmailJS ড্যাশবোর্ডের Integration সেকশনে পাবে (Public Key)।
+        const EMAILJS_USER_ID = "C_N51dLfLvaR40WjY"; // <--- তোমার EmailJS User ID এখানে বসানো হয়েছে
 
-        // আপনার EmailJS Service ID এখানে দিন।
-        // এটি আপনার EmailJS ড্যাশবোর্ডের Email Services সেকশনে পাবেন।
-        const EMAILJS_SERVICE_ID = "service_alpcgquiz25"; // <--- আপনার EmailJS Service ID এখানে বসানো হয়েছে
+        // তোমার EmailJS Service ID এখানে দাও।
+        // এটি তোমার EmailJS ড্যাশবোর্ডের Email Services সেকশনে পাবে।
+        const EMAILJS_SERVICE_ID = "service_alpcgquiz25"; // <--- তোমার EmailJS Service ID এখানে বসানো হয়েছে
 
-        // আপনার EmailJS Template ID এখানে দিন।
-        // এটি আপনার EmailJS ড্যাশবোর্ডের Email Templates সেকশনে পাবেন।
-        const EMAILJS_TEMPLATE_ID = "template_gofk2tk"; // <--- আপনার EmailJS Template ID এখানে বসানো হয়েছে
+        // তোমার EmailJS Template ID এখানে দাও।
+        // এটি তোমার EmailJS ড্যাশবোর্ডের Email Templates সেকশনে পাবে।
+        const EMAILJS_TEMPLATE_ID = "template_gofk2tk"; // <--- তোমার EmailJS Template ID এখানে বসানো হয়েছে
 
         // কুইজের প্রশ্নগুলো
         const allQuestions = [
@@ -506,14 +547,23 @@
             }
         ];
 
+        // গোপন কোডগুলো
+        const secretCodes = [
+            "ALPCG-QUIZ-VX7B",
+            "ALPCG-QUIZ-P9QW",
+            "ALPCG-QUIZ-R4ZL",
+            "ALPCG-QUIZ-M2FK",
+            "ALPCG-QUIZ-T8JH"
+        ];
+
         let currentQuizQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
         let selectedOption = null;
         let quizSessionId = '';
         let studentInfo = {};
-        let quizStarted = false; // Track if quiz has started
-        let quizCompleted = false; // Track if quiz has completed
+        let quizStarted = false; // কুইজ শুরু হয়েছে কিনা ট্র্যাক করার জন্য
+        let quizCompleted = false; // কুইজ শেষ হয়েছে কিনা ট্র্যাক করার জন্য
         let tabSwitched = false; // ট্যাব সুইচ হয়েছে কিনা ট্র্যাক করার জন্য
 
         // টাইমার ভেরিয়েবল
@@ -542,51 +592,54 @@
         const totalQuestionsSpan = document.getElementById('total-questions');
         const feedbackElement = document.getElementById('feedback');
         const nextButton = document.getElementById('next-button');
-        const timeLeftSpan = document.getElementById('time-left'); // নতুন টাইমার ডিসপ্লে
+        const timeLeftSpan = document.getElementById('time-left'); // টাইমার ডিসপ্লে
 
         const resultSection = document.getElementById('result-section');
         const finalScoreSpan = document.getElementById('final-score');
         const finalTotalSpan = document.getElementById('final-total');
         const resultMessageElement = document.getElementById('result-message');
         const restartButton = document.getElementById('restart-button');
+        const secretCodeContainer = document.getElementById('secret-code-container'); // গোপন কোড কন্টেইনার
+        const secretCodeDisplay = document.getElementById('secret-code-display'); // গোপন কোড ডিসপ্লে
+        const keepSecretMsg = document.getElementById('keep-secret-msg'); // গোপন রাখার বার্তা
 
         const darkModeToggle = document.getElementById('dark-mode-toggle');
 
-        // Tab Switch Modal Elements
+        // ট্যাব সুইচ মডেল এলিমেন্টস
         const tabSwitchModal = document.getElementById('tab-switch-modal');
         const modalRestartButton = document.getElementById('modal-restart-button');
 
-        // Event Listeners
+        // ইভেন্ট লিসেনার্স
         submitPinButton.addEventListener('click', checkPin);
         pinInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPin(); });
         startQuizButton.addEventListener('click', startQuiz);
         nextButton.addEventListener('click', loadNextQuestion);
         restartButton.addEventListener('click', resetQuiz);
         darkModeToggle.addEventListener('click', toggleDarkMode);
-        modalRestartButton.addEventListener('click', handleModalRestart); // Modal restart button
+        modalRestartButton.addEventListener('click', handleModalRestart); // মডেল রিস্টার্ট বাটন
 
         document.addEventListener('DOMContentLoaded', () => {
             loadDarkModePreference();
-            // Initial state: only PIN entry visible
+            // প্রাথমিক অবস্থা: শুধুমাত্র পিন এন্ট্রি দৃশ্যমান
             pinEntrySection.classList.remove('hidden');
             registrationSection.classList.add('hidden');
             quizSection.classList.add('hidden');
             resultSection.classList.add('hidden');
         });
 
-        // Tab Visibility API Event Listeners
+        // ট্যাব ভিজিবিলিটি API ইভেন্ট লিসেনার্স
         document.addEventListener('visibilitychange', () => {
             if (quizStarted && !quizCompleted) { // কুইজ শুরু হলে এবং শেষ না হলে
                 if (document.hidden) {
                     // ট্যাব সুইচ করা হয়েছে (পেজ ফোকাস হারিয়েছে)
                     tabSwitched = true;
-                    clearInterval(timerInterval); // টাইমার বন্ধ করুন
-                    showTabSwitchWarning(); // সতর্কতা দেখান
+                    clearInterval(timerInterval); // টাইমার বন্ধ করো
+                    showTabSwitchWarning(); // সতর্কতা দেখাও
                 } else {
                     // ট্যাব আবার ফোকাস পেয়েছে
                     if (tabSwitched) {
-                        // যদি ট্যাব সুইচ করে ফিরে আসে, তাহলে কুইজ রিস্টার্ট করুন
-                        // handleModalRestart() ফাংশনটি modal থেকে কল হবে
+                        // যদি ট্যাব সুইচ করে ফিরে আসে, তাহলে কুইজ রিস্টার্ট করো
+                        // handleModalRestart() ফাংশনটি মডেল থেকে কল হবে
                     }
                 }
             }
@@ -594,19 +647,19 @@
 
         function showTabSwitchWarning() {
             tabSwitchModal.classList.remove('hidden');
-            // কুইজ সেকশন লুকিয়ে দিন
+            // কুইজ সেকশন লুকিয়ে দাও
             quizSection.classList.add('hidden');
         }
 
         function handleModalRestart() {
             tabSwitchModal.classList.add('hidden');
-            tabSwitched = false; // ফ্ল্যাগ রিসেট করুন
-            resetQuiz(); // কুইজ রিস্টার্ট করুন
+            tabSwitched = false; // ফ্ল্যাগ রিসেট করো
+            resetQuiz(); // কুইজ রিস্টার্ট করো
         }
 
 
         function checkPin() {
-            const correctPin = "1234"; // আপনার পিন কোড এখানে সেট করুন
+            const correctPin = "1234"; // তোমার পিন কোড এখানে সেট করো
             if (pinInput.value === correctPin) {
                 pinEntrySection.classList.add('hidden');
                 registrationSection.classList.remove('hidden');
@@ -634,10 +687,10 @@
 
             quizStarted = true;
             quizCompleted = false;
-            tabSwitched = false; // কুইজ শুরু হলে ট্যাব সুইচ ফ্ল্যাগ রিসেট করুন
-            quizSessionId = crypto.randomUUID(); // Generate a unique session ID
+            tabSwitched = false; // কুইজ শুরু হলে ট্যাব সুইচ ফ্ল্যাগ রিসেট করো
+            quizSessionId = crypto.randomUUID(); // একটি ইউনিক সেশন আইডি তৈরি করো
 
-            // Select 20 random questions
+            // ২০টি র্যান্ডম প্রশ্ন নির্বাচন করো
             currentQuizQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 20);
             totalQuestionsSpan.textContent = currentQuizQuestions.length;
 
@@ -646,13 +699,13 @@
             currentScoreSpan.textContent = score;
 
             loadQuestion();
-            sendEmailNotification('started'); // Email on quiz start
+            sendEmailNotification('started'); // কুইজ শুরু হলে ইমেইল পাঠাও
         }
 
         function startTimer() {
-            clearInterval(timerInterval); // কোনো চলমান টাইমার থাকলে সেটি বন্ধ করুন
-            countdown = TIME_LIMIT; // টাইমার রিসেট করুন
-            timeLeftSpan.textContent = countdown; // ডিসপ্লে আপডেট করুন
+            clearInterval(timerInterval); // কোনো চলমান টাইমার থাকলে সেটি বন্ধ করো
+            countdown = TIME_LIMIT; // টাইমার রিসেট করো
+            timeLeftSpan.textContent = countdown; // ডিসপ্লে আপডেট করো
 
             timerInterval = setInterval(() => {
                 countdown--;
@@ -660,14 +713,14 @@
 
                 if (countdown <= 0) {
                     clearInterval(timerInterval);
-                    // যদি সময় শেষ হয়ে যায় এবং উত্তর না দেওয়া হয়, তাহলে ভুল উত্তর হিসেবে ধরে পরবর্তী প্রশ্নে যান
+                    // যদি সময় শেষ হয়ে যায় এবং উত্তর না দেওয়া হয়, তাহলে ভুল উত্তর হিসেবে ধরে পরবর্তী প্রশ্নে যাও
                     if (selectedOption === null) {
                         const questionData = currentQuizQuestions[currentQuestionIndex];
                         const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
                         allOptionButtons.forEach(btn => {
-                            btn.classList.add('disabled'); // সব অপশন ডিজেবল করুন
+                            btn.classList.add('disabled'); // সব অপশন ডিজেবল করো
                             if (btn.textContent === questionData.answer) {
-                                btn.classList.add('correct'); // সঠিক উত্তর হাইলাইট করুন
+                                btn.classList.add('correct'); // সঠিক উত্তর হাইলাইট করো
                             }
                         });
                         feedbackElement.textContent = "সময় শেষ! সঠিক উত্তর: " + questionData.answer;
@@ -675,12 +728,12 @@
                         feedbackElement.classList.add('feedback-incorrect');
                         // এখানে স্কোর বাড়ানো হবে না কারণ উত্তর দেওয়া হয়নি
                     }
-                    // যদি ট্যাব সুইচ না হয়ে থাকে, তাহলেই পরবর্তী প্রশ্নে যান
+                    // যদি ট্যাব সুইচ না হয়ে থাকে, তাহলেই পরবর্তী প্রশ্নে যাও
                     if (!tabSwitched) {
                         loadNextQuestion();
                     }
                 }
-            }, 1000); // প্রতি সেকেন্ডে আপডেট করুন
+            }, 1000); // প্রতি সেকেন্ডে আপডেট করো
         }
 
         function loadQuestion() {
@@ -697,7 +750,7 @@
             nextButton.classList.add('hidden');
             selectedOption = null;
 
-            // Shuffle options
+            // অপশনগুলো এলোমেলো করো
             const shuffledOptions = [...questionData.options].sort(() => 0.5 - Math.random());
 
             shuffledOptions.forEach(option => {
@@ -708,18 +761,18 @@
                 optionsContainer.appendChild(button);
             });
 
-            startTimer(); // নতুন প্রশ্ন লোড হলে টাইমার শুরু করুন
+            startTimer(); // নতুন প্রশ্ন লোড হলে টাইমার শুরু করো
         }
 
         function selectOption(button, option, correctAnswer) {
-            if (selectedOption !== null) return; // একাধিক নির্বাচন প্রতিরোধ করুন
+            if (selectedOption !== null) return; // একাধিক নির্বাচন প্রতিরোধ করো
 
-            clearInterval(timerInterval); // অপশন নির্বাচন করা হলে টাইমার বন্ধ করুন
+            clearInterval(timerInterval); // অপশন নির্বাচন করা হলে টাইমার বন্ধ করো
 
             selectedOption = option;
             const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
             allOptionButtons.forEach(btn => {
-                btn.classList.add('disabled'); // নির্বাচনের পর সব বাটন ডিজেবল করুন
+                btn.classList.add('disabled'); // নির্বাচনের পর সব বাটন ডিজেবল করো
                 if (btn === button) {
                     btn.classList.add('selected');
                 }
@@ -737,14 +790,14 @@
                 feedbackElement.textContent = "ভুল উত্তর। সঠিক উত্তর: " + correctAnswer;
                 feedbackElement.classList.remove('feedback-correct', 'hidden');
                 feedbackElement.classList.add('feedback-incorrect');
-                // ভুল উত্তর নির্বাচন করা হলে সঠিক উত্তর হাইলাইট করুন
+                // ভুল উত্তর নির্বাচন করা হলে সঠিক উত্তর হাইলাইট করো
                 allOptionButtons.forEach(btn => {
                     if (btn.textContent === correctAnswer) {
                         btn.classList.add('correct');
                     }
                 });
             }
-            // যদি শেষ প্রশ্ন না হয়, তাহলে পরবর্তী প্রশ্ন বাটনে ক্লিক করার জন্য 1 সেকেন্ড অপেক্ষা করুন
+            // যদি শেষ প্রশ্ন না হয়, তাহলে পরবর্তী প্রশ্ন বাটনে ক্লিক করার জন্য 1 সেকেন্ড অপেক্ষা করো
             if (currentQuestionIndex < currentQuizQuestions.length - 1) {
                 setTimeout(() => {
                     if (!tabSwitched) { // শুধুমাত্র যদি ট্যাব সুইচ না হয়ে থাকে
@@ -752,7 +805,7 @@
                     }
                 }, 1000); // 1 সেকেন্ড পর পরবর্তী প্রশ্ন লোড হবে
             } else {
-                // শেষ প্রশ্ন হলে, ফলাফল দেখান
+                // শেষ প্রশ্ন হলে, ফলাফল দেখাও
                 setTimeout(() => {
                     if (!tabSwitched) { // শুধুমাত্র যদি ট্যাব সুইচ না হয়ে থাকে
                         showResult();
@@ -767,37 +820,51 @@
         }
 
         function showResult() {
-            clearInterval(timerInterval); // কুইজ শেষ হলে টাইমার বন্ধ করুন
+            clearInterval(timerInterval); // কুইজ শেষ হলে টাইমার বন্ধ করো
             quizSection.classList.add('hidden');
             resultSection.classList.remove('hidden');
             finalScoreSpan.textContent = score;
             finalTotalSpan.textContent = currentQuizQuestions.length;
 
+            secretCodeContainer.classList.add('hidden'); // প্রথমে গোপন কোড লুকিয়ে রাখো
+            secretCodeDisplay.textContent = ''; // কোড ক্লিয়ার করো
+            resultMessageElement.classList.remove('celebration-message'); // অ্যানিমেশন ক্লাস সরিয়ে দাও
+
             if (score === currentQuizQuestions.length) {
-                resultMessageElement.textContent = "অসাধারণ! আপনি সব প্রশ্নের সঠিক উত্তর দিয়েছেন!";
-                resultMessageElement.style.color = '#06D6A0'; // Green
+                resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉";
+                resultMessageElement.classList.add('celebration-message'); // সেলিব্রেশন অ্যানিমেশন যোগ করো
+                
+                // র্যান্ডম গোপন কোড নির্বাচন করো
+                const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
+                secretCodeDisplay.textContent = randomCode;
+                secretCodeContainer.classList.remove('hidden'); // গোপন কোড দেখাও
+                resultMessageElement.style.color = '#06D6A0'; // সবুজ
             } else if (score >= currentQuizQuestions.length / 2) {
-                resultMessageElement.textContent = "খুব ভালো করেছেন! আপনার জ্ঞান প্রশংসনীয়।";
-                resultMessageElement.style.color = '#F29E38'; // Orange
+                resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
+                resultMessageElement.style.color = '#F29E38'; // কমলা
             } else {
-                resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন। হাল ছাড়বেন না!";
-                resultMessageElement.style.color = '#EF476F'; // Red
+                resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন। হাল ছেড়ো না!";
+                resultMessageElement.style.color = '#EF476F'; // লাল
             }
             quizCompleted = true;
-            sendEmailNotification('completed'); // Email on quiz completion
+            sendEmailNotification('completed'); // কুইজ শেষ হলে ইমেইল পাঠাও
         }
 
         function resetQuiz() {
-            clearInterval(timerInterval); // কুইজ রিসেট হলে টাইমার বন্ধ করুন
+            clearInterval(timerInterval); // কুইজ রিসেট হলে টাইমার বন্ধ করো
             resultSection.classList.add('hidden');
-            pinInput.value = ''; // PIN ক্লিয়ার করুন
-            studentNameInput.value = ''; // শিক্ষার্থীর তথ্য ক্লিয়ার করুন
+            pinInput.value = ''; // পিন ক্লিয়ার করো
+            studentNameInput.value = ''; // শিক্ষার্থীর তথ্য ক্লিয়ার করো
             studentClassInput.value = '';
             studentRollInput.value = '';
-            pinEntrySection.classList.remove('hidden'); // PIN এন্ট্রি স্ক্রিনে ফিরে যান
+            pinEntrySection.classList.remove('hidden'); // পিন এন্ট্রি স্ক্রিনে ফিরে যাও
             quizStarted = false;
             quizCompleted = false;
-            tabSwitched = false; // রিসেট করার সময় ট্যাব সুইচ ফ্ল্যাগও রিসেট করুন
+            tabSwitched = false; // রিসেট করার সময় ট্যাব সুইচ ফ্ল্যাগও রিসেট করো
+
+            secretCodeContainer.classList.add('hidden'); // কোড কন্টেইনার লুকিয়ে দাও
+            secretCodeDisplay.textContent = ''; // কোড ক্লিয়ার করো
+            resultMessageElement.classList.remove('celebration-message'); // অ্যানিমেশন ক্লাস সরিয়ে দাও
         }
 
         function toggleDarkMode() {
@@ -817,7 +884,7 @@
             }
         }
 
-        // EmailJS Notification Function
+        // EmailJS নোটিফিকেশন ফাংশন
         async function sendEmailNotification(type) {
             const templateParams = {
                 type: type,
@@ -830,22 +897,22 @@
                 timestamp: new Date().toLocaleString('bn-BD') // বাংলা ফরম্যাটে সময়
             };
 
-            // Debugging logs to confirm IDs and parameters
-            console.log("Attempting to send email with EmailJS:");
-            console.log("Service ID:", EMAILJS_SERVICE_ID);
-            console.log("Template ID:", EMAILJS_TEMPLATE_ID);
-            console.log("User ID:", EMAILJS_USER_ID);
-            console.log("Template Parameters:", templateParams);
+            // ডিবাগিং লগস: আইডি এবং প্যারামিটার নিশ্চিত করার জন্য
+            console.log("EmailJS দিয়ে ইমেইল পাঠানোর চেষ্টা করছি:");
+            console.log("সার্ভিস আইডি:", EMAILJS_SERVICE_ID);
+            console.log("টেমপ্লেট আইডি:", EMAILJS_TEMPLATE_ID);
+            console.log("ইউজার আইডি:", EMAILJS_USER_ID);
+            console.log("টেমপ্লেট প্যারামিটার:", templateParams);
 
 
             try {
-                // EmailJS থেকে ইমেইল পাঠান
+                // EmailJS থেকে ইমেইল পাঠাও
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-                console.log('Email sent successfully via EmailJS for type:', type);
+                console.log('EmailJS দিয়ে ইমেইল সফলভাবে পাঠানো হয়েছে, টাইপ:', type);
             } catch (error) {
-                console.error('Failed to send email via EmailJS:', error);
-                // এখানে আপনি ব্যবহারকারীকে একটি বার্তা দেখাতে পারেন যে ইমেইল পাঠানো যায়নি
-                // যেমন: alert('ইমেইল পাঠাতে সমস্যা হয়েছে।');
+                console.error('EmailJS দিয়ে ইমেইল পাঠাতে ব্যর্থ:', error);
+                // এখানে তুমি ব্যবহারকারীকে একটি বার্তা দেখাতে পারো যে ইমেইল পাঠানো যায়নি
+                // যেমন: alert('ইমেইল পাঠাতে সমস্যা হয়েছে।');
             }
         }
 
