@@ -412,7 +412,7 @@
 
     <script>
         // **এখানে আপনার Google Apps Script এর Web App URL বসানো হয়েছে**
-        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzgdQLheJcNHFe2Nn3-M_ZL1LoGSCvnGynDCioqKzZ5R1OG0NYapHCC4mQB_JqAAnQUpQ/exec";
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyyT2kIufUwra32oCCTGnBR7LrinrH3LwVUav39sfonNGE-3iQfdEyrQxgLAG0pVNAcsA/exec";
 
         // কুইজের প্রশ্নগুলো
         const allQuestions = [
@@ -860,14 +860,13 @@
             try {
                 const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                     method: 'POST',
-                    // mode: 'no-cors', // এই লাইনটি সরানো হয়েছে
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(formData),
                 });
                 console.log('Google Apps Script এ ডেটা পাঠানো হয়েছে:', response);
-                // এখন response.ok চেক করা যাবে, কারণ no-cors মোড সরানো হয়েছে
+                // এখন response.ok চেক করা যাবে
                 if (response.ok) {
                     const result = await response.json();
                     console.log('Apps Script থেকে প্রতিক্রিয়া:', result);
