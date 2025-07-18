@@ -337,7 +337,7 @@
             <input type="text" id="student-class" class="input-field" placeholder="তোমার শ্রেণি লেখো" required>
             <input type="text" id="student-roll" class="input-field" placeholder="তোমার রোল নম্বর লেখো" required>
             <!-- যদি ইমেল সংগ্রহ করতে চান, তাহলে নিচের লাইনটি আনকমেন্ট করুন -->
-            <!-- <input type="email" id="student-email" class="input-field" placeholder="তোমার ইমেল লেখো (ঐচ্ছিক)"> -->
+            <input type="email" id="student-email" class="input-field" placeholder="তোমার ইমেল লেখো (ঐচ্ছিক)">
             <button id="start-quiz-button" class="action-button">কুইজ শুরু করো</button>
             <p id="registration-error-message" class="error-message hidden">সব তথ্য পূরণ করো।</p>
         </div>
@@ -561,7 +561,7 @@
         const studentNameInput = document.getElementById('student-name');
         const studentClassInput = document.getElementById('student-class');
         const studentRollInput = document.getElementById('student-roll');
-        // const studentEmailInput = document.getElementById('student-email'); // যদি ইমেল সংগ্রহ করতে চান
+        const studentEmailInput = document.getElementById('student-email'); // ইমেল সংগ্রহ করার জন্য
         const startQuizButton = document.getElementById('start-quiz-button');
         const registrationErrorMessage = document.getElementById('registration-error-message');
 
@@ -655,14 +655,14 @@
             const name = studentNameInput.value.trim();
             const studentClass = studentClassInput.value.trim();
             const roll = studentRollInput.value.trim();
-            // const email = studentEmailInput ? studentEmailInput.value.trim() : ''; // যদি ইমেল সংগ্রহ করতে চান
+            const email = studentEmailInput.value.trim(); // ইমেল সংগ্রহ করার জন্য
 
             if (!name || !studentClass || !roll) {
                 registrationErrorMessage.classList.remove('hidden');
                 return;
             }
 
-            studentInfo = { name, class: studentClass, roll }; // যদি ইমেল সংগ্রহ করতে চান: , email
+            studentInfo = { name, class: studentClass, roll, email }; // ইমেল যোগ করা হয়েছে
             registrationErrorMessage.classList.add('hidden');
             registrationSection.classList.add('hidden');
             quizSection.classList.remove('hidden');
@@ -832,8 +832,15 @@
             // Netlify Form সাবমিট করার জন্য
             const netlifyForm = document.createElement('form');
             netlifyForm.setAttribute('name', 'quiz-submission');
-            netlifyForm.setAttribute('netlify', '');
+            netlifyForm.setAttribute('data-netlify', 'true'); // Netlify ফর্ম সনাক্তকরণের জন্য
             netlifyForm.style.display = 'none'; // ফর্মটি লুকানো থাকবে
+
+            // হানিপট ফিল্ড যোগ করুন (স্প্যাম প্রতিরোধের জন্য)
+            const honeypotInput = document.createElement('input');
+            honeypotInput.setAttribute('type', 'hidden');
+            honeypotInput.setAttribute('name', 'bot-field');
+            honeypotInput.value = ''; // এই ফিল্ডটি খালি থাকবে
+            netlifyForm.appendChild(honeypotInput);
 
             // হিডেন ইনপুট ফিল্ড তৈরি এবং মান নির্ধারণ
             const nameInput = document.createElement('input');
@@ -853,6 +860,12 @@
             rollInput.setAttribute('name', 'student-roll');
             rollInput.value = studentInfo.roll;
             netlifyForm.appendChild(rollInput);
+
+            const emailInput = document.createElement('input');
+            emailInput.setAttribute('type', 'hidden');
+            emailInput.setAttribute('name', 'student-email');
+            emailInput.value = studentInfo.email;
+            netlifyForm.appendChild(emailInput);
 
             const scoreInput = document.createElement('input');
             scoreInput.setAttribute('type', 'hidden');
@@ -878,13 +891,6 @@
             timestampInput.value = new Date().toLocaleString('bn-BD');
             netlifyForm.appendChild(timestampInput);
 
-            // যদি ইমেল সংগ্রহ করতে চান, তাহলে নিচের লাইনটি আনকমেন্ট করুন এবং studentInfo.email ব্যবহার করুন
-            // const emailInput = document.createElement('input');
-            // emailInput.setAttribute('type', 'hidden');
-            // emailInput.setAttribute('name', 'student-email');
-            // emailInput.value = studentInfo.email || ''; // যদি ইমেল না থাকে, খালি স্ট্রিং
-            // netlifyForm.appendChild(emailInput);
-
             // ফর্মটি বডিতে যোগ করে সাবমিট করুন
             document.body.appendChild(netlifyForm);
             netlifyForm.submit();
@@ -897,7 +903,7 @@
             studentNameInput.value = ''; // শিক্ষার্থীর তথ্য ক্লিয়ার করো
             studentClassInput.value = '';
             studentRollInput.value = '';
-            // if (studentEmailInput) studentEmailInput.value = ''; // যদি ইমেল সংগ্রহ করতে চান
+            studentEmailInput.value = ''; // ইমেল ক্লিয়ার করো
             pinEntrySection.classList.remove('hidden'); // পিন এন্ট্রি স্ক্রিনে ফিরে যাও
             quizStarted = false;
             quizCompleted = false;
@@ -927,3 +933,4 @@
     </script>
 </body>
 </html>
+
