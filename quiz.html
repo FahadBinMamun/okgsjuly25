@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -8,8 +7,8 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-xicon">
-    <link rel="icon" href="favicon.ico" type="image/x-xicon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <title>ওয়েব ডেভেলপমেন্ট কুইজ</title>
     <!-- Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,6 +16,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <!-- তোমার বিদ্যমান style.css ফাইলটি লোড করা হচ্ছে -->
+    <link rel="stylesheet" href="style.css">
     <style>
         /* সাধারণ বডি স্টাইল */
         body {
@@ -315,15 +316,30 @@
 
     <div class="container mx-auto p-4 md:p-8">
         <header class="text-center mb-12">
+            <!-- ALPCG Logo -->
             <img src="images/alpcg_logo.png" alt="ALPCG Logo" class="mx-auto mb-4" style="max-width: 150px; height: auto;">
             <h1 class="text-4xl md:text-5xl font-bold text-[#025373]">ওয়েব ডেভেলপমেন্ট কুইজ</h1>
             <p class="text-xl mt-2 text-[#037E8C]">তোমার জ্ঞান যাচাই করো এবং পুরস্কার জেতো!</p>
         </header>
 
+        <!-- **Google Apps Script এর জন্য লুকানো ফর্ম** -->
+        <!-- এই ফর্মটি JavaScript ব্যবহার করে Google Apps Script এ ডেটা পাঠাতে সাহায্য করবে। -->
+        <!-- এটি ব্যবহারকারী দেখতে পাবে না, কারণ এটি 'hidden' অ্যাট্রিবিউট ব্যবহার করে লুকানো আছে। -->
+        <form id="google-form-submission" hidden>
+            <input type="text" name="শিক্ষার্থীর নাম" />
+            <input type="text" name="শ্রেণি" />
+            <input type="text" name="রোল" />
+            <input type="email" name="ইমেল" />
+            <input type="number" name="স্কোর" />
+            <input type="number" name="মোট প্রশ্ন" />
+            <input type="text" name="সেশন আইডি" />
+            <input type="text" name="সময়" />
+        </form>
+
         <!-- পিন এন্ট্রি সেকশন -->
         <div id="pin-entry-section" class="pin-container">
             <h2 class="text-2xl font-bold mb-4 text-[#025373]">কুইজে প্রবেশের জন্য পিন দাও</h2>
-            <input type="password" id="pin-input" class="input-field" placeholder="পিন কোড লেখো" maxlength="4" autofocus>
+            <input type="password" id="pin-input" class="input-field" placeholder="পিন কোড লেখো" maxlength="4">
             <button id="submit-pin" class="action-button">প্রবেশ করো</button>
             <p id="error-message" class="error-message hidden">ভুল পিন কোড। আবার চেষ্টা করো।</p>
         </div>
@@ -334,14 +350,16 @@
             <input type="text" id="student-name" class="input-field" placeholder="তোমার নাম লেখো" required>
             <input type="text" id="student-class" class="input-field" placeholder="তোমার শ্রেণি লেখো" required>
             <input type="text" id="student-roll" class="input-field" placeholder="তোমার রোল নম্বর লেখো" required>
+            <input type="email" id="student-email" class="input-field" placeholder="তোমার ইমেল লেখো (ঐচ্ছিক)">
             <button id="start-quiz-button" class="action-button">কুইজ শুরু করো</button>
             <p id="registration-error-message" class="error-message hidden">সব তথ্য পূরণ করো।</p>
         </div>
 
         <!-- কুইজ সেকশন -->
         <div id="quiz-section" class="quiz-card hidden">
-            <div class="flex justify-between items-center mb-4 flex-wrap">
+            <div class="flex justify-between items-center mb-4">
                 <p class="score-display">স্কোর: <span id="current-score">0</span> / <span id="total-questions">0</span></p>
+                <!-- টাইমার ডিসপ্লে -->
                 <p class="text-lg font-semibold text-[#037E8C]">সময় বাকি: <span id="time-left">10</span> সেকেন্ড</p>
                 <p class="text-lg font-semibold text-[#037E8C]">প্রশ্ন <span id="question-number">1</span></p>
             </div>
@@ -350,13 +368,14 @@
                 <!-- অপশনগুলো জাভাস্ক্রিপ্ট দিয়ে লোড হবে -->
             </div>
             <p id="feedback" class="feedback-message text-center hidden"></p>
+            <button id="next-button" class="next-button hidden">পরবর্তী প্রশ্ন</button>
         </div>
 
         <!-- ফলাফল সেকশন -->
         <div id="result-section" class="quiz-card hidden">
             <h2 class="text-3xl font-bold text-center mb-6 text-[#025373]">কুইজ শেষ!</h2>
             <p class="text-2xl font-bold text-center mb-4 text-[#037E8C]">তোমার ফাইনাল স্কোর: <span id="final-score">0</span> / <span id="final-total">0</span></p>
-            <p id="result-message" class="text-lg text-center mb-8"></p>
+            <p id="result-message" class="text-lg text-center mb-8 text-gray-700"></p>
             <!-- গোপন কোড প্রদর্শনের জন্য নতুন div -->
             <div id="secret-code-container" class="hidden">
                 <div id="secret-code-display" class="secret-code-display"></div>
@@ -392,40 +411,146 @@
     </footer>
 
     <script>
-        // formsubmit.co endpoint
-        const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/el/lawahu";
+        // **এখানে আপনার Google Apps Script এর Web App URL বসানো হয়েছে**
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzgdQLheJcNHFe2Nn3-M_ZL1LoGSCvnGynDCioqKzZ5R1OG0NYapHCC4mQB_JqAAnQUpQ/exec";
 
         // কুইজের প্রশ্নগুলো
         const allQuestions = [
-            { question: "HTML এর পূর্ণরূপ কী?", options: ["HyperText Markup Language", "Hyperlink and Text Markup Language", "High-level Text Machine Language", "Home Tool Markup Language", "অন্যান্য"], answer: "HyperText Markup Language" },
-            { question: "ওয়েবপেজের কাঠামো তৈরি করতে কোনটি ব্যবহৃত হয়?", options: ["CSS", "JavaScript", "HTML", "Python", "অন্যান্য"], answer: "HTML" },
-            { question: "একটি প্যারাগ্রাফ ট্যাগ কোনটি?", options: ["<p>", "<h>", "<a>", "<div>", "<span>"], answer: "<p>" },
-            { question: "ছবি যোগ করার জন্য কোন ট্যাগ ব্যবহৃত হয়?", options: ["<image>", "<img>", "<pic>", "<photo>", "<picture>"], answer: "<img>" },
-            { question: "অন্য পেজে লিঙ্ক করার জন্য কোন অ্যাট্রিবিউট ব্যবহৃত হয়?", options: ["src", "href", "link", "url", "target"], answer: "href" },
-            { question: "ওয়েবপেজকে স্টাইল করার জন্য কোনটি ব্যবহৃত হয়?", options: ["HTML", "JavaScript", "CSS", "Python", "SQL"], answer: "CSS" },
-            { question: "ওয়েবপেজকে ইন্টারেক্টিভ করার জন্য কোনটি ব্যবহৃত হয়?", options: ["HTML", "CSS", "JavaScript", "PHP", "Ruby"], answer: "JavaScript" },
-            { question: "সবচেয়ে বড় হেডিং ট্যাগ কোনটি?", options: ["<h1>", "<h6>", "<head>", "<heading>", "<title>"], answer: "<h1>" },
-            { question: "একটি আনঅর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<ol>", "<li>", "<ul>", "<list>", "<dl>"], answer: "<ul>" },
-            { question: "একটি অর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<ul>", "<li>", "<ol>", "<list>", "<dt>"], answer: "<ol>" },
-            { question: "ওয়েব ব্রাউজার কী?", options: ["একটি অপারেটিং সিস্টেম", "একটি প্রোগ্রামিং ভাষা", "ইন্টারনেট দেখার সফটওয়্যার", "একটি হার্ডওয়্যার ডিভাইস", "একটি ডেটাবেস"], answer: "ইন্টারনেট দেখার সফটওয়্যার" },
-            { question: "কম্পিউটারের 'মস্তিষ্ক' কোনটি?", options: ["RAM", "CPU", "Hard Disk", "Monitor", "GPU"], answer: "CPU" },
-            { question: "মোবাইলে কোড লেখার জন্য কোন অ্যাপ ব্যবহার করা যেতে পারে?", options: ["Microsoft Word", "TrebEdit", "VLC Player", "Adobe Reader", "Calculator"], answer: "TrebEdit" },
-            { question: "ফাইলের এক্সটেনশন কী নির্দেশ করে?", options: ["ফাইলের আকার", "ফাইলের তৈরির তারিখ", "ফাইলের ধরণ", "ফাইলের নাম", "ফাইলের মালিক"], answer: "ফাইলের ধরণ" },
-            { question: "একটি `.pdf` ফাইল খোলার জন্য কোন ধরনের সফটওয়্যার প্রয়োজন?", options: ["ওয়েব ব্রাউজার", "মিডিয়া প্লেয়ার", "পিডিএফ রিডার", "কোড এডিটর", "স্প্রেডশীট সফটওয়্যার"], answer: "পিডিএফ রিডার" },
-            { question: "HTML ট্যাগের মধ্যে `<` এবং `>` চিহ্নকে কী বলা হয়?", options: ["অ্যাঙ্গেল ব্র্যাকেট", "কার্লি ব্র্যাকেট", "স্কয়ার ব্র্যাকেট", "প্যারেন্থেসিস", "কোটেশন মার্ক"], answer: "অ্যাঙ্গেল ব্র্যাকেট" },
-            { question: "কোন HTML ট্যাগটি একটি লাইন ব্রেক তৈরি করে?", options: ["<br>", "<lb>", "<break>", "<line>", "<newline>"], answer: "<br>" },
-            { question: "ওয়েবপেজে একটি লিঙ্ক তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<link>", "<href>", "<a>", "<url>", "<navigate>"], answer: "<a>" },
-            { question: "কোনটি একটি ইনপুট ডিভাইস?", options: ["মনিটর", "প্রিন্টার", "কীবোর্ড", "স্পিকার", "প্রজেক্টর"], answer: "কীবোর্ড" },
-            { question: "কম্পিউটারের স্থায়ী তথ্য সংরক্ষণের জন্য কোনটি ব্যবহৃত হয়?", options: ["RAM", "CPU", "Hard Disk", "Cache", "Processor"], answer: "Hard Disk" },
-            { question: "ওয়েবসাইট এবং ওয়েবপেজের মধ্যে প্রধান পার্থক্য কী?", options: ["ওয়েবসাইট একটি একক পৃষ্ঠা, ওয়েবপেজ অনেক পৃষ্ঠার সমষ্টি", "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা", "তাদের মধ্যে কোনো পার্থক্য নেই", "ওয়েবসাইট শুধুমাত্র ছবিতে থাকে", "ওয়েবপেজ শুধুমাত্র টেক্সটে থাকে"], answer: "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা" },
-            { question: "স্ট্যাটিক ওয়েবপেজের বৈশিষ্ট্য কী?", options: ["এটি ব্যবহারকারীর ইনপুটের উপর ভিত্তি করে পরিবর্তিত হয়", "এর বিষয়বস্তু সবার জন্য একই থাকে", "এটি ডেটাবেস থেকে তথ্য লোড করে", "এটি নিয়মিত আপডেট হয়", "এটি সার্ভার-সাইড কোড দিয়ে তৈরি হয়"], answer: "এর বিষয়বস্তু সবার জন্য একই থাকে" },
-            { question: "কোনটি ফ্রন্ট-এন্ড ডেভেলপমেন্টের অংশ নয়?", options: ["HTML", "CSS", "JavaScript", "Python (সার্ভার-সাইড)", "React"], answer: "Python (সার্ভার-সাইড)" },
-            { question: "VS Code কী?", options: ["একটি ওয়েব ব্রাউজার", "একটি অপারেটিং সিস্টেম", "একটি কোড এডিটর", "একটি গেম", "একটি অ্যান্টিভাইরাস"], answer: "একটি কোড এডিটর" },
-            { question: "CodePen এর প্রধান সুবিধা কী?", options: ["অফলাইনে কাজ করে", "বড় প্রজেক্টের জন্য সেরা", "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়", "শুধুমাত্র ব্যাকএন্ড ডেভেলপমেন্টের জন্য", "খুব দ্রুত ফাইল সেভ করে"], answer: "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়" }
+            {
+                question: "HTML এর পূর্ণরূপ কী?",
+                options: ["HyperText Markup Language", "Hyperlink and Text Markup Language", "High-level Text Machine Language", "Home Tool Markup Language", "অন্যান্য"],
+                answer: "HyperText Markup Language"
+            },
+            {
+                question: "ওয়েবপেজের কাঠামো তৈরি করতে কোনটি ব্যবহৃত হয়?",
+                options: ["CSS", "JavaScript", "HTML", "Python", "অন্যান্য"],
+                answer: "HTML"
+            },
+            {
+                question: "একটি প্যারাগ্রাফ ট্যাগ কোনটি?",
+                options: ["<p>", "<h>", "<a>", "<div>", "<span>"],
+                answer: "<p>"
+            },
+            {
+                question: "ছবি যোগ করার জন্য কোন ট্যাগ ব্যবহৃত হয়?",
+                options: ["<image>", "<img>", "<pic>", "<photo>", "<picture>"],
+                answer: "<img>"
+            },
+            {
+                question: "অন্য পেজে লিঙ্ক করার জন্য কোন অ্যাট্রিবিউট ব্যবহৃত হয়?",
+                options: ["src", "href", "link", "url", "target"],
+                answer: "href"
+            },
+            {
+                question: "ওয়েবপেজকে স্টাইল করার জন্য কোনটি ব্যবহৃত হয়?",
+                options: ["HTML", "JavaScript", "CSS", "Python", "SQL"],
+                answer: "CSS"
+            },
+            {
+                question: "ওয়েবপেজকে ইন্টারেক্টিভ করার জন্য কোনটি ব্যবহৃত হয়?",
+                options: ["HTML", "CSS", "JavaScript", "PHP", "Ruby"],
+                answer: "JavaScript"
+            },
+            {
+                question: "সবচেয়ে বড় হেডিং ট্যাগ কোনটি?",
+                options: ["<h1>", "<h6>", "<head>", "<heading>", "<title>"],
+                answer: "<h1>"
+            },
+            {
+                question: "একটি আনঅর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?",
+                options: ["<ol>", "<li>", "<ul>", "<list>", "<dl>"],
+                answer: "<ul>"
+            },
+            {
+                question: "একটি অর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?",
+                options: ["<ul>", "<li>", "<ol>", "<list>", "<dt>"],
+                answer: "<ol>"
+            },
+            {
+                question: "ওয়েব ব্রাউজার কী?",
+                options: ["একটি অপারেটিং সিস্টেম", "একটি প্রোগ্রামিং ভাষা", "ইন্টারনেট দেখার সফটওয়্যার", "একটি হার্ডওয়্যার ডিভাইস", "একটি ডেটাবেস"],
+                answer: "ইন্টারনেট দেখার সফটওয়্যার"
+            },
+            {
+                question: "কম্পিউটারের 'মস্তিষ্ক' কোনটি?",
+                options: ["RAM", "CPU", "Hard Disk", "Monitor", "GPU"],
+                answer: "CPU"
+            },
+            {
+                question: "মোবাইলে কোড লেখার জন্য কোন অ্যাপ ব্যবহার করা যেতে পারে?",
+                options: ["Microsoft Word", "TrebEdit", "VLC Player", "Adobe Reader", "Calculator"],
+                answer: "TrebEdit"
+            },
+            {
+                question: "ফাইলের এক্সটেনশন কী নির্দেশ করে?",
+                options: ["ফাইলের আকার", "ফাইলের তৈরির তারিখ", "ফাইলের ধরণ", "ফাইলের নাম", "ফাইলের মালিক"],
+                answer: "ফাইলের ধরণ"
+            },
+            {
+                question: "একটি `.pdf` ফাইল খোলার জন্য কোন ধরনের সফটওয়্যার প্রয়োজন?",
+                options: ["ওয়েব ব্রাউজার", "মিডিয়া প্লেয়ার", "পিডিএফ রিডার", "কোড এডিটর", "স্প্রেডশীট সফটওয়্যার"],
+                answer: "পিডিএফ রিডার"
+            },
+            {
+                question: "HTML ট্যাগের মধ্যে `<` এবং `>` চিহ্নকে কী বলা হয়?",
+                options: ["অ্যাঙ্গেল ব্র্যাকেট", "কার্লি ব্র্যাকেট", "স্কয়ার ব্র্যাকেট", "প্যারেন্থেসিস", "কোটেশন মার্ক"],
+                answer: "অ্যাঙ্গেল ব্র্যাকেট"
+            },
+            {
+                question: "কোন HTML ট্যাগটি একটি লাইন ব্রেক তৈরি করে?",
+                options: ["<br>", "<lb>", "<break>", "<line>", "<newline>"],
+                answer: "<br>"
+            },
+            {
+                question: "ওয়েবপেজে একটি লিঙ্ক তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?",
+                options: ["<link>", "<href>", "<a>", "<url>", "<navigate>"],
+                answer: "<a>"
+            },
+            {
+                question: "কোনটি একটি ইনপুট ডিভাইস?",
+                options: ["মনিটর", "প্রিন্টার", "কীবোর্ড", "স্পিকার", "প্রজেক্টর"],
+                answer: "কীবোর্ড"
+            },
+            {
+                question: "কম্পিউটারের স্থায়ী তথ্য সংরক্ষণের জন্য কোনটি ব্যবহৃত হয়?",
+                options: ["RAM", "CPU", "Hard Disk", "Cache", "Processor"],
+                answer: "Hard Disk"
+            },
+            {
+                question: "ওয়েবসাইট এবং ওয়েবপেজের মধ্যে প্রধান পার্থক্য কী?",
+                options: ["ওয়েবসাইট একটি একক পৃষ্ঠা, ওয়েবপেজ অনেক পৃষ্ঠার সমষ্টি", "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা", "তাদের মধ্যে কোনো পার্থক্য নেই", "ওয়েবসাইট শুধুমাত্র ছবিতে থাকে", "ওয়েবপেজ শুধুমাত্র টেক্সটে থাকে"],
+                answer: "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা"
+            },
+            {
+                question: "স্ট্যাটিক ওয়েবপেজের বৈশিষ্ট্য কী?",
+                options: ["এটি ব্যবহারকারীর ইনপুটের উপর ভিত্তি করে পরিবর্তিত হয়", "এর বিষয়বস্তু সবার জন্য একই থাকে", "এটি ডেটাবেস থেকে তথ্য লোড করে", "এটি নিয়মিত আপডেট হয়", "এটি সার্ভার-সাইড কোড দিয়ে তৈরি হয়"],
+                answer: "এর বিষয়বস্তু সবার জন্য একই থাকে"
+            },
+            {
+                question: "কোনটি ফ্রন্ট-এন্ড ডেভেলপমেন্টের অংশ নয়?",
+                options: ["HTML", "CSS", "JavaScript", "Python (সার্ভার-সাইড)", "React"],
+                answer: "Python (সার্ভার-সাইড)"
+            },
+            {
+                question: "VS Code কী?",
+                options: ["একটি ওয়েব ব্রাউজার", "একটি অপারেটিং সিস্টেম", "একটি কোড এডিটর", "একটি গেম", "একটি অ্যান্টিভাইরাস"],
+                answer: "একটি কোড এডিটর"
+            },
+            {
+                question: "CodePen এর প্রধান সুবিধা কী?",
+                options: ["অফলাইনে কাজ করে", "বড় প্রজেক্টের জন্য সেরা", "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়", "শুধুমাত্র ব্যাকএন্ড ডেভেলপমেন্টের জন্য", "খুব দ্রুত ফাইল সেভ করে"],
+                answer: "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়"
+            }
         ];
 
         // গোপন কোডগুলো
-        const secretCodes = [ "ALPCG-QUIZ-VX7B", "ALPCG-QUIZ-P9QW", "ALPCG-QUIZ-R4ZL", "ALPCG-QUIZ-M2FK", "ALPCG-QUIZ-T8JH" ];
+        const secretCodes = [
+            "ALPCG-QUIZ-VX7B",
+            "ALPCG-QUIZ-P9QW",
+            "ALPCG-QUIZ-R4ZL",
+            "ALPCG-QUIZ-M2FK",
+            "ALPCG-QUIZ-T8JH"
+        ];
 
         let currentQuizQuestions = [];
         let currentQuestionIndex = 0;
@@ -433,26 +558,29 @@
         let selectedOption = null;
         let quizSessionId = '';
         let studentInfo = {};
-        let quizStarted = false;
-        let quizCompleted = false;
-        let tabSwitched = false;
+        let quizStarted = false; // কুইজ শুরু হয়েছে কিনা ট্র্যাক করার জন্য
+        let quizCompleted = false; // কুইজ শেষ হয়েছে কিনা ট্র্যাক করার জন্য
+        let tabSwitched = false; // ট্যাব সুইচ হয়েছে কিনা ট্র্যাক করার জন্য
 
+        // টাইমার ভেরিয়েবল
         let timerInterval;
-        let nextQuestionTimeout;
-        const TIME_LIMIT = 10;
-        let countdown = TIME_LIMIT;
+        let countdown = 10;
+        const TIME_LIMIT = 10; // প্রতি প্রশ্নের জন্য সময় সীমা
 
         // DOM Elements
         const pinEntrySection = document.getElementById('pin-entry-section');
         const pinInput = document.getElementById('pin-input');
         const submitPinButton = document.getElementById('submit-pin');
         const errorMessage = document.getElementById('error-message');
+
         const registrationSection = document.getElementById('registration-section');
         const studentNameInput = document.getElementById('student-name');
         const studentClassInput = document.getElementById('student-class');
         const studentRollInput = document.getElementById('student-roll');
+        const studentEmailInput = document.getElementById('student-email'); // ইমেল সংগ্রহ করার জন্য
         const startQuizButton = document.getElementById('start-quiz-button');
         const registrationErrorMessage = document.getElementById('registration-error-message');
+
         const quizSection = document.getElementById('quiz-section');
         const questionNumberSpan = document.getElementById('question-number');
         const questionTextElement = document.getElementById('question-text');
@@ -460,59 +588,75 @@
         const currentScoreSpan = document.getElementById('current-score');
         const totalQuestionsSpan = document.getElementById('total-questions');
         const feedbackElement = document.getElementById('feedback');
-        const timeLeftSpan = document.getElementById('time-left');
+        const nextButton = document.getElementById('next-button');
+        const timeLeftSpan = document.getElementById('time-left'); // টাইমার ডিসপ্লে
+
         const resultSection = document.getElementById('result-section');
         const finalScoreSpan = document.getElementById('final-score');
         const finalTotalSpan = document.getElementById('final-total');
         const resultMessageElement = document.getElementById('result-message');
         const restartButton = document.getElementById('restart-button');
-        const secretCodeContainer = document.getElementById('secret-code-container');
-        const secretCodeDisplay = document.getElementById('secret-code-display');
+        const secretCodeContainer = document.getElementById('secret-code-container'); // গোপন কোড কন্টেইনার
+        const secretCodeDisplay = document.getElementById('secret-code-display'); // গোপন কোড ডিসপ্লে
+        const keepSecretMsg = document.getElementById('keep-secret-msg'); // গোপন রাখার বার্তা
+
         const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+        // ট্যাব সুইচ মডেল এলিমেন্টস
         const tabSwitchModal = document.getElementById('tab-switch-modal');
         const modalRestartButton = document.getElementById('modal-restart-button');
 
-        // Event Listeners
+        // ইভেন্ট লিসেনার্স
         submitPinButton.addEventListener('click', checkPin);
         pinInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPin(); });
         startQuizButton.addEventListener('click', startQuiz);
+        nextButton.addEventListener('click', loadNextQuestion);
         restartButton.addEventListener('click', resetQuiz);
         darkModeToggle.addEventListener('click', toggleDarkMode);
-        modalRestartButton.addEventListener('click', handleModalRestart);
+        modalRestartButton.addEventListener('click', handleModalRestart); // মডেল রিস্টার্ট বাটন
 
         document.addEventListener('DOMContentLoaded', () => {
             loadDarkModePreference();
+            // প্রাথমিক অবস্থা: শুধুমাত্র পিন এন্ট্রি দৃশ্যমান
             pinEntrySection.classList.remove('hidden');
             registrationSection.classList.add('hidden');
             quizSection.classList.add('hidden');
             resultSection.classList.add('hidden');
         });
 
+        // ট্যাব ভিজিবিলিটি API ইভেন্ট লিসেনার্স
         document.addEventListener('visibilitychange', () => {
-            if (quizStarted && !quizCompleted && document.hidden) {
-                tabSwitched = true;
-                clearAllTimers();
-                showTabSwitchWarning();
+            if (quizStarted && !quizCompleted) { // কুইজ শুরু হলে এবং শেষ না হলে
+                if (document.hidden) {
+                    // ট্যাব সুইচ করা হয়েছে (পেজ ফোকাস হারিয়েছে)
+                    tabSwitched = true;
+                    clearInterval(timerInterval); // টাইমার বন্ধ করো
+                    showTabSwitchWarning(); // সতর্কতা দেখাও
+                } else {
+                    // ট্যাব আবার ফোকাস পেয়েছে
+                    if (tabSwitched) {
+                        // যদি ট্যাব সুইচ করে ফিরে আসে, তাহলে কুইজ রিস্টার্ট করো
+                        // handleModalRestart() ফাংশনটি মডেল থেকে কল হবে
+                    }
+                }
             }
         });
 
-        function clearAllTimers() {
-            clearInterval(timerInterval);
-            clearTimeout(nextQuestionTimeout);
-        }
-
         function showTabSwitchWarning() {
             tabSwitchModal.classList.remove('hidden');
+            // কুইজ সেকশন লুকিয়ে দাও
             quizSection.classList.add('hidden');
         }
 
         function handleModalRestart() {
             tabSwitchModal.classList.add('hidden');
-            resetQuiz();
+            tabSwitched = false; // ফ্ল্যাগ রিসেট করো
+            resetQuiz(); // কুইজ রিস্টার্ট করো
         }
 
+
         function checkPin() {
-            const correctPin = "1234";
+            const correctPin = "1234"; // তোমার পিন কোড এখানে সেট করো
             if (pinInput.value === correctPin) {
                 pinEntrySection.classList.add('hidden');
                 registrationSection.classList.remove('hidden');
@@ -527,41 +671,66 @@
             const name = studentNameInput.value.trim();
             const studentClass = studentClassInput.value.trim();
             const roll = studentRollInput.value.trim();
+            const email = studentEmailInput.value.trim(); // ইমেল সংগ্রহ করার জন্য
 
             if (!name || !studentClass || !roll) {
                 registrationErrorMessage.classList.remove('hidden');
                 return;
             }
 
-            studentInfo = { name, class: studentClass, roll };
+            studentInfo = { name, class: studentClass, roll, email }; // ইমেল যোগ করা হয়েছে
             registrationErrorMessage.classList.add('hidden');
             registrationSection.classList.add('hidden');
             quizSection.classList.remove('hidden');
 
             quizStarted = true;
             quizCompleted = false;
-            tabSwitched = false;
-            quizSessionId = crypto.randomUUID();
+            tabSwitched = false; // কুইজ শুরু হলে ট্যাব সুইচ ফ্ল্যাগ রিসেট করো
+            quizSessionId = crypto.randomUUID(); // একটি ইউনিক সেশন আইডি তৈরি করো
+
+            // ২০টি র্যান্ডম প্রশ্ন নির্বাচন করো
             currentQuizQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 20);
             totalQuestionsSpan.textContent = currentQuizQuestions.length;
+
             currentQuestionIndex = 0;
             score = 0;
             currentScoreSpan.textContent = score;
+
             loadQuestion();
         }
 
         function startTimer() {
-            clearAllTimers();
-            countdown = TIME_LIMIT;
-            timeLeftSpan.textContent = countdown;
+            clearInterval(timerInterval); // কোনো চলমান টাইমার থাকলে সেটি বন্ধ করো
+            countdown = TIME_LIMIT; // টাইমার রিসেট করো
+            timeLeftSpan.textContent = countdown; // ডিসপ্লে আপডেট করো
+
             timerInterval = setInterval(() => {
                 countdown--;
                 timeLeftSpan.textContent = countdown;
+
                 if (countdown <= 0) {
                     clearInterval(timerInterval);
-                    handleAnswer(null, null); // Time's up, count as unanswered
+                    // যদি সময় শেষ হয়ে যায় এবং উত্তর না দেওয়া হয়, তাহলে ভুল উত্তর হিসেবে ধরে পরবর্তী প্রশ্নে যাও
+                    if (selectedOption === null) {
+                        const questionData = currentQuizQuestions[currentQuestionIndex];
+                        const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
+                        allOptionButtons.forEach(btn => {
+                            btn.classList.add('disabled'); // সব অপশন ডিজেবল করো
+                            if (btn.textContent === questionData.answer) {
+                                btn.classList.add('correct'); // সঠিক উত্তর হাইলাইট করো
+                            }
+                        });
+                        feedbackElement.textContent = "সময় শেষ! সঠিক উত্তর: " + questionData.answer;
+                        feedbackElement.classList.remove('feedback-correct', 'hidden');
+                        feedbackElement.classList.add('feedback-incorrect');
+                        // এখানে স্কোর বাড়ানো হবে না কারণ উত্তর দেওয়া হয়নি
+                    }
+                    // যদি ট্যাব সুইচ না হয়ে থাকে, তাহলেই পরবর্তী প্রশ্নে যাও
+                    if (!tabSwitched) {
+                        loadNextQuestion();
+                    }
                 }
-            }, 1000);
+            }, 1000); // প্রতি সেকেন্ডে আপডেট করো
         }
 
         function loadQuestion() {
@@ -575,108 +744,98 @@
             questionTextElement.textContent = questionData.question;
             optionsContainer.innerHTML = '';
             feedbackElement.classList.add('hidden');
+            nextButton.classList.add('hidden');
             selectedOption = null;
 
+            // অপশনগুলো এলোমেলো করো
             const shuffledOptions = [...questionData.options].sort(() => 0.5 - Math.random());
+
             shuffledOptions.forEach(option => {
                 const button = document.createElement('button');
                 button.classList.add('option-button');
                 button.textContent = option;
-                button.addEventListener('click', () => handleAnswer(button, option));
+                button.addEventListener('click', () => selectOption(button, option, questionData.answer));
                 optionsContainer.appendChild(button);
             });
-            startTimer();
+
+            startTimer(); // নতুন প্রশ্ন লোড হলে টাইমার শুরু করো
         }
 
-        function handleAnswer(button, selectedAnswer) {
-            if (selectedOption !== null) return; // Prevent multiple answers
+        function selectOption(button, option, correctAnswer) {
+            if (selectedOption !== null) return; // একাধিক নির্বাচন প্রতিরোধ করো
 
-            clearAllTimers();
-            selectedOption = selectedAnswer;
-            const correctAnswer = currentQuizQuestions[currentQuestionIndex].answer;
+            clearInterval(timerInterval); // অপশন নির্বাচন করা হলে টাইমার বন্ধ করো
+
+            selectedOption = option;
             const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
-
             allOptionButtons.forEach(btn => {
-                btn.classList.add('disabled');
-                if (btn.textContent === correctAnswer) {
-                    btn.classList.add('correct');
-                }
-                if (btn === button && selectedAnswer !== correctAnswer) {
-                    btn.classList.add('incorrect');
-                }
+                btn.classList.add('disabled'); // নির্বাচনের পর সব বাটন ডিজেবল করো
                 if (btn === button) {
                     btn.classList.add('selected');
                 }
             });
 
-            if (selectedAnswer && selectedAnswer === correctAnswer) {
+            if (option === correctAnswer) {
                 score++;
                 currentScoreSpan.textContent = score;
+                button.classList.add('correct');
                 feedbackElement.textContent = "সঠিক উত্তর!";
-                feedbackElement.className = 'feedback-message feedback-correct';
-            } else if (selectedAnswer) {
+                feedbackElement.classList.remove('feedback-incorrect', 'hidden');
+                feedbackElement.classList.add('feedback-correct');
+            } else {
+                button.classList.add('incorrect');
                 feedbackElement.textContent = "ভুল উত্তর। সঠিক উত্তর: " + correctAnswer;
-                feedbackElement.className = 'feedback-message feedback-incorrect';
-            } else { // Time ran out
-                feedbackElement.textContent = "সময় শেষ! সঠিক উত্তর: " + correctAnswer;
-                feedbackElement.className = 'feedback-message feedback-incorrect';
-            }
-            feedbackElement.classList.remove('hidden');
-
-            nextQuestionTimeout = setTimeout(() => {
-                if (!tabSwitched) {
-                    currentQuestionIndex++;
-                    loadQuestion();
-                }
-            }, 2000);
-        }
-
-        async function sendResultNotification() {
-            const formData = {
-                _captcha: "false",
-                _template: "table",
-                subject: `নতুন কুইজ ফলাফল: ${studentInfo.name}`,
-                'নাম': studentInfo.name,
-                'শ্রেণি': studentInfo.class,
-                'রোল': studentInfo.roll,
-                'স্কোর': `${score} / ${currentQuizQuestions.length}`,
-                'সেশন আইডি': quizSessionId,
-                'সময়': new Date().toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' })
-            };
-
-            try {
-                const response = await fetch(FORMSUBMIT_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(formData)
+                feedbackElement.classList.remove('feedback-correct', 'hidden');
+                feedbackElement.classList.add('feedback-incorrect');
+                // ভুল উত্তর নির্বাচন করা হলে সঠিক উত্তর হাইলাইট করো
+                allOptionButtons.forEach(btn => {
+                    if (btn.textContent === correctAnswer) {
+                        btn.classList.add('correct');
+                    }
                 });
-                if (response.ok) {
-                    console.log('Result notification sent successfully.');
-                } else {
-                    console.error('Failed to send result notification.');
-                }
-            } catch (error)
- {
-                console.error('Error sending result notification:', error);
+            }
+            // যদি শেষ প্রশ্ন না হয়, তাহলে পরবর্তী প্রশ্ন বাটনে ক্লিক করার জন্য 1 সেকেন্ড অপেক্ষা করো
+            if (currentQuestionIndex < currentQuizQuestions.length - 1) {
+                setTimeout(() => {
+                    if (!tabSwitched) { // শুধুমাত্র যদি ট্যাব সুইচ না হয়ে থাকে
+                        loadNextQuestion();
+                    }
+                }, 1000); // 1 সেকেন্ড পর পরবর্তী প্রশ্ন লোড হবে
+            } else {
+                // শেষ প্রশ্ন হলে, ফলাফল দেখাও
+                setTimeout(() => {
+                    if (!tabSwitched) { // শুধুমাত্র যদি ট্যাব সুইচ না হয়ে থাকে
+                        showResult();
+                    }
+                }, 1000);
             }
         }
 
-        function showResult() {
-            clearAllTimers();
+        function loadNextQuestion() {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+
+        async function showResult() {
+            clearInterval(timerInterval); // কুইজ শেষ হলে টাইমার বন্ধ করো
             quizSection.classList.add('hidden');
             resultSection.classList.remove('hidden');
             finalScoreSpan.textContent = score;
             finalTotalSpan.textContent = currentQuizQuestions.length;
-            secretCodeContainer.classList.add('hidden');
-            secretCodeDisplay.textContent = '';
-            resultMessageElement.className = 'text-lg text-center mb-8';
+
+            secretCodeContainer.classList.add('hidden'); // প্রথমে গোপন কোড লুকিয়ে রাখো
+            secretCodeDisplay.textContent = ''; // কোড ক্লিয়ার করো
+            resultMessageElement.classList.remove('celebration-message'); // অ্যানিমেশন ক্লাস সরিয়ে দাও
 
             if (score === currentQuizQuestions.length) {
                 resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉";
                 resultMessageElement.classList.add('celebration-message');
+                
+                // র্যান্ডম গোপন কোড নির্বাচন করো
                 const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
                 secretCodeDisplay.textContent = randomCode;
-                secretCodeContainer.classList.remove('hidden');
+                secretCodeContainer.classList.remove('hidden'); // গোপন কোড দেখাও
+                resultMessageElement.style.color = '#06D6A0';
             } else if (score >= currentQuizQuestions.length / 2) {
                 resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
                 resultMessageElement.style.color = '#F29E38';
@@ -685,24 +844,53 @@
                 resultMessageElement.style.color = '#EF476F';
             }
             quizCompleted = true;
-            sendResultNotification(); // Send notification on quiz completion
+
+            // Google Apps Script এ ডেটা পাঠানোর জন্য
+            const formData = {
+                "শিক্ষার্থীর নাম": studentInfo.name,
+                "শ্রেণি": studentInfo.class,
+                "রোল": studentInfo.roll,
+                "ইমেল": studentInfo.email,
+                "স্কোর": score,
+                "মোট প্রশ্ন": currentQuizQuestions.length,
+                "সেশন আইডি": quizSessionId,
+                "সময়": new Date().toLocaleString('bn-BD')
+            };
+
+            try {
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // CORS সমস্যা এড়াতে
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+                console.log('Google Apps Script এ ডেটা পাঠানো হয়েছে:', response);
+                // যেহেতু mode: 'no-cors', response.ok বা response.json() চেক করা যাবে না
+                // তবে, ডেটা পাঠানো সাধারণত সফল হয়।
+            } catch (error) {
+                console.error('Google Apps Script এ ডেটা পাঠাতে ব্যর্থ:', error);
+                // এখানে ব্যবহারকারীকে একটি বার্তা দেখাতে পারেন যে ডেটা পাঠাতে সমস্যা হয়েছে
+            }
         }
 
         function resetQuiz() {
-            clearAllTimers();
+            clearInterval(timerInterval); // কুইজ রিসেট হলে টাইমার বন্ধ করো
             resultSection.classList.add('hidden');
-            pinInput.value = '';
-            studentNameInput.value = '';
+            pinInput.value = ''; // পিন ক্লিয়ার করো
+            studentNameInput.value = ''; // শিক্ষার্থীর তথ্য ক্লিয়ার করো
             studentClassInput.value = '';
             studentRollInput.value = '';
-            pinEntrySection.classList.remove('hidden');
+            studentEmailInput.value = ''; // ইমেল ক্লিয়ার করো
+            pinEntrySection.classList.remove('hidden'); // পিন এন্ট্রি স্ক্রিনে ফিরে যাও
             quizStarted = false;
             quizCompleted = false;
-            tabSwitched = false;
-            secretCodeContainer.classList.add('hidden');
-            secretCodeDisplay.textContent = '';
-            resultMessageElement.classList.remove('celebration-message');
-            resultMessageElement.style.color = '';
+            tabSwitched = false; // রিসেট করার সময় ট্যাব সুইচ ফ্ল্যাগও রিসেট করো
+
+            secretCodeContainer.classList.add('hidden'); // কোড কন্টেইনার লুকিয়ে দাও
+            secretCodeDisplay.textContent = ''; // কোড ক্লিয়ার করো
+            resultMessageElement.classList.remove('celebration-message'); // অ্যানিমেশন ক্লাস সরিয়ে দাও
         }
 
         function toggleDarkMode() {
@@ -724,3 +912,4 @@
     </script>
 </body>
 </html>
+
