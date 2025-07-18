@@ -322,6 +322,21 @@
             <p class="text-xl mt-2 text-[#037E8C]">তোমার জ্ঞান যাচাই করো এবং পুরস্কার জেতো!</p>
         </header>
 
+        <!-- **Netlify Forms এর জন্য লুকানো স্ট্যাটিক ফর্ম** -->
+        <!-- এই ফর্মটি Netlify এর বিল্ড সিস্টেমকে আপনার কুইজের ডেটা স্ট্রাকচার সম্পর্কে জানাতে সাহায্য করে। -->
+        <!-- এটি ব্যবহারকারী দেখতে পাবে না, কারণ এটি 'hidden' অ্যাট্রিবিউট ব্যবহার করে লুকানো আছে। -->
+        <form name="quiz-submission" data-netlify="true" hidden netlify-honeypot="bot-field">
+            <input type="text" name="student-name" />
+            <input type="text" name="student-class" />
+            <input type="text" name="student-roll" />
+            <input type="email" name="student-email" />
+            <input type="number" name="score" />
+            <input type="number" name="total-questions" />
+            <input type="text" name="session-id" />
+            <input type="text" name="timestamp" />
+            <input type="text" name="bot-field" /> <!-- হানিপট ফিল্ড -->
+        </form>
+
         <!-- পিন এন্ট্রি সেকশন -->
         <div id="pin-entry-section" class="pin-container">
             <h2 class="text-2xl font-bold mb-4 text-[#025373]">কুইজে প্রবেশের জন্য পিন দাও</h2>
@@ -336,7 +351,6 @@
             <input type="text" id="student-name" class="input-field" placeholder="তোমার নাম লেখো" required>
             <input type="text" id="student-class" class="input-field" placeholder="তোমার শ্রেণি লেখো" required>
             <input type="text" id="student-roll" class="input-field" placeholder="তোমার রোল নম্বর লেখো" required>
-            <!-- যদি ইমেল সংগ্রহ করতে চান, তাহলে নিচের লাইনটি আনকমেন্ট করুন -->
             <input type="email" id="student-email" class="input-field" placeholder="তোমার ইমেল লেখো (ঐচ্ছিক)">
             <button id="start-quiz-button" class="action-button">কুইজ শুরু করো</button>
             <p id="registration-error-message" class="error-message hidden">সব তথ্য পূরণ করো।</p>
@@ -830,6 +844,7 @@
             quizCompleted = true;
 
             // Netlify Form সাবমিট করার জন্য
+            // এই অংশটি এখন লুকানো স্ট্যাটিক ফর্মের সাথে কাজ করবে
             const netlifyForm = document.createElement('form');
             netlifyForm.setAttribute('name', 'quiz-submission');
             netlifyForm.setAttribute('data-netlify', 'true'); // Netlify ফর্ম সনাক্তকরণের জন্য
