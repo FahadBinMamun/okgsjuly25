@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ওয়েব ডেভেলপমেন্ট কুইজ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Tiro Bangla', serif;
+      }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "@emailjs/browser": "https://esm.sh/@emailjs/browser@^4.4.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <!-- Netlify hidden form for notifications -->
+    <form name="quiz-notifications" netlify netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="quiz-notifications" />
+      <p class="hidden">
+        <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+      </p>
+      <input type="text" name="type" />
+      <input type="text" name="name" />
+      <input type="text" name="studentClass" />
+      <input type="text" name="roll" />
+      <input type="text" name="score" />
+      <input type="text" name="total" />
+      <input type="text" name="sessionId" />
+      <input type="text" name="timestamp" />
+    </form>
+    
+    <script type="module">
+      // --- CONSTANTS ---
+      const CORRECT_PIN = "1234";
+      const TIME_LIMIT = 10;
+      const TOTAL_QUESTIONS_TO_SELECT = 20;
+
+      const ALL_QUESTIONS = [
+          { question: "HTML এর পূর্ণরূপ কী?", options: ["HyperText Markup Language", "Hyperlink and Text Markup Language", "High-level Text Machine Language", "Home Tool Markup Language", "অন্যান্য"], answer: "HyperText Markup Language" },
+          { question: "ওয়েবপেজের কাঠামো তৈরি করতে কোনটি ব্যবহৃত হয়?", options: ["CSS", "JavaScript", "HTML", "Python", "অন্যান্য"], answer: "HTML" },
+          { question: "একটি প্যারাগ্রাফ ট্যাগ কোনটি?", options: ["<p>", "<h>", "<a>", "<div>", "<span>"], answer: "<p>" },
+          { question: "ছবি যোগ করার জন্য কোন ট্যাগ ব্যবহৃত হয়?", options: ["<image>", "<img>", "<pic>", "<photo>", "<picture>"], answer: "<img>" },
+          { question: "অন্য পেজে লিঙ্ক করার জন্য কোন অ্যাট্রিবিউট ব্যবহৃত হয়?", options: ["src", "href", "link", "url", "target"], answer: "href" },
+          { question: "ওয়েবপেজকে স্টাইল করার জন্য কোনটি ব্যবহৃত হয়?", options: ["HTML", "JavaScript", "CSS", "Python", "SQL"], answer: "CSS" },
+          { question: "ওয়েবপেজকে ইন্টারেক্টিভ করার জন্য কোনটি ব্যবহৃত হয়?", options: ["HTML", "CSS", "JavaScript", "PHP", "Ruby"], answer: "JavaScript" },
+          { question: "সবচেয়ে বড় হেডিং ট্যাগ কোনটি?", options: ["<h1>", "<h6>", "<head>", "<heading>", "<title>"], answer: "<h1>" },
+          { question: "একটি আনঅর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<ol>", "<li>", "<ul>", "<list>", "<dl>"], answer: "<ul>" },
+          { question: "একটি অর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<ul>", "<li>", "<ol>", "<list>", "<dt>"], answer: "<ol>" },
+          { question: "ওয়েব ব্রাউজার কী?", options: ["একটি অপারেটিং সিস্টেম", "একটি প্রোগ্রামিং ভাষা", "ইন্টারনেট দেখার সফটওয়্যার", "একটি হার্ডওয়্যার ডিভাইস", "একটি ডেটাবেস"], answer: "ইন্টারনেট দেখার সফটওয়্যার" },
+          { question: "কম্পিউটারের 'মস্তিষ্ক' কোনটি?", options: ["RAM", "CPU", "Hard Disk", "Monitor", "GPU"], answer: "CPU" },
+          { question: "মোবাইলে কোড লেখার জন্য কোন অ্যাপ ব্যবহার করা যেতে পারে?", options: ["Microsoft Word", "TrebEdit", "VLC Player", "Adobe Reader", "Calculator"], answer: "TrebEdit" },
+          { question: "ফাইলের এক্সটেনশন কী নির্দেশ করে?", options: ["ফাইলের আকার", "ফাইলের তৈরির তারিখ", "ফাইলের ধরণ", "ফাইলের নাম", "ফাইলের মালিক"], answer: "ফাইলের ধরণ" },
+          { question: "একটি `.pdf` ফাইল খোলার জন্য কোন ধরনের সফটওয়্যার প্রয়োজন?", options: ["ওয়েব ব্রাউজার", "মিডিয়া প্লেয়ার", "পিডিএফ রিডার", "কোড এডিটর", "স্প্রেডশীট সফটওয়্যার"], answer: "পিডিএফ রিডার" },
+          { question: "HTML ট্যাগের মধ্যে `<` এবং `>` চিহ্নকে কী বলা হয়?", options: ["অ্যাঙ্গেল ব্র্যাকেট", "কার্লি ব্র্যাকেট", "স্কয়ার ব্র্যাকেট", "প্যারেন্থেসিস", "কোটেশন মার্ক"], answer: "অ্যাঙ্গেল ব্র্যাকেট" },
+          { question: "কোন HTML ট্যাগটি একটি লাইন ব্রেক তৈরি করে?", options: ["<br>", "<lb>", "<break>", "<line>", "<newline>"], answer: "<br>" },
+          { question: "ওয়েবপেজে একটি লিঙ্ক তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<link>", "<href>", "<a>", "<url>", "<navigate>"], answer: "<a>" },
+          { question: "কোনটি একটি ইনপুট ডিভাইস?", options: ["মনিটর", "প্রিন্টার", "কীবোর্ড", "স্পিকার", "প্রজেক্টর"], answer: "কীবোর্ড" },
+          { question: "কম্পিউটারের স্থায়ী তথ্য সংরক্ষণের জন্য কোনটি ব্যবহৃত হয়?", options: ["RAM", "CPU", "Hard Disk", "Cache", "Processor"], answer: "Hard Disk" },
+          { question: "ওয়েবসাইট এবং ওয়েবপেজের মধ্যে প্রধান পার্থক্য কী?", options: ["ওয়েবসাইট একটি একক পৃষ্ঠা, ওয়েবপেজ অনেক পৃষ্ঠার সমষ্টি", "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা", "তাদের মধ্যে কোনো পার্থক্য নেই", "ওয়েবসাইট শুধুমাত্র ছবিতে থাকে", "ওয়েবপেজ শুধুমাত্র টেক্সটে থাকে"], answer: "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা" },
+          { question: "স্ট্যাটিক ওয়েবপেজের বৈশিষ্ট্য কী?", options: ["এটি ব্যবহারকারীর ইনপুটের উপর ভিত্তি করে পরিবর্তিত হয়", "এর বিষয়বস্তু সবার জন্য একই থাকে", "এটি ডেটাবেস থেকে তথ্য লোড করে", "এটি নিয়মিত আপডেট হয়", "এটি সার্ভার-সাইড কোড দিয়ে তৈরি হয়"], answer: "এর বিষয়বস্তু সবার জন্য একই থাকে" },
+          { question: "কোনটি ফ্রন্ট-এন্ড ডেভেলপমেন্টের অংশ নয়?", options: ["HTML", "CSS", "JavaScript", "Python (সার্ভার-সাইড)", "React"], answer: "Python (সার্ভার-সাইড)" },
+          { question: "VS Code কী?", options: ["একটি ওয়েব ব্রাউজার", "একটি অপারেটিং সিস্টেম", "একটি কোড এডিটর", "একটি গেম", "একটি অ্যান্টিভাইরাস"], answer: "একটি কোড এডিটর" },
+          { question: "CodePen এর প্রধান সুবিধা কী?", options: ["অফলাইনে কাজ করে", "বড় প্রজেক্টের জন্য সেরা", "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়", "শুধুমাত্র ব্যাকএন্ড ডেভেলপমেন্টের জন্য", "খুব দ্রুত ফাইল সেভ করে"], answer: "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়" }
+      ];
+      const SECRET_CODES = ["ALPCG-QUIZ-VX7B", "ALPCG-QUIZ-P9QW", "ALPCG-QUIZ-R4ZL", "ALPCG-QUIZ-M2FK", "ALPCG-QUIZ-T8JH"];
+
+      // --- STATE ---
+      let state = {
+          screen: 'PIN', // PIN, REGISTER, QUIZ, RESULTS
+          studentInfo: null,
+          quizQuestions: [],
+          score: 0,
+          quizSessionId: '',
+          isDarkMode: localStorage.getItem('dark-mode') === 'true',
+          isTabSwitchModalOpen: false,
+          pinError: false,
+          registrationError: false,
+          currentQuestionIndex: 0,
+          selectedOption: null,
+          shuffledOptions: [],
+          feedback: null,
+          timeLeft: TIME_LIMIT,
+          timerId: null,
+      };
+
+      // --- DOM INIT ---
+      const root = document.getElementById('root');
+      
+      // --- NOTIFICATION SERVICE (NETLIFY FORMS) ---
+      const sendQuizNotification = async (params) => {
+          const formData = new URLSearchParams();
+          formData.append('form-name', 'quiz-notifications');
+          formData.append('type', params.type);
+          formData.append('name', params.studentInfo.name);
+          formData.append('studentClass', params.studentInfo.class);
+          formData.append('roll', params.studentInfo.roll);
+          formData.append('score', String(params.score));
+          formData.append('total', String(params.total));
+          formData.append('sessionId', params.sessionId);
+          formData.append('timestamp', new Date().toLocaleString('bn-BD'));
+
+          try {
+              await fetch('/', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: formData.toString()
+              });
+          } catch (error) {
+              console.error('Failed to send notification via Netlify Forms:', error);
+          }
+      };
+      
+      // --- LOGIC / HANDLERS ---
+      const clearTimer = () => {
+          if (state.timerId) {
+              clearInterval(state.timerId);
+              state.timerId = null;
+          }
+      };
+
+      const handlePinSuccess = () => {
+          state.screen = 'REGISTER';
+          renderApp();
+      };
+      
+      const handleRegistration = (info) => {
+          state.studentInfo = info;
+          state.quizQuestions = ALL_QUESTIONS.sort(() => 0.5 - Math.random()).slice(0, TOTAL_QUESTIONS_TO_SELECT);
+          state.quizSessionId = crypto.randomUUID();
+          state.screen = 'QUIZ';
+          loadNextQuestion();
+          sendQuizNotification({ type: 'started', studentInfo: info, score: 0, total: state.quizQuestions.length, sessionId: state.quizSessionId });
+      };
+
+      const handleQuizComplete = (finalScore) => {
+          clearTimer();
+          state.score = finalScore;
+          state.screen = 'RESULTS';
+          if (state.studentInfo && state.quizSessionId) {
+               sendQuizNotification({ type: 'completed', studentInfo: state.studentInfo, score: finalScore, total: state.quizQuestions.length, sessionId: state.quizSessionId });
+          }
+          renderApp();
+      };
+      
+      const handleRestart = () => {
+          clearTimer();
+          state = { ...state, screen: 'PIN', studentInfo: null, quizQuestions: [], score: 0, quizSessionId: '', isTabSwitchModalOpen: false, pinError: false, registrationError: false, currentQuestionIndex: 0, selectedOption: null, feedback: null };
+          renderApp();
+      };
+
+      const loadNextQuestion = () => {
+          clearTimer();
+          if (state.currentQuestionIndex < state.quizQuestions.length) {
+              const questionData = state.quizQuestions[state.currentQuestionIndex];
+              state.selectedOption = null;
+              state.feedback = null;
+              state.shuffledOptions = [...questionData.options].sort(() => Math.random() - 0.5);
+              state.timeLeft = TIME_LIMIT;
+              renderApp();
+              startTimer();
+          } else {
+              handleQuizComplete(state.score);
+          }
+      };
+
+      const startTimer = () => {
+          clearTimer();
+          const timerDisplay = document.getElementById('timer-display');
+          if (timerDisplay) timerDisplay.textContent = state.timeLeft;
+          
+          state.timerId = setInterval(() => {
+              state.timeLeft--;
+              const timerDisplay = document.getElementById('timer-display');
+              if(timerDisplay) timerDisplay.textContent = state.timeLeft;
+              
+              if (state.timeLeft <= 0) {
+                  clearTimer();
+                  state.feedback = { message: `সময় শেষ! সঠিক উত্তর: ${state.quizQuestions[state.currentQuestionIndex].answer}`, isCorrect: false };
+                  renderApp();
+                  setTimeout(() => {
+                      state.currentQuestionIndex++;
+                      loadNextQuestion();
+                  }, 2000);
+              }
+          }, 1000);
+      };
+
+      // --- RENDER FUNCTIONS ---
+      const renderHeader = () => `<header class="text-center mb-8 md:mb-12"><img src="https://picsum.photos/150/100" alt="ALPCG Logo" class="mx-auto mb-4" style="max-width: 150px; height: auto;" /><h1 class="text-4xl md:text-5xl font-bold text-[#025373] dark:text-[#F29E38]">ওয়েব ডেভেলপমেন্ট কুইজ</h1><p class="text-xl mt-2 text-[#037E8C] dark:text-teal-400">তোমার জ্ঞান যাচাই করো এবং পুরস্কার জেতো!</p></header>`;
+      const renderFooter = () => `<footer class="text-center mt-16 pt-8 border-t border-gray-300 dark:border-gray-700"><p class="text-gray-600 dark:text-gray-400">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p><p class="text-sm text-gray-500 dark:text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p></footer>`;
+      const renderDarkModeToggle = () => `<button id="dark-mode-toggle" class="fixed top-4 right-4 z-50 bg-[#025373] text-white dark:bg-[#F29E38] dark:text-[#041B2D] px-4 py-2 rounded-lg shadow-md font-bold transition-colors duration-300">${state.isDarkMode ? 'লাইট মোড' : 'ডার্ক মোড'}</button>`;
+      const renderTabSwitchModal = () => `<div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"><div class="bg-white dark:bg-[#112A46] text-[#041B2D] dark:text-[#F8F4F0] p-8 rounded-2xl shadow-xl text-center max-w-sm w-11/12"><h3 class="text-2xl font-bold text-[#EF476F] mb-4">সতর্কতা!</h3><p class="text-lg mb-6">তুমি কুইজ চলাকালীন অন্য ট্যাবে চলে গিয়েছিলে। তোমার কুইজ পুনরায় শুরু হবে।</p><button id="restart-btn" class="w-full p-3 font-bold text-white bg-[#F29E38] rounded-lg hover:bg-[#A66224] transition-colors duration-300">কুইজ পুনরায় শুরু করো</button></div></div>`;
+      
+      const renderPinEntry = () => `<div class="bg-white dark:bg-[#112A46] rounded-2xl p-8 shadow-lg w-full max-w-md text-center"><h2 class="text-2xl font-bold mb-4 text-[#025373] dark:text-gray-200">কুইজে প্রবেশের জন্য পিন দাও</h2><input id="pin-input" type="password" value="" class="w-full p-3 mb-4 text-center text-lg bg-white dark:bg-[#2D4059] border-2 border-[#037E8C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F29E38]" placeholder="পিন কোড লেখো" maxLength="4" /><button id="pin-submit-btn" class="w-full p-3 font-bold text-white bg-[#F29E38] rounded-lg hover:bg-[#A66224] transition-colors duration-300">প্রবেশ করো</button>${state.pinError ? `<p class="mt-4 font-semibold text-red-500 dark:text-orange-400">ভুল পিন কোড। আবার চেষ্টা করো।</p>` : ''}</div>`;
+      const renderRegistration = () => `<div class="bg-white dark:bg-[#112A46] rounded-2xl p-8 shadow-lg w-full max-w-md text-center"><h2 class="text-2xl font-bold mb-4 text-[#025373] dark:text-gray-200">শিক্ষার্থীর তথ্য</h2><div class="space-y-4"><input id="reg-name" type="text" value="" class="w-full p-3 text-center bg-white dark:bg-[#2D4059] border-2 border-[#037E8C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F29E38]" placeholder="তোমার নাম লেখো" /><input id="reg-class" type="text" value="" class="w-full p-3 text-center bg-white dark:bg-[#2D4059] border-2 border-[#037E8C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F29E38]" placeholder="তোমার শ্রেণি লেখো" /><input id="reg-roll" type="text" value="" class="w-full p-3 text-center bg-white dark:bg-[#2D4059] border-2 border-[#037E8C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F29E38]" placeholder="তোমার রোল নম্বর লেখো" /></div><button id="reg-submit-btn" class="w-full p-3 mt-6 font-bold text-white bg-[#F29E38] rounded-lg hover:bg-[#A66224] transition-colors duration-300">কুইজ শুরু করো</button>${state.registrationError ? `<p class="mt-4 font-semibold text-red-500 dark:text-orange-400">সব তথ্য পূরণ করো।</p>` : ''}</div>`;
+      
+      const renderQuiz = () => {
+        const currentQuestion = state.quizQuestions[state.currentQuestionIndex];
+        if (!currentQuestion) return `<div class="text-center">প্রশ্ন লোড হচ্ছে...</div>`;
+
+        return `<div class="bg-white dark:bg-[#112A46] rounded-2xl p-8 shadow-lg w-full max-w-3xl"><div class="flex justify-between items-center mb-4"><p class="font-bold text-lg text-[#025373] dark:text-[#F29E38]">স্কোর: ${state.score} / ${state.quizQuestions.length}</p><p class="font-semibold text-lg text-[#037E8C] dark:text-teal-400">সময় বাকি: <span id="timer-display">${state.timeLeft}</span> সেকেন্ড</p><p class="font-semibold text-lg text-[#037E8C] dark:text-teal-400">প্রশ্ন ${state.currentQuestionIndex + 1}</p></div><h2 class="text-2xl font-bold mb-6 text-[#025373] dark:text-gray-200">${currentQuestion.question}</h2><div class="grid grid-cols-1 gap-3">${state.shuffledOptions.map(option => {
+            const isSelected = state.selectedOption === option;
+            const isCorrect = option === currentQuestion.answer;
+            let buttonClass = 'option-btn w-full text-left p-3 font-bold rounded-lg border-2 transition-all duration-300 ';
+            if (state.selectedOption === null) {
+                buttonClass += 'bg-[#E6F3F2] dark:bg-[#2D4059] border-[#037E8C] hover:bg-[#037E8C] hover:text-white dark:hover:bg-teal-600';
+            } else {
+                buttonClass += 'cursor-not-allowed ';
+                if ((isSelected && state.feedback?.isCorrect) || isCorrect) {
+                    buttonClass += 'bg-[#06D6A0] border-[#06D6A0] text-white';
+                } else if (isSelected && !state.feedback?.isCorrect) {
+                    buttonClass += 'bg-[#EF476F] border-[#EF476F] text-white';
+                } else {
+                    buttonClass += 'bg-[#E6F3F2] dark:bg-[#2D4059] border-[#037E8C] opacity-70';
+                }
+            }
+            return `<button data-option="${option}" class="${buttonClass}" ${state.selectedOption !== null ? 'disabled' : ''}>${option}</button>`;
+        }).join('')}</div>${state.feedback ? `<p class="mt-4 text-center font-bold text-lg ${state.feedback.isCorrect ? 'text-green-500' : 'text-red-500'}">${state.feedback.message}</p>` : ''}</div>`;
+      };
+      
+      const renderResults = () => {
+          const { message, color, isPerfect, secretCode } = (() => {
+              if (state.score === state.quizQuestions.length && state.quizQuestions.length > 0) return { message: "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉", color: "text-[#06D6A0]", isPerfect: true, secretCode: SECRET_CODES[Math.floor(Math.random() * SECRET_CODES.length)] };
+              if (state.score >= state.quizQuestions.length / 2) return { message: "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।", color: "text-[#F29E38]", isPerfect: false, secretCode: null };
+              return { message: "আরও অনুশীলন প্রয়োজন। হাল ছেড়ো না!", color: "text-[#EF476F]", isPerfect: false, secretCode: null };
+          })();
+
+          return `<div class="bg-white dark:bg-[#112A46] rounded-2xl p-8 shadow-lg w-full max-w-2xl text-center"><h2 class="text-3xl font-bold mb-6 text-[#025373] dark:text-gray-200">কুইজ শেষ!</h2><p class="text-2xl font-bold mb-4 text-[#037E8C] dark:text-[#F29E38]">তোমার ফাইনাল স্কোর: ${state.score} / ${state.quizQuestions.length}</p><p class="text-xl font-bold text-center mb-8 ${color} ${isPerfect ? "animate-pulse" : ""}">${message}</p>${isPerfect && secretCode ? `<div class="my-6"><div class="inline-block bg-yellow-300 dark:bg-[#F29E38] text-[#041B2D] dark:text-white px-6 py-3 rounded-lg font-bold text-xl shadow-md">${secretCode}</div><p class="text-sm mt-2 text-orange-800 dark:text-yellow-300">তোমার পুরস্কার বুঝে নিতে এই গোপন কোডটি কাউকে দিও না!</p></div>` : ''}<button id="restart-btn" class="w-full max-w-xs mx-auto p-3 mt-4 font-bold text-white bg-[#F29E38] rounded-lg hover:bg-[#A66224] transition-colors duration-300">আবার কুইজ দাও</button></div>`;
+      };
+
+      const renderApp = () => {
+          document.documentElement.classList.toggle('dark', state.isDarkMode);
+          localStorage.setItem('dark-mode', state.isDarkMode);
+
+          let screenHtml;
+          switch (state.screen) {
+              case 'PIN': screenHtml = renderPinEntry(); break;
+              case 'REGISTER': screenHtml = renderRegistration(); break;
+              case 'QUIZ': screenHtml = renderQuiz(); break;
+              case 'RESULTS': screenHtml = renderResults(); break;
+              default: screenHtml = renderPinEntry();
+          }
+
+          root.innerHTML = `<div class="bg-[#F8F4F0] dark:bg-[#041B2D] text-[#041B2D] dark:text-[#F8F4F0] min-h-screen transition-colors duration-300 antialiased">${renderDarkModeToggle()}<div class="container mx-auto p-4 md:p-8 flex flex-col min-h-screen">${renderHeader()}<main class="flex-grow flex items-center justify-center">${screenHtml}</main>${renderFooter()}</div>${state.isTabSwitchModalOpen ? renderTabSwitchModal() : ''}</div>`;
+      };
+
+      // --- EVENT LISTENERS ---
+      root.addEventListener('click', e => {
+          const target = e.target.closest('button');
+          if (!target) return;
+
+          switch (target.id) {
+              case 'dark-mode-toggle':
+                  state.isDarkMode = !state.isDarkMode;
+                  renderApp();
+                  break;
+              case 'pin-submit-btn':
+                  const pin = root.querySelector('#pin-input').value;
+                  if (pin === CORRECT_PIN) {
+                    state.pinError = false;
+                    handlePinSuccess();
+                  } else {
+                    state.pinError = true;
+                    root.querySelector('#pin-input').value = '';
+                    renderApp();
+                  }
+                  break;
+              case 'reg-submit-btn':
+                  const name = root.querySelector('#reg-name').value;
+                  const studentClass = root.querySelector('#reg-class').value;
+                  const roll = root.querySelector('#reg-roll').value;
+                  if (!name.trim() || !studentClass.trim() || !roll.trim()) {
+                      state.registrationError = true;
+                  } else {
+                      state.registrationError = false;
+                      handleRegistration({ name, class: studentClass, roll });
+                  }
+                  renderApp();
+                  break;
+              case 'restart-btn':
+                  handleRestart();
+                  break;
+          }
+          
+          if (target.classList.contains('option-btn')) {
+              if (state.selectedOption) return;
+              clearTimer();
+              const option = target.dataset.option;
+              state.selectedOption = option;
+              const isCorrect = option === state.quizQuestions[state.currentQuestionIndex].answer;
+              if(isCorrect) {
+                state.score++;
+                state.feedback = { message: 'সঠিক উত্তর!', isCorrect: true };
+              } else {
+                state.feedback = { message: `ভুল উত্তর। সঠিক উত্তর: ${state.quizQuestions[state.currentQuestionIndex].answer}`, isCorrect: false };
+              }
+              renderApp();
+              setTimeout(() => {
+                  state.currentQuestionIndex++;
+                  loadNextQuestion();
+              }, 1500);
+          }
+      });
+      
+      root.addEventListener('keypress', e => {
+        if (e.key === 'Enter' && state.screen === 'PIN') {
+             root.querySelector('#pin-submit-btn')?.click();
+        }
+      });
+
+      document.addEventListener('visibilitychange', () => {
+          if (document.hidden && state.screen === 'QUIZ') {
+              clearTimer();
+              state.isTabSwitchModalOpen = true;
+              renderApp();
+          }
+      });
+      
+      // --- INITIAL RENDER ---
+      renderApp();
+
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
