@@ -860,15 +860,20 @@
             try {
                 const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // CORS সমস্যা এড়াতে
+                    // mode: 'no-cors', // এই লাইনটি সরানো হয়েছে
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(formData),
                 });
                 console.log('Google Apps Script এ ডেটা পাঠানো হয়েছে:', response);
-                // যেহেতু mode: 'no-cors', response.ok বা response.json() চেক করা যাবে না
-                // তবে, ডেটা পাঠানো সাধারণত সফল হয়।
+                // এখন response.ok চেক করা যাবে, কারণ no-cors মোড সরানো হয়েছে
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Apps Script থেকে প্রতিক্রিয়া:', result);
+                } else {
+                    console.error('Apps Script থেকে ত্রুটি প্রতিক্রিয়া:', response.status, response.statusText);
+                }
             } catch (error) {
                 console.error('Google Apps Script এ ডেটা পাঠাতে ব্যর্থ:', error);
                 // এখানে ব্যবহারকারীকে একটি বার্তা দেখাতে পারেন যে ডেটা পাঠাতে সমস্যা হয়েছে
