@@ -322,10 +322,15 @@
             <p class="text-xl mt-2 text-[#037E8C]">তোমার জ্ঞান যাচাই করো এবং পুরস্কার জেতো!</p>
         </header>
 
-        <!-- **Netlify Forms এর জন্য লুকানো স্ট্যাটিক ফর্ম** -->
-        <!-- এই ফর্মটি Netlify এর বিল্ড সিস্টেমকে আপনার কুইজের ডেটা স্ট্রাকচার সম্পর্কে জানাতে সাহায্য করে। -->
+        <!-- **FormSubmit.co এর জন্য লুকানো স্ট্যাটিক ফর্ম** -->
+        <!-- এই ফর্মটি FormSubmit.co এর বিল্ড সিস্টেমকে আপনার কুইজের ডেটা স্ট্রাকচার সম্পর্কে জানাতে সাহায্য করে। -->
         <!-- এটি ব্যবহারকারী দেখতে পাবে না, কারণ এটি 'hidden' অ্যাট্রিবিউট ব্যবহার করে লুকানো আছে। -->
-        <form name="quiz-submission" data-netlify="true" hidden netlify-honeypot="bot-field">
+        <!-- AJAX সাবমিশনের জন্য _next অ্যাট্রিবিউট প্রয়োজন নেই। -->
+        <form id="formsubmit-static-form" action="https://formsubmit.co/el/lawahu" method="POST" hidden>
+            <!-- আপনার FormSubmit.co এর ইউনিক URL এখানে বসানো হয়েছে -->
+            <input type="hidden" name="_subject" value="ALPCG Quiz Submission!">
+            <input type="hidden" name="_captcha" value="false"> <!-- ক্যাপচা বন্ধ করতে চাইলে -->
+            
             <input type="text" name="student-name" />
             <input type="text" name="student-class" />
             <input type="text" name="student-roll" />
@@ -334,7 +339,7 @@
             <input type="number" name="total-questions" />
             <input type="text" name="session-id" />
             <input type="text" name="timestamp" />
-            <input type="text" name="bot-field" /> <!-- হানিপট ফিল্ড -->
+            <input type="text" name="_honey" style="display:none"> <!-- হানিপট ফিল্ড -->
         </form>
 
         <!-- পিন এন্ট্রি সেকশন -->
@@ -814,7 +819,7 @@
             loadQuestion();
         }
 
-        function showResult() {
+        async function showResult() {
             clearInterval(timerInterval); // কুইজ শেষ হলে টাইমার বন্ধ করো
             quizSection.classList.add('hidden');
             resultSection.classList.remove('hidden');
@@ -827,88 +832,58 @@
 
             if (score === currentQuizQuestions.length) {
                 resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉";
-                resultMessageElement.classList.add('celebration-message'); // সেলিব্রেশন অ্যানিমেশন যোগ করো
+                resultMessageElement.classList.add('celebration-message');
                 
                 // র্যান্ডম গোপন কোড নির্বাচন করো
                 const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
                 secretCodeDisplay.textContent = randomCode;
                 secretCodeContainer.classList.remove('hidden'); // গোপন কোড দেখাও
-                resultMessageElement.style.color = '#06D6A0'; // সবুজ
+                resultMessageElement.style.color = '#06D6A0';
             } else if (score >= currentQuizQuestions.length / 2) {
                 resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
-                resultMessageElement.style.color = '#F29E38'; // কমলা
+                resultMessageElement.style.color = '#F29E38';
             } else {
                 resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন। হাল ছেড়ো না!";
-                resultMessageElement.style.color = '#EF476F'; // লাল
+                resultMessageElement.style.color = '#EF476F';
             }
             quizCompleted = true;
 
-            // Netlify Form সাবমিট করার জন্য
-            // এই অংশটি এখন লুকানো স্ট্যাটিক ফর্মের সাথে কাজ করবে
-            const netlifyForm = document.createElement('form');
-            netlifyForm.setAttribute('name', 'quiz-submission');
-            netlifyForm.setAttribute('data-netlify', 'true'); // Netlify ফর্ম সনাক্তকরণের জন্য
-            netlifyForm.style.display = 'none'; // ফর্মটি লুকানো থাকবে
+            // FormSubmit.co তে ডেটা পাঠানোর জন্য AJAX ব্যবহার করুন
+            const formUrl = document.getElementById('formsubmit-static-form').action;
+            const formData = new FormData();
 
-            // হানিপট ফিল্ড যোগ করুন (স্প্যাম প্রতিরোধের জন্য)
-            const honeypotInput = document.createElement('input');
-            honeypotInput.setAttribute('type', 'hidden');
-            honeypotInput.setAttribute('name', 'bot-field');
-            honeypotInput.value = ''; // এই ফিল্ডটি খালি থাকবে
-            netlifyForm.appendChild(honeypotInput);
+            // FormSubmit.co এর জন্য প্রয়োজনীয় হিডেন ফিল্ড যোগ করুন
+            formData.append('_subject', 'ALPCG Quiz Submission!');
+            formData.append('_captcha', 'false'); // ক্যাপচা বন্ধ করতে চাইলে
+            formData.append('_honey', ''); // হানিপট ফিল্ড
 
-            // হিডেন ইনপুট ফিল্ড তৈরি এবং মান নির্ধারণ
-            const nameInput = document.createElement('input');
-            nameInput.setAttribute('type', 'hidden');
-            nameInput.setAttribute('name', 'student-name');
-            nameInput.value = studentInfo.name;
-            netlifyForm.appendChild(nameInput);
+            // আপনার কুইজের ডেটা যোগ করুন
+            formData.append('student-name', studentInfo.name);
+            formData.append('student-class', studentInfo.class);
+            formData.append('student-roll', studentInfo.roll);
+            formData.append('student-email', studentInfo.email);
+            formData.append('score', score);
+            formData.append('total-questions', currentQuizQuestions.length);
+            formData.append('session-id', quizSessionId);
+            formData.append('timestamp', new Date().toLocaleString('bn-BD'));
 
-            const classInput = document.createElement('input');
-            classInput.setAttribute('type', 'hidden');
-            classInput.setAttribute('name', 'student-class');
-            classInput.value = studentInfo.class;
-            netlifyForm.appendChild(classInput);
+            try {
+                const response = await fetch(formUrl, {
+                    method: 'POST',
+                    body: formData, // FormData ব্যবহার করলে Content-Type স্বয়ংক্রিয়ভাবে সেট হয়
+                });
 
-            const rollInput = document.createElement('input');
-            rollInput.setAttribute('type', 'hidden');
-            rollInput.setAttribute('name', 'student-roll');
-            rollInput.value = studentInfo.roll;
-            netlifyForm.appendChild(rollInput);
-
-            const emailInput = document.createElement('input');
-            emailInput.setAttribute('type', 'hidden');
-            emailInput.setAttribute('name', 'student-email');
-            emailInput.value = studentInfo.email;
-            netlifyForm.appendChild(emailInput);
-
-            const scoreInput = document.createElement('input');
-            scoreInput.setAttribute('type', 'hidden');
-            scoreInput.setAttribute('name', 'score');
-            scoreInput.value = score;
-            netlifyForm.appendChild(scoreInput);
-
-            const totalInput = document.createElement('input');
-            totalInput.setAttribute('type', 'hidden');
-            totalInput.setAttribute('name', 'total-questions');
-            totalInput.value = currentQuizQuestions.length;
-            netlifyForm.appendChild(totalInput);
-
-            const sessionIdInput = document.createElement('input');
-            sessionIdInput.setAttribute('type', 'hidden');
-            sessionIdInput.setAttribute('name', 'session-id');
-            sessionIdInput.value = quizSessionId;
-            netlifyForm.appendChild(sessionIdInput);
-
-            const timestampInput = document.createElement('input');
-            timestampInput.setAttribute('type', 'hidden');
-            timestampInput.setAttribute('name', 'timestamp');
-            timestampInput.value = new Date().toLocaleString('bn-BD');
-            netlifyForm.appendChild(timestampInput);
-
-            // ফর্মটি বডিতে যোগ করে সাবমিট করুন
-            document.body.appendChild(netlifyForm);
-            netlifyForm.submit();
+                if (response.ok) {
+                    console.log('FormSubmit.co তে ডেটা সফলভাবে পাঠানো হয়েছে!');
+                    // এখানে আপনি সাবমিশন সফল হওয়ার পর কোনো ভিজ্যুয়াল ফিডব্যাক দেখাতে পারেন
+                } else {
+                    console.error('FormSubmit.co তে ডেটা পাঠাতে ব্যর্থ:', response.statusText);
+                    // এখানে ব্যবহারকারীকে একটি ত্রুটি বার্তা দেখাতে পারেন
+                }
+            } catch (error) {
+                console.error('FormSubmit.co তে ডেটা পাঠাতে সমস্যা:', error);
+                // এখানে ব্যবহারকারীকে একটি ত্রুটি বার্তা দেখাতে পারেন
+            }
         }
 
         function resetQuiz() {
@@ -948,4 +923,3 @@
     </script>
 </body>
 </html>
-
