@@ -424,7 +424,7 @@
         const EMAILJS_PUBLIC_KEY = "K6_HVb9wFTJ-wmLOS"; 
 
         const CORRECT_PIN = "7891";
-        const QUESTIONS_PER_QUIZ = 2;
+        const QUESTIONS_PER_QUIZ = 20;
         const TIME_PER_QUESTION = 10; // seconds
         const FEEDBACK_DELAY_MS = 1500; // time to show feedback before next question
 
@@ -667,7 +667,7 @@
             resultMessageElement.classList.remove('celebration-message');
             resultMessageElement.style.color = ''; // Reset color
 
-            if (score === currentQuizQuestions.length) {
+            if (score >= 18) {
                 resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉";
                 resultMessageElement.classList.add('celebration-message');
                 const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
@@ -698,6 +698,7 @@
                 total: currentQuizQuestions.length,
                 sessionId: quizSessionId,
                 timestamp: new Date().toLocaleString('bn-BD'),
+                secretCode: secretCode
             };
 
             console.log("Attempting to send perfect score notification with params:", templateParams);
