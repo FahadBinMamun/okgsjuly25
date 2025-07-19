@@ -412,7 +412,7 @@
 
     <script>
         // **এখানে আপনার Google Apps Script এর Web App URL বসানো হয়েছে**
-        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhe52B1xqiKQAbrKUrQGdUGlepE8zrswVS5oC5QuOIasS_oW0ABUPJfp-PEv0O8mKdCQ/exec";
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8dJpPRJwbFFZKWqOVYcMU4fOnkUpeP_fmqhOEtBrViD__9eB8P_la-1RnOIlmZv3KJw/exec";
 
         // কুইজের প্রশ্নগুলো
         const allQuestions = [
@@ -656,7 +656,7 @@
 
 
         function checkPin() {
-            const correctPin = "1234"; // তোমার পিন কোড এখানে সেট করো
+            const correctPin = "7891"; // তোমার পিন কোড এখানে সেট করো
             if (pinInput.value === correctPin) {
                 pinEntrySection.classList.add('hidden');
                 registrationSection.classList.remove('hidden');
@@ -817,6 +817,7 @@
         }
 
         async function showResult() {
+            console.log("showResult() ফাংশন কল হয়েছে।"); // ডিবাগিং লগ
             clearInterval(timerInterval); // কুইজ শেষ হলে টাইমার বন্ধ করো
             quizSection.classList.add('hidden');
             resultSection.classList.remove('hidden');
@@ -828,7 +829,7 @@
             resultMessageElement.classList.remove('celebration-message'); // অ্যানিমেশন ক্লাস সরিয়ে দাও
 
             if (score === currentQuizQuestions.length) {
-                resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! �";
+                resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉";
                 resultMessageElement.classList.add('celebration-message');
                 
                 // র্যান্ডম গোপন কোড নির্বাচন করো
@@ -857,13 +858,18 @@
                 "সময়": new Date().toLocaleString('bn-BD')
             };
 
+            // URLSearchParams ব্যবহার করে ডেটা ফরম্যাট করা হচ্ছে
+            const urlEncodedData = new URLSearchParams(formData).toString();
+            console.log('Apps Script এ পাঠানো হচ্ছে (URL Encoded):', urlEncodedData); // ডিবাগিং লগ
+
             try {
                 const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        // Content-Type পরিবর্তন করা হয়েছে
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: JSON.stringify(formData),
+                    body: urlEncodedData, // URL Encoded ডেটা পাঠানো হচ্ছে
                 });
                 console.log('Google Apps Script এ ডেটা পাঠানো হয়েছে:', response);
                 // এখন response.ok চেক করা যাবে
@@ -916,4 +922,3 @@
     </script>
 </body>
 </html>
-�
