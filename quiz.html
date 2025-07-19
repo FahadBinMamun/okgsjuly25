@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>ওয়েব ডেভেলপমেন্ট কুইজ</title>
+    <!-- Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Bengali text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        /* সাধারণ বডি স্টাইল */
+        body {
+            font-family: 'Tiro Bangla', serif;
+            background-color: #F8F4F0;
+            color: #041B2D;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .quiz-card {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .option-button {
+            background-color: #E6F3F2; /* হালকা টিল */
+            color: #041B2D;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.75rem;
+            border: 2px solid #037E8C; /* টিল নীল বর্ডার */
+        }
+        .option-button:hover:not(.selected):not(.disabled) {
+            background-color: #037E8C; /* টিল নীল */
+            color: white;
+            transform: translateY(-2px);
+        }
+        .option-button.selected {
+            border-color: #F29E38; /* কমলা বর্ডার যখন নির্বাচিত */
+            background-color: #F29E38; /* কমলা ব্যাকগ্রাউন্ড */
+            color: white;
+        }
+        .option-button.correct {
+            background-color: #06D6A0; /* সবুজ */
+            color: white;
+            border-color: #06D6A0;
+        }
+        .option-button.incorrect {
+            background-color: #EF476F; /* লাল */
+            color: white;
+            border-color: #EF476F;
+        }
+        .option-button.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .next-button {
+            background-color: #025373; /* গাঢ় নীল */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .next-button:hover {
+            background-color: #037E8C; /* টিল নীল */
+        }
+        .pin-container, .registration-container {
+            background-color: #FFFFFF;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        .input-field {
+            border: 2px solid #037E8C;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: 100%;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .action-button {
+            background-color: #F29E38;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+        .action-button:hover {
+            background-color: #A66224;
+        }
+        .error-message {
+            color: #dc2626;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+        .hidden {
+            display: none;
+        }
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #025373;
+            margin-bottom: 1rem;
+        }
+        .feedback-message {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+        .feedback-correct {
+            color: #06D6A0; /* সবুজ */
+        }
+        .feedback-incorrect {
+            color: #EF476F; /* লাল */
+        }
+
+        /* ডার্ক মোড স্টাইল */
+        body.dark-mode {
+            background-color: #041B2D; /* গাঢ় নীল ব্যাকগ্রাউন্ড */
+            color: #F8F4F0; /* হালকা টেক্সট কালার */
+        }
+        body.dark-mode .quiz-card,
+        body.dark-mode .pin-container,
+        body.dark-mode .registration-container {
+            background-color: #112A46; /* গাঢ় কার্ড ব্যাকগ্রাউন্ড */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+        }
+        body.dark-mode .option-button {
+            background-color: #2D4059; /* গাঢ় অপশন বাটন */
+            color: #F8F4F0;
+            border-color: #037E8C;
+        }
+        body.dark-mode .option-button:hover:not(.selected):not(.disabled) {
+            background-color: #037E8C;
+            color: white;
+        }
+        body.dark-mode .option-button.selected {
+            background-color: #F29E38;
+            color: white;
+            border-color: #F29E38;
+        }
+        body.dark-mode .option-button.correct {
+            background-color: #06D6A0;
+            color: white;
+            border-color: #06D6A0;
+        }
+        body.dark-mode .option-button.incorrect {
+            background-color: #EF476F;
+            color: white;
+            border-color: #EF476F;
+        }
+        body.dark-mode .next-button {
+            background-color: #025373;
+            color: white;
+        }
+        body.dark-mode .next-button:hover {
+            background-color: #037E8C;
+        }
+        body.dark-mode .score-display {
+            color: #F29E38;
+        }
+        body.dark-mode .input-field {
+            background-color: #2D4059;
+            color: #F8F4F0;
+            border-color: #037E8C;
+        }
+        body.dark-mode .input-field::placeholder {
+            color: #ccc;
+        }
+        body.dark-mode .action-button {
+            background-color: #F29E38;
+            color: white;
+        }
+        body.dark-mode .action-button:hover {
+            background-color: #A66224;
+        }
+        body.dark-mode .error-message {
+            color: #F29E38; /* কমলা */
+        }
+        #dark-mode-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: #025373;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            z-index: 1000;
+        }
+        body.dark-mode #dark-mode-toggle {
+            background-color: #F29E38;
+            color: #041B2D;
+        }
+
+        /* ট্যাব সুইচ ওয়ার্নিং মডেল স্টাইল */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            color: #041B2D;
+        }
+        body.dark-mode .modal-content {
+            background-color: #112A46;
+            color: #F8F4F0;
+        }
+        .modal-content h3 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #EF476F; /* লাল */
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-content button {
+            background-color: #F29E38;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .modal-content button:hover {
+            background-color: #A66224;
+        }
+
+        /* সেলিব্রেশন অ্যানিমেশন */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .celebration-message {
+            animation: pulse 1.5s infinite;
+            color: #06D6A0 !important; /* সবুজ */
+            font-size: 1.8rem !important; /* বড় ফন্ট */
+            font-weight: bold;
+        }
+        .secret-code-display {
+            background-color: #FFD166; /* হলুদ */
+            color: #041B2D;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            user-select: all;
+        }
+        body.dark-mode .secret-code-display {
+            background-color: #F29E38; /* কমলা */
+            color: #F8F4F0;
+        }
+        .keep-secret-message {
+            font-size: 0.9rem;
+            color: #A66224; /* গাঢ় কমলা */
+            margin-top: 0.5rem;
+        }
+        body.dark-mode .keep-secret-message {
+            color: #FFD166;
+        }
+        /* Participant Details Box */
+        #participant-details {
+            background-color: #e6f3f2;
+            color: #041B2D;
+            border-left: 5px solid #037E8C;
+        }
+        body.dark-mode #participant-details {
+            background-color: #2D4059;
+            color: #F8F4F0;
+            border-left-color: #F29E38;
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+    <button id="dark-mode-toggle">ডার্ক মোড</button>
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <!-- ALPCG Logo -->
+            <img src="images/alpcg_logo.png" alt="ALPCG Logo" class="mx-auto mb-4" style="max-width: 150px; height: auto;">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#025373]">ওয়েব ডেভেলপমেন্ট কুইজ</h1>
+            <p class="text-xl mt-2 text-[#037E8C]">তোমার জ্ঞান যাচাই করো এবং পুরস্কার জেতো!</p>
+        </header>
+
+        <!-- পিন এন্ট্রি সেকশন -->
+        <div id="pin-entry-section" class="pin-container">
+            <h2 class="text-2xl font-bold mb-4 text-[#025373]">কুইজে প্রবেশের জন্য পিন দাও</h2>
+            <input type="password" id="pin-input" class="input-field" placeholder="পিন কোড লেখো" maxlength="4" autocomplete="off">
+            <button id="submit-pin" class="action-button">প্রবেশ করো</button>
+            <p id="error-message" class="error-message hidden">ভুল পিন কোড। আবার চেষ্টা করো।</p>
+        </div>
+
+        <!-- রেজিস্ট্রেশন সেকশন -->
+        <div id="registration-section" class="registration-container hidden">
+            <h2 class="text-2xl font-bold mb-4 text-[#025373]">শিক্ষার্থীর তথ্য</h2>
+            <input type="text" id="student-name" class="input-field" placeholder="তোমার নাম লেখো" required>
+            <input type="text" id="student-class" class="input-field" placeholder="তোমার শ্রেণি লেখো" required>
+            <input type="text" id="student-roll" class="input-field" placeholder="তোমার রোল নম্বর লেখো" required>
+            <input type="email" id="student-email" class="input-field" placeholder="তোমার ইমেল লেখো (ঐচ্ছিক)">
+            <button id="start-quiz-button" class="action-button">কুইজ শুরু করো</button>
+            <p id="registration-error-message" class="error-message hidden">অনুগ্রহ করে নাম, শ্রেণি এবং রোল পূরণ করো।</p>
+        </div>
+
+        <!-- কুইজ সেকশন -->
+        <div id="quiz-section" class="quiz-card hidden">
+            <div class="flex justify-between items-center mb-4 flex-wrap">
+                <p class="score-display">স্কোর: <span id="current-score">0</span> / <span id="total-questions">0</span></p>
+                <p class="text-lg font-semibold text-[#037E8C]">প্রশ্ন <span id="question-number">1</span></p>
+                <!-- টাইমার ডিসপ্লে -->
+                <p class="text-lg font-semibold text-[#EF476F]">সময় বাকি: <span id="time-left">10</span> সেকেন্ড</p>
+            </div>
+            <h2 id="question-text" class="text-2xl font-bold mb-6 text-[#025373]">প্রশ্ন এখানে থাকবে?</h2>
+            <div id="options-container" class="grid grid-cols-1 gap-3">
+                <!-- অপশনগুলো জাভাস্ক্রিপ্ট দিয়ে লোড হবে -->
+            </div>
+            <p id="feedback" class="feedback-message text-center mt-4 hidden"></p>
+        </div>
+
+        <!-- ফলাফল সেকশন -->
+        <div id="result-section" class="quiz-card hidden">
+            <h2 class="text-3xl font-bold text-center mb-6 text-[#025373]">কুইজ শেষ!</h2>
+            
+            <!-- Participant Details Section -->
+            <div id="participant-details" class="hidden text-left p-4 rounded-lg mb-6">
+                <h3 class="font-bold text-lg mb-2">অংশগ্রহণকারীর তথ্য:</h3>
+                <p><strong>নাম:</strong> <span id="participant-name"></span></p>
+                <p><strong>শ্রেণি:</strong> <span id="participant-class"></span></p>
+                <p><strong>রোল:</strong> <span id="participant-roll"></span></p>
+            </div>
+
+            <p class="text-2xl font-bold text-center mb-4 text-[#037E8C]">তোমার ফাইনাল স্কোর: <span id="final-score">0</span> / <span id="final-total">0</span></p>
+            <p id="result-message" class="text-lg text-center mb-8"></p>
+            <!-- গোপন কোড প্রদর্শনের জন্য নতুন div -->
+            <div id="secret-code-container" class="text-center hidden">
+                <div id="secret-code-display" class="secret-code-display"></div>
+                <p id="keep-secret-msg" class="keep-secret-message">তোমার পুরস্কার বুঝে নিতে এই গোপন কোডটি কাউকে দিও না!</p>
+            </div>
+            <button id="restart-button" class="action-button mt-6">আবার কুইজ দাও</button>
+        </div>
+    </div>
+
+    <!-- ট্যাব সুইচ ওয়ার্নিং মডেল -->
+    <div id="tab-switch-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>সতর্কতা!</h3>
+            <p>তুমি কুইজ চলাকালীন অন্য ট্যাবে চলে গিয়েছিলে। তোমার কুইজ পুনরায় শুরু হবে।</p>
+            <button id="modal-restart-button">কুইজ পুনরায় শুরু করো</button>
+        </div>
+    </div>
+
+    <footer class="text-center mt-16 pt-8 border-t border-gray-300/50">
+        <nav class="mb-4">
+            <ul class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-base md:text-lg">
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-[#F29E38] transition-colors duration-200">হোম</a></li>
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-[#F29E38] transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
+                <li><a href="#" class="text-gray-700 dark:text-gray-300 hover:text-[#F29E38] transition-colors duration-200">কুইজ</a></li>
+            </ul>
+        </nav>
+        <p class="text-gray-600 dark:text-gray-400">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
+        <p class="text-sm text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p>
+    </footer>
+
+    <script>
+        // --- CONFIGURATION ---
+        const EMAILJS_SERVICE_ID = "service_okgsjuly1";
+        const EMAILJS_TEMPLATE_ID = "template_ixem4b9";
+        // IMPORTANT: Replace "YOUR_PUBLIC_KEY" with your actual EmailJS Public Key from your account settings.
+        const EMAILJS_PUBLIC_KEY = "K6_HVb9wFTJ-wmLOS"; 
+
+        const CORRECT_PIN = "7891";
+        const QUESTIONS_PER_QUIZ = 20;
+        const TIME_PER_QUESTION = 10; // seconds
+        const FEEDBACK_DELAY_MS = 1500; // time to show feedback before next question
+
+        // --- ALL QUESTIONS ---
+        const allQuestions = [
+            // ভবিষ্যতে আরও প্রশ্ন যোগ করার জন্য, এই অ্যারে-তে নতুন অবজেক্ট যোগ করুন।
+            // প্রতিটি অবজেক্টের মধ্যে 'question', 'options' (৫টি অপশন সহ), এবং 'answer' থাকতে হবে।
+            // مثال: { question: "নতুন প্রশ্ন?", options: ["A", "B", "C", "D", "E"], answer: "A" },
+            { question: "HTML এর পূর্ণরূপ কী?", options: ["HyperText Markup Language", "Hyperlink and Text Markup Language", "High-level Text Machine Language", "Home Tool Markup Language", "অন্যান্য"], answer: "HyperText Markup Language" },
+            { question: "ওয়েবপেজের কাঠামো তৈরি করতে কোনটি ব্যবহৃত হয়?", options: ["CSS", "JavaScript", "HTML", "Python", "অন্যান্য"], answer: "HTML" },
+            { question: "একটি প্যারাগ্রাফ ট্যাগ কোনটি?", options: ["<p>", "<h>", "<a>", "<div>", "অন্যান্য"], answer: "<p>" },
+            { question: "ছবি যোগ করার জন্য কোন ট্যাগ ব্যবহৃত হয়?", options: ["<image>", "<img>", "<pic>", "<photo>", "অন্যান্য"], answer: "<img>" },
+            { question: "অন্য পেজে লিঙ্ক করার জন্য কোন অ্যাট্রিবিউট ব্যবহৃত হয়?", options: ["src", "href", "link", "url", "অন্যান্য"], answer: "href" },
+            { question: "ওয়েবপেজকে স্টাইল করার জন্য কোনটি ব্যবহৃত হয়?", options: ["HTML", "JavaScript", "CSS", "Python", "অন্যান্য"], answer: "CSS" },
+            { question: "ওয়েবপেজকে ইন্টারেক্টিভ করার জন্য কোনটি ব্যবহৃত হয়?", options: ["HTML", "CSS", "JavaScript", "PHP", "অন্যান্য"], answer: "JavaScript" },
+            { question: "সবচেয়ে বড় হেডিং ট্যাগ কোনটি?", options: ["<h1>", "<h6>", "<head>", "<heading>", "অন্যান্য"], answer: "<h1>" },
+            { question: "একটি আনঅর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<ol>", "<li>", "<ul>", "<list>", "অন্যান্য"], answer: "<ul>" },
+            { question: "একটি অর্ডারড লিস্ট তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<ul>", "<li>", "<ol>", "<list>", "অন্যান্য"], answer: "<ol>" },
+            { question: "ওয়েব ব্রাউজার কী?", options: ["একটি অপারেটিং সিস্টেম", "একটি প্রোগ্রামিং ভাষা", "ইন্টারনেট দেখার সফটওয়্যার", "একটি হার্ডওয়্যার ডিভাইস", "অন্যান্য"], answer: "ইন্টারনেট দেখার সফটওয়্যার" },
+            { question: "কম্পিউটারের 'মস্তিষ্ক' কোনটি?", options: ["RAM", "CPU", "Hard Disk", "Monitor", "অন্যান্য"], answer: "CPU" },
+            { question: "মোবাইলে কোড লেখার জন্য কোন অ্যাপ ব্যবহার করা যেতে পারে?", options: ["Microsoft Word", "TrebEdit", "VLC Player", "Adobe Reader", "অন্যান্য"], answer: "TrebEdit" },
+            { question: "ফাইলের এক্সটেনশন কী নির্দেশ করে?", options: ["ফাইলের আকার", "ফাইলের তৈরির তারিখ", "ফাইলের ধরণ", "ফাইলের নাম", "অন্যান্য"], answer: "ফাইলের ধরণ" },
+            { question: "একটি `.pdf` ফাইল খোলার জন্য কোন ধরনের সফটওয়্যার প্রয়োজন?", options: ["ওয়েব ব্রাউজার", "মিডিয়া প্লেয়ার", "পিডিএফ রিডার", "কোড এডিটর", "অন্যান্য"], answer: "পিডিএফ রিডার" },
+            { question: "HTML ট্যাগের মধ্যে `<` এবং `>` চিহ্নকে কী বলা হয়?", options: ["অ্যাঙ্গেল ব্র্যাকেট", "কার্লি ব্র্যাকেট", "স্কয়ার ব্র্যাকেট", "প্যারেন্থেসিস", "অন্যান্য"], answer: "অ্যাঙ্গেল ব্র্যাকেট" },
+            { question: "কোন HTML ট্যাগটি একটি লাইন ব্রেক তৈরি করে?", options: ["<br>", "<lb>", "<break>", "<line>", "অন্যান্য"], answer: "<br>" },
+            { question: "ওয়েবপেজে একটি লিঙ্ক তৈরি করতে কোন ট্যাগ ব্যবহৃত হয়?", options: ["<link>", "<href>", "<a>", "<url>", "অন্যান্য"], answer: "<a>" },
+            { question: "কোনটি একটি ইনপুট ডিভাইস?", options: ["মনিটর", "প্রিন্টার", "কীবোর্ড", "স্পিকার", "অন্যান্য"], answer: "কীবোর্ড" },
+            { question: "কম্পিউটারের স্থায়ী তথ্য সংরক্ষণের জন্য কোনটি ব্যবহৃত হয়?", options: ["RAM", "CPU", "Hard Disk", "Cache", "অন্যান্য"], answer: "Hard Disk" },
+            { question: "ওয়েবসাইট এবং ওয়েবপেজের মধ্যে প্রধান পার্থক্য কী?", options: ["ওয়েবসাইট একটি একক পৃষ্ঠা, ওয়েবপেজ অনেক পৃষ্ঠার সমষ্টি", "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা", "তাদের মধ্যে কোনো পার্থক্য নেই", "ওয়েবসাইট শুধুমাত্র ছবিতে থাকে", "অন্যান্য"], answer: "ওয়েবসাইট অনেক পৃষ্ঠার সমষ্টি, ওয়েবপেজ একটি একক পৃষ্ঠা" },
+            { question: "স্ট্যাটিক ওয়েবপেজের বৈশিষ্ট্য কী?", options: ["এটি ব্যবহারকারীর ইনপুটের উপর ভিত্তি করে পরিবর্তিত হয়", "এর বিষয়বস্তু সবার জন্য একই থাকে", "এটি ডেটাবেস থেকে তথ্য লোড করে", "এটি নিয়মিত আপডেট হয়", "অন্যান্য"], answer: "এর বিষয়বস্তু সবার জন্য একই থাকে" },
+            { question: "কোনটি ফ্রন্ট-এন্ড ডেভেলপমেন্টের অংশ নয়?", options: ["HTML", "CSS", "JavaScript", "Python (সার্ভার-সাইড)", "অন্যান্য"], answer: "Python (সার্ভার-সাইড)" },
+            { question: "VS Code কী?", options: ["একটি ওয়েব ব্রাউজার", "একটি অপারেটিং সিস্টেম", "একটি কোড এডিটর", "একটি গেম", "অন্যান্য"], answer: "একটি কোড এডিটর" },
+            { question: "CodePen এর প্রধান সুবিধা কী?", options: ["অফলাইনে কাজ করে", "বড় প্রজেক্টের জন্য সেরা", "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়", "শুধুমাত্র ব্যাকএন্ড ডেভেলপমেন্টের জন্য", "অন্যান্য"], answer: "কোনো সেটআপ ছাড়াই অনলাইনে কোড লেখা যায়" }
+        ];
+
+        const secretCodes = ["ALPCG-QUIZ-VX7B", "ALPCG-QUIZ-P9QW", "ALPCG-QUIZ-R4ZL", "ALPCG-QUIZ-M2FK", "ALPCG-QUIZ-T8JH"];
+
+        // --- DOM ELEMENTS ---
+        const pinEntrySection = document.getElementById('pin-entry-section');
+        const pinInput = document.getElementById('pin-input');
+        const submitPinButton = document.getElementById('submit-pin');
+        const errorMessage = document.getElementById('error-message');
+
+        const registrationSection = document.getElementById('registration-section');
+        const studentNameInput = document.getElementById('student-name');
+        const studentClassInput = document.getElementById('student-class');
+        const studentRollInput = document.getElementById('student-roll');
+        const studentEmailInput = document.getElementById('student-email');
+        const startQuizButton = document.getElementById('start-quiz-button');
+        const registrationErrorMessage = document.getElementById('registration-error-message');
+
+        const quizSection = document.getElementById('quiz-section');
+        const questionNumberSpan = document.getElementById('question-number');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentScoreSpan = document.getElementById('current-score');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const feedbackElement = document.getElementById('feedback');
+        const timeLeftSpan = document.getElementById('time-left');
+
+        const resultSection = document.getElementById('result-section');
+        const participantDetailsSection = document.getElementById('participant-details');
+        const participantNameSpan = document.getElementById('participant-name');
+        const participantClassSpan = document.getElementById('participant-class');
+        const participantRollSpan = document.getElementById('participant-roll');
+        const finalScoreSpan = document.getElementById('final-score');
+        const finalTotalSpan = document.getElementById('final-total');
+        const resultMessageElement = document.getElementById('result-message');
+        const restartButton = document.getElementById('restart-button');
+        const secretCodeContainer = document.getElementById('secret-code-container');
+        const secretCodeDisplay = document.getElementById('secret-code-display');
+
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const tabSwitchModal = document.getElementById('tab-switch-modal');
+        const modalRestartButton = document.getElementById('modal-restart-button');
+
+        // --- STATE VARIABLES ---
+        let currentQuizQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizSessionId = '';
+        let studentInfo = {};
+        let quizStarted = false;
+        let quizCompleted = false;
+        let tabSwitched = false;
+        let timerInterval;
+        let countdown = TIME_PER_QUESTION;
+        let isQuestionAnswered = false; // Prevents race conditions
+
+        // --- FUNCTIONS ---
+
+        function checkPin() {
+            if (pinInput.value === CORRECT_PIN) {
+                pinEntrySection.classList.add('hidden');
+                registrationSection.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+            } else {
+                errorMessage.classList.remove('hidden');
+                pinInput.value = '';
+                pinInput.focus();
+            }
+        }
+
+        function startQuiz() {
+            const name = studentNameInput.value.trim();
+            const studentClass = studentClassInput.value.trim();
+            const roll = studentRollInput.value.trim();
+            const email = studentEmailInput.value.trim(); // Email is optional
+
+            if (!name || !studentClass || !roll) {
+                registrationErrorMessage.classList.remove('hidden');
+                return;
+            }
+
+            studentInfo = { name, class: studentClass, roll, email };
+            registrationErrorMessage.classList.add('hidden');
+            registrationSection.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+
+            // Reset state for a new quiz
+            quizStarted = true;
+            quizCompleted = false;
+            tabSwitched = false;
+            quizSessionId = crypto.randomUUID();
+            currentQuizQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, QUESTIONS_PER_QUIZ);
+            totalQuestionsSpan.textContent = currentQuizQuestions.length;
+            currentQuestionIndex = 0;
+            score = 0;
+            currentScoreSpan.textContent = score;
+            participantDetailsSection.classList.add('hidden'); // Hide details until results
+
+            loadQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            countdown = TIME_PER_QUESTION;
+            timeLeftSpan.textContent = countdown;
+
+            timerInterval = setInterval(() => {
+                countdown--;
+                timeLeftSpan.textContent = countdown;
+
+                if (countdown <= 0) {
+                    clearInterval(timerInterval);
+                    handleAnswer(null, null, currentQuizQuestions[currentQuestionIndex].answer);
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            if (currentQuestionIndex >= currentQuizQuestions.length) {
+                showResult();
+                return;
+            }
+
+            isQuestionAnswered = false;
+            const questionData = currentQuizQuestions[currentQuestionIndex];
+            questionNumberSpan.textContent = currentQuestionIndex + 1;
+            questionTextElement.textContent = questionData.question;
+            optionsContainer.innerHTML = '';
+            feedbackElement.classList.add('hidden');
+
+            const shuffledOptions = [...questionData.options].sort(() => 0.5 - Math.random());
+
+            shuffledOptions.forEach(option => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.textContent = option;
+                button.addEventListener('click', () => handleAnswer(button, option, questionData.answer));
+                optionsContainer.appendChild(button);
+            });
+
+            startTimer();
+        }
+
+        function handleAnswer(button, selectedOption, correctAnswer) {
+            if (isQuestionAnswered) return;
+            isQuestionAnswered = true;
+            clearInterval(timerInterval);
+
+            const allOptionButtons = optionsContainer.querySelectorAll('.option-button');
+            allOptionButtons.forEach(btn => btn.classList.add('disabled'));
+
+            if (selectedOption) { // User clicked an option
+                button.classList.add('selected');
+                if (selectedOption === correctAnswer) {
+                    score++;
+                    currentScoreSpan.textContent = score;
+                    button.classList.add('correct');
+                    feedbackElement.textContent = "সঠিক উত্তর!";
+                    feedbackElement.classList.remove('feedback-incorrect', 'hidden');
+                    feedbackElement.classList.add('feedback-correct');
+                } else {
+                    button.classList.add('incorrect');
+                    feedbackElement.textContent = `ভুল উত্তর। সঠিক উত্তর: ${correctAnswer}`;
+                    feedbackElement.classList.remove('feedback-correct', 'hidden');
+                    feedbackElement.classList.add('feedback-incorrect');
+                }
+            } else { // Time ran out
+                feedbackElement.textContent = `সময় শেষ! সঠিক উত্তর: ${correctAnswer}`;
+                feedbackElement.classList.remove('feedback-correct', 'hidden');
+                feedbackElement.classList.add('feedback-incorrect');
+            }
+            
+            // Highlight the correct answer regardless
+            allOptionButtons.forEach(btn => {
+                if (btn.textContent === correctAnswer) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            setTimeout(proceedToNextStep, FEEDBACK_DELAY_MS);
+        }
+
+        function proceedToNextStep() {
+            if (tabSwitched) return;
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+        
+        function showResult() {
+            quizCompleted = true;
+            quizStarted = false;
+            clearInterval(timerInterval);
+            quizSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            
+            // Display participant details
+            participantNameSpan.textContent = studentInfo.name;
+            participantClassSpan.textContent = studentInfo.class;
+            participantRollSpan.textContent = studentInfo.roll;
+            participantDetailsSection.classList.remove('hidden');
+
+            finalScoreSpan.textContent = score;
+            finalTotalSpan.textContent = currentQuizQuestions.length;
+
+            secretCodeContainer.classList.add('hidden');
+            secretCodeDisplay.textContent = '';
+            resultMessageElement.classList.remove('celebration-message');
+            resultMessageElement.style.color = ''; // Reset color
+
+            if (score === currentQuizQuestions.length) {
+                resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉";
+                resultMessageElement.classList.add('celebration-message');
+                const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
+                secretCodeDisplay.textContent = randomCode;
+                secretCodeContainer.classList.remove('hidden');
+                // Send email notification ONLY for a perfect score
+                sendEmailNotification(randomCode);
+            } else if (score >= currentQuizQuestions.length / 2) {
+                resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
+                resultMessageElement.style.color = '#037E8C';
+            } else {
+                resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন। হাল ছেড়ো না!";
+                resultMessageElement.style.color = '#EF476F';
+            }
+        }
+        
+        function sendEmailNotification(secretCode) {
+            // **গুরুত্বপূর্ণ নোট:** এই ফাংশনটি কাজ করার জন্য, আপনার EmailJS টেমপ্লেটের "To Email" ফিল্ডে
+            // আপনার নিজের অ্যাডমিন ইমেল ঠিকানাটি হার্ডকোড করা থাকতে হবে।
+            // Your template uses {{type}}, {{name}}, {{studentClass}}, {{roll}}, {{student-email}}, {{score}}, {{total}}, {{sessionId}}, {{timestamp}}
+            const templateParams = {
+                type: 'perfectly completed',
+                name: studentInfo.name,
+                studentClass: studentInfo.class,
+                roll: studentInfo.roll,
+                'student-email': studentInfo.email || 'দেওয়া হয়নি', // Quoted because of hyphen
+                score: score,
+                total: currentQuizQuestions.length,
+                sessionId: quizSessionId,
+                timestamp: new Date().toLocaleString('bn-BD'),
+            };
+
+            console.log("Attempting to send perfect score notification with params:", templateParams);
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                .then((response) => {
+                   console.log('SUCCESS! EmailJS notification sent.', response.status, response.text);
+                   alert("অভিনন্দন! আপনার ফলাফল সফলভাবে জমা দেওয়া হয়েছে।");
+                }, (error) => {
+                   console.error('FAILED to send EmailJS notification. Status:', error.status, 'Error:', error.text);
+                   alert(`দুঃখিত, আপনার ফলাফল জমা দেওয়া যায়নি। অনুগ্রহ করে অ্যাডমিনের সাথে যোগাযোগ করুন। ত্রুটি: ${error.text || 'Unknown Error'}`);
+                });
+        }
+
+        function resetQuiz() {
+            clearInterval(timerInterval);
+            resultSection.classList.add('hidden');
+            pinInput.value = '';
+            studentNameInput.value = '';
+            studentClassInput.value = '';
+            studentRollInput.value = '';
+            studentEmailInput.value = '';
+            pinEntrySection.classList.remove('hidden');
+            quizStarted = false;
+            quizCompleted = false;
+            tabSwitched = false;
+            secretCodeContainer.classList.add('hidden');
+            participantDetailsSection.classList.add('hidden');
+            resultMessageElement.classList.remove('celebration-message');
+            resultMessageElement.style.color = '';
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('dark-mode', isDarkMode);
+            darkModeToggle.textContent = isDarkMode ? 'লাইট মোড' : 'ডার্ক মোড';
+        }
+
+        function loadDarkModePreference() {
+            const isDarkMode = localStorage.getItem('dark-mode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.textContent = 'লাইট মোড';
+            } else {
+                darkModeToggle.textContent = 'ডার্ক মোড';
+            }
+        }
+
+        function showTabSwitchWarning() {
+            tabSwitchModal.classList.remove('hidden');
+            quizSection.classList.add('hidden');
+        }
+
+        function handleModalRestart() {
+            tabSwitchModal.classList.add('hidden');
+            tabSwitched = false;
+            resetQuiz();
+        }
+
+        // --- EVENT LISTENERS & INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Proactive check for EmailJS Public Key
+            if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY' || !EMAILJS_PUBLIC_KEY) {
+                console.error("গুরুত্বপূর্ণ: EmailJS Public Key সেট করা হয়নি। অনুগ্রহ করে স্ক্রিপ্টে 'YOUR_PUBLIC_KEY' পরিবর্তন করুন।");
+                alert("ত্রুটি: ইমেল সার্ভিস কনফিগার করা হয়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।");
+                // Disable the PIN button if config is invalid
+                submitPinButton.disabled = true;
+                submitPinButton.style.cursor = 'not-allowed';
+                submitPinButton.style.opacity = '0.5';
+                return;
+            }
+            
+            try {
+                emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+            } catch(e) {
+                console.error("EmailJS শুরু করতে ব্যর্থ। আপনার Public Key চেক করুন।", e);
+                alert("ইমেল নোটিফিকেশন সার্ভিস শুরু করা যায়নি। অ্যাডমিনের সাথে যোগাযোগ করুন।");
+                 // Disable the PIN button if init fails
+                submitPinButton.disabled = true;
+                submitPinButton.style.cursor = 'not-allowed';
+                submitPinButton.style.opacity = '0.5';
+            }
+
+            loadDarkModePreference();
+            pinEntrySection.classList.remove('hidden');
+            registrationSection.classList.add('hidden');
+            quizSection.classList.add('hidden');
+            resultSection.classList.add('hidden');
+        });
+
+        submitPinButton.addEventListener('click', checkPin);
+        pinInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPin(); });
+        startQuizButton.addEventListener('click', startQuiz);
+        restartButton.addEventListener('click', resetQuiz);
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+        modalRestartButton.addEventListener('click', handleModalRestart);
+
+        document.addEventListener('visibilitychange', () => {
+            if (quizStarted && !quizCompleted && document.hidden) {
+                tabSwitched = true;
+                clearInterval(timerInterval);
+                showTabSwitchWarning();
+            }
+        });
+    </script>
+</body>
+</html>
