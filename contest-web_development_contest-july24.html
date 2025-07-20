@@ -14,6 +14,74 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=1.1">
+    <!-- Tally.so embed script added here -->
+    <script async src="https://tally.so/widgets/embed.js"></script>
+    <style>
+        /* Custom styles for the animated floating button */
+        .floating-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .floating-button {
+            position: relative;
+            overflow: hidden; /* Important for gradient animation */
+            background-color: transparent; /* Will be covered by pseudo-element */
+            color: white;
+            padding: 15px 25px; /* Increased padding for better look */
+            border-radius: 9999px; /* Fully rounded */
+            font-weight: bold;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column; /* Stack text vertically */
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-width: 180px; /* Ensure a minimum width */
+        }
+
+        .floating-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Animated gradient background */
+            background: linear-gradient(135deg, #025373, #037E8C, #F29E38, #A66224);
+            background-size: 400% 400%; /* Larger size for animation */
+            animation: gradientAnimation 10s ease infinite; /* Animation duration and type */
+            z-index: -1; /* Behind the button content */
+            border-radius: 9999px; /* Match button border-radius */
+        }
+
+        .floating-button:hover {
+            transform: translateY(-5px) scale(1.02); /* More pronounced hover effect */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-button-main-text {
+            font-size: 1.1rem; /* Larger main text */
+            margin-bottom: 4px; /* Space between main and subtitle */
+        }
+
+        .floating-button-subtitle {
+            font-size: 0.85rem; /* Smaller subtitle */
+            opacity: 0.9; /* Slightly transparent */
+        }
+
+        /* Keyframes for gradient animation */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
 </head>
 <body class="antialiased">
     <div class="container mx-auto p-4 md:p-8">
@@ -196,6 +264,15 @@
 
     </div>
 
+    <!-- Floating Tally.so button -->
+    <div class="floating-button-container">
+        <button class="floating-button"
+                data-tally-open="wo8xJ1" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-form-events-forwarding="1">
+            <span class="floating-button-main-text">অ্যাসাইনমেন্ট জমা দিন</span>
+            <span class="floating-button-subtitle">আপনার কুইজ ফলাফল ও প্রোজেক্ট জমা দিন</span>
+        </button>
+    </div>
+
     <script>
         // Ensure all Chart.js initializations run after the entire page is loaded
         window.onload = function() {
@@ -346,5 +423,3 @@
     </script>
 </body>
 </html>
-
-
