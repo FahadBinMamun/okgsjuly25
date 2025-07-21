@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPCG: শিক্ষার্থীদের HTML প্রজেক্ট নির্দেশিকা</title>
+    <!-- ফেভিকন লিঙ্ক যোগ করা হয়েছে -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Tiro Bangla, Hind Siliguri (for consistency), Inter (for code/modern elements) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- আপনার কাস্টম স্টাইলশীট, ক্যাশে সমস্যা এড়াতে ভার্সন নাম্বার যোগ করা হয়েছে -->
+    <link rel="stylesheet" href="style.css?v=1.0">
+    <style>
+        /* বডির ফন্ট আপনার মূল সাইটের সাথে সামঞ্জস্যপূর্ণ করা হয়েছে */
+        body {
+            font-family: 'Tiro Bangla', serif; /* মূল সাইটের ফন্ট */
+            background-color: #1A202C; /* Dark background (Almost Black) */
+            color: #E2E8F0; /* Light gray for main text */
+            overflow-x: hidden;
+        }
+        /* হেডার এবং সেকশনের ফন্ট কালার নতুন থিমের সাথে সামঞ্জস্যপূর্ণ করা হয়েছে */
+        header h1 {
+            color: #63B3ED; /* Soft Blue */
+        }
+        header p {
+            color: #90CDF4; /* Lighter Blue */
+        }
+        .intro-banner {
+            background-image: linear-gradient(to right, #2D3748, #4A5568); /* Dark Gray to Medium Gray gradient */
+            color: #E2E8F0; /* Light gray text for banner */
+            border: 1px solid #4A5568; /* Subtle border */
+        }
+        /* প্রজেক্ট গ্যালারির নির্দিষ্ট স্টাইল */
+        .project-container {
+            background-color: #2D3748; /* Darker gray for project cards */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Deeper shadow */
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+            border: 1px solid #4A5568; /* Subtle border for cards */
+        }
+        .project-container:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+            box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.3), 0 6px 10px -3px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+        }
+        /* Project question text color */
+        .project-container h3 {
+            color: #E2E8F0; /* White/Ash color for project questions */
+        }
+        .code-block {
+            background-color: #FFFFFF; /* White background for code */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            max-height: 25rem; /* Fixed height for code block */
+            font-family: 'Inter', sans-serif; /* কোড ব্লকের জন্য ইন্টার ফন্ট */
+            font-size: 0.875rem; /* Small font size for code */
+            color: #2D3748; /* Darker gray text for code */
+            border: 1px solid #4A5568; /* Border for code block */
+        }
+        .preview-frame {
+            border: 1px solid #4A5568; /* Darker gray border for iframe */
+            border-radius: 0.5rem;
+            width: 100%;
+            height: 25rem; /* Fixed height for preview */
+            background-color: #FFFFFF; /* White background for preview */
+        }
+        /* Custom scrollbar for webkit browsers */
+        .code-block::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .code-block::-webkit-scrollbar-track {
+            background: #2D3748; /* Darker gray for scrollbar track */
+            border-radius: 10px;
+        }
+        .code-block::-webkit-scrollbar-thumb {
+            background: #63B3ED; /* Soft Blue for scrollbar thumb */
+            border-radius: 10px;
+        }
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: #4299E1; /* Darker blue on hover */
+        }
+        .detailed-content-div {
+            background-color: #F7FAFC; /* Very light gray, almost white for detailed question */
+            color: #2D3748; /* Darker gray for detailed question text */
+            border: 1px solid #4A5568; /* Border for detailed question */
+        }
+        .inner-toggle-button {
+            background-color: #4A5568; /* Medium gray for inner toggle */
+            color: #90CDF4; /* Lighter Blue for inner toggle icon */
+        }
+        .inner-toggle-button:hover {
+            background-color: #63B3ED; /* Soft Blue on hover */
+            color: #1A202C; /* Dark text on hover */
+        }
+        .outer-toggle-button {
+            background-color: #63B3ED; /* Soft Blue - strong accent for outer toggle */
+            color: #1A202C; /* Dark text for outer toggle */
+            font-weight: 700;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .outer-toggle-button:hover {
+            background-color: #4299E1; /* Darker blue on hover */
+            box-shadow: 0 6px 8px -2px rgba(0, 0, 0, 0.15), 0 3px 5px -1px rgba(0, 0, 0, 0.08);
+        }
+        .box-title {
+            font-family: 'Hind Siliguri', sans-serif; /* For box titles */
+            font-weight: 600;
+            color: #2D3748; /* Darker gray for titles on white background */
+            margin-bottom: 0.5rem;
+        }
+        footer {
+            border-color: #4A5568; /* Darker gray border for footer */
+        }
+        footer p {
+            color: #A0AEC0; /* Light gray for footer text */
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container mx-auto max-w-6xl">
+        <!-- ALPCG ক্লাবের হেডার যোগ করা হয়েছে -->
+        <header class="text-center mb-12">
+            <img src="images/alpcg_logo.png" alt="ALPCG ক্লাব লোগো" class="mx-auto mb-4" style="max-width: 200px; height: auto;">
+            <h1 class="text-4xl md:text-5xl font-bold">ALPCG ওয়েব ডেভেলপমেন্ট প্রজেক্ট নির্দেশিকা</h1>
+            <p class="text-xl mt-2">শিক্ষার্থীদের জন্য HTML প্রজেক্টের নমুনা ও নির্দেশনা</p>
+        </header>
+
+        <main class="mt-10">
+            <section class="intro-banner text-center mb-10 py-8 rounded-xl shadow-lg">
+                <!-- হেডিং এবং সাবটাইটেল পরিবর্তন করা হয়েছে -->
+                <h2 class="text-4xl md:text-5xl font-extrabold mb-2">HTML প্রজেক্ট নির্দেশিকা ও নমুনা প্রশ্ন</h2>
+                <p class="text-lg md:text-xl font-light mb-4">এগুলো প্রতিযোগিতার জন্য প্রজেক্ট বা প্রশ্নের শুধুমাত্র নমুনা। এখানে ছোট কিন্তু কার্যকরী নমুনা কোড দিয়ে আংশিকভাবে বোঝানো হয়েছে যে ট্যাগগুলো কিভাবে কাজ করে, কিভাবে তোমরা ব্যবহার করবে।</p>
+                <p class="text-lg md:text-xl font-light">তোমাদের মূল প্রজেক্ট তৈরি করতে যাতে ট্যাগগুলোর সঠিক এবং বিস্তারিত ব্যবহার করতে পারো, সেই লক্ষ্যে এই গাইডলাইন দেওয়া হলো।</p>
+            </section>
+
+            <div id="projects-container">
+                <!-- Projects will be dynamically loaded here by JavaScript -->
+            </div>
+        </main>
+
+        <!-- আপনার মূল ওয়েবসাইটের ফুটার যোগ করা হয়েছে -->
+        <footer class="text-center mt-16 pt-8 border-t">
+            <p class="text-gray-600">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্ডেন একাডেমি, জয়পুরহাট।</p>
+            <p class="text-sm text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫</p>
+        </footer>
+    </div>
+
+    <script>
+        const projects = [
+            {
+                question: "প্রজেক্ট ১: আমার পছন্দের বিষয়\n\nলক্ষ্য: বিভিন্ন হেডিং (`<h1>` থেকে `<h3>`) এবং একাধিক প্যারাগ্রাফ (`<p>`) ব্যবহার করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"আমার পছন্দের বিষয়\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আমার পছন্দের একটি বিষয়\"।\n* আপনার পছন্দের একটি বিষয় (যেমন: বিজ্ঞান, সাহিত্য, কম্পিউটার) সম্পর্কে একটি `<h2>` হেডিং দিন।\n* সেই বিষয় সম্পর্কে দুটি পৃথক `<p>` প্যারাগ্রাফ লিখুন। প্রথমটিতে এর একটি সংক্ষিপ্ত বর্ণনা দিন এবং দ্বিতীয়টিতে কেন এটি আপনার পছন্দের তা ব্যাখ্যা করুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার পছন্দের বিষয়</title>
+</head>
+<body>
+    <h1>আমার পছন্দের একটি বিষয়</h1>
+    <h2>কম্পিউটার বিজ্ঞান</h2>
+    <p>কম্পিউটার বিজ্ঞান একটি বিশাল এবং দ্রুত পরিবর্তনশীল ক্ষেত্র। এটি অ্যালগরিদম, ডেটা স্ট্রাকচার, প্রোগ্রামিং ভাষা এবং কম্পিউটার আর্কিটেকচার নিয়ে কাজ করে।</p>
+    <p>আমি কম্পিউটার বিজ্ঞান পছন্দ করি কারণ এটি আমাকে সমস্যা সমাধানের নতুন উপায় শিখতে এবং সৃজনশীল কিছু তৈরি করতে সাহায্য করে। এর মাধ্যমে আমি ডিজিটাল বিশ্বে অবদান রাখতে পারি।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ২: একটি ছোট সংবাদ শিরোনাম\n\nলক্ষ্য: হেডিং (`<h1>`) এবং একটি লাইন ব্রেক (`<br>`) সহ একটি প্যারাগ্রাফ (`<p>`) ব্যবহার করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"সংবাদ শিরোনাম\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আজকের প্রধান সংবাদ\"।\n* একটি `<p>` ট্যাগের মধ্যে একটি কাল্পনিক সংবাদের শিরোনাম লিখুন। শিরোনামটি দুই লাইনে দেখানোর জন্য `<br>` ট্যাগ ব্যবহার করুন (যেমন: \"শহর জুড়ে বৃক্ষরোপণ অভিযান:<br>পরিবেশ রক্ষায় সকলের অংশগ্রহণ\")।\n* শিরোনামের নিচে একটি ছোট `<p>` প্যারাগ্রাফে সংবাদের একটি সংক্ষিপ্ত সারসংক্ষেপ দিন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>একটি ছোট সংবাদ শিরোনাম</title>
+</head>
+<body>
+    <h1>আজকের প্রধান সংবাদ</h1>
+    <p>শহর জুড়ে বৃক্ষরোপণ অভিযান:<br>পরিবেশ রক্ষায় সকলের অংশগ্রহণ</p>
+    <p>আজ সকালে শহরের বিভিন্ন স্থানে বৃক্ষরোপণ কর্মসূচি পালিত হয়েছে। এই কর্মসূচিতে স্থানীয় জনগণ স্বতঃস্ফূর্তভাবে অংশ নেন, যা পরিবেশ সুরক্ষায় এক নতুন বার্তা দিয়েছে।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ৩: একটি পণ্যের বিবরণ\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ এবং বোল্ড টেক্সট (`<strong>` বা `<b>`) ব্যবহার করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"পণ্যের বিবরণ\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আমাদের নতুন পণ্য: স্মার্ট ওয়াচ\"।\n* একটি `<p>` প্যারাগ্রাফে পণ্যের একটি সাধারণ বর্ণনা দিন। এই বর্ণনার মধ্যে পণ্যের **প্রধান বৈশিষ্ট্যগুলি বোল্ড** করে দেখান (যেমন: \"**ওয়াটারপ্রুফ**, **দীর্ঘ ব্যাটারি লাইফ**, **হৃদস্পন্দন মনিটর**\")।\n* আরেকটি `<p>` প্যারাগ্রাফে পণ্যের মূল্য উল্লেখ করুন এবং মূল্যটি **বোল্ড** করে দিন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পণ্যের বিবরণ</title>
+</head>
+<body>
+    <h1>আমাদের নতুন পণ্য: স্মার্ট ওয়াচ</h1>
+    <p>আমাদের নতুন স্মার্ট ওয়াচটি অত্যাধুনিক প্রযুক্তিতে তৈরি। এটি <strong>ওয়াটারপ্রুফ</strong>, <strong>দীর্ঘ ব্যাটারি লাইফ</strong> এবং <strong>হৃদস্পন্দন মনিটর</strong> এর মতো বৈশিষ্ট্য নিয়ে এসেছে, যা আপনার দৈনন্দিন জীবনকে আরও সহজ করে তুলবে।</p>
+    <p>মূল্য: <strong>৫০০০ টাকা</strong></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ৪: একটি বইয়ের পর্যালোচনা\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ এবং ইটালিক টেক্সট (`<em>` বা `<i>`) ব্যবহার করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"বই পর্যালোচনা\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"বই পর্যালোচনা: [বইয়ের নাম]\"।\n* একটি `<h2>` হেডিং দিয়ে বইয়ের **লেখকের নাম ইটালিক** করে লিখুন (যেমন: \"লেখক: *অমুক অমুক*\")।\n* বইটি সম্পর্কে দুটি পৃথক `<p>` প্যারাগ্রাফ লিখুন। প্রথমটিতে বইয়ের মূল কাহিনী বা বিষয়বস্তু সম্পর্কে লিখুন এবং দ্বিতীয়টিতে **আপনার ব্যক্তিগত মতামত ইটালিক** করে তুলে ধরুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বই পর্যালোচনা</title>
+</head>
+<body>
+    <h1>বই পর্যালোচনা: পথের পাঁচালী</h1>
+    <h2>লেখক: <em>বিভূতিভূষণ বন্দ্যোপাধ্যায়</em></h2>
+    <p>পথের পাঁচালী উপন্যাসটি গ্রামীণ বাংলার জীবন, প্রকৃতি এবং অপু-দুর্গার সরল শৈশবকে অত্যন্ত সুন্দরভাবে ফুটিয়ে তুলেছে। এটি একটি কালজয়ী বাংলা সাহিত্যকর্ম।</p>
+    <p>আমার ব্যক্তিগত মতামত হল, <em>এই বইটি পড়লে মন এক অন্য জগতে হারিয়ে যায় এবং গ্রামীণ জীবনের প্রতি এক গভীর ভালোবাসা তৈরি হয়।</em></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ৫: একটি অনুপ্রেরণামূলক বার্তা\n\nলক্ষ্য: `<blockquote>` এবং ইটালিক (`<em>` বা `<i>`) টেক্সট ব্যবহার করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"অনুপ্রেরণামূলক বার্তা\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"দিনের সেরা উক্তি\"।\n* একটি `<blockquote>` ট্যাগের মধ্যে একটি অনুপ্রেরণামূলক উক্তি লিখুন।\n* `<blockquote>` ট্যাগের নিচে একটি `<p>` প্যারাগ্রাফে উক্তিটি কার বলা, তা **ইটালিক** করে উল্লেখ করুন (যেমন: \"*নেলসন ম্যান্ডেলা*\")।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনুপ্রেরণামূলক বার্তা</title>
+</head>
+<body>
+    <h1>দিনের সেরা উক্তি</h1>
+    <blockquote>
+        "শিক্ষা হল সবচেয়ে শক্তিশালী অস্ত্র যা দিয়ে আপনি বিশ্ব পরিবর্তন করতে পারেন।"
+    </blockquote>
+    <p><em>নেলসন ম্যান্ডেলা</em></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ৬: সাধারণ নোটিশ বোর্ড\n\nলক্ষ্য: একাধিক `<h1>` থেকে `<h3>` হেডিং এবং লাইন ব্রেক (`<br>`) ব্যবহার করে একটি নোটিশ তৈরি করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"নোটিশ বোর্ড\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"গুরুত্বপূর্ণ নোটিশ\"।\n* একটি `<h2>` হেডিং দিয়ে নোটিশের তারিখ দিন।\n* একটি `<h3>` হেডিং দিয়ে নোটিশের বিষয়বস্তু লিখুন (যেমন: \"ছুটির ঘোষণা\")।\n* একটি `<p>` প্যারাগ্রাফে নোটিশের বিস্তারিত লিখুন। নোটিশের প্রতিটি গুরুত্বপূর্ণ তথ্য বা বাক্যকে নতুন লাইনে দেখানোর জন্য `<br>` ট্যাগ ব্যবহার করুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নোটিশ বোর্ড</title>
+</head>
+<body>
+    <h1>গুরুত্বপূর্ণ নোটিশ</h1>
+    <h2>তারিখ: ২০ জুলাই, ২০২৫</h2>
+    <h3>বিষয়: ছুটির ঘোষণা</h3>
+    <p>সকল শিক্ষার্থী ও শিক্ষক-শিক্ষিকাদের জানানো যাচ্ছে যে,<br>
+    আগামী ২৫শে জুলাই, ২০২৫ তারিখে ঈদ-উল-আযহা উপলক্ষে<br>
+    শিক্ষা প্রতিষ্ঠান বন্ধ থাকবে।<br>
+    সকলের সহযোগিতা কামনা করা হচ্ছে।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ৭: একটি সাধারণ বর্ণনা\n\nলক্ষ্য: একটি বিষয়ে বিস্তারিত বর্ণনা দিতে একাধিক `<p>` ট্যাগ এবং `<strong>` ব্যবহার করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"জলবায়ু পরিবর্তন\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"জলবায়ু পরিবর্তন: একটি সংক্ষিপ্ত ধারণা\"।\n* জলবায়ু পরিবর্তন সম্পর্কে দুটি বা তিনটি `<p>` প্যারাগ্রাফে লিখুন। প্রথম প্যারাগ্রাফে এর সংজ্ঞা দিন। দ্বিতীয় প্যারাগ্রাফে এর **কারণগুলো বোল্ড** করে লিখুন। তৃতীয় প্যারাগ্রাফে এর **প্রভাবগুলো বোল্ড** করে লিখুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জলবায়ু পরিবর্তন</title>
+</head>
+<body>
+    <h1>জলবায়ু পরিবর্তন: একটি সংক্ষিপ্ত ধারণা</h1>
+    <p>জলবায়ু পরিবর্তন বলতে পৃথিবীর দীর্ঘমেয়াদী আবহাওয়ার ধরনে পরিবর্তনকে বোঝায়। এটি প্রাকৃতিক কারণে হতে পারে, তবে বর্তমান সময়ে মানুষের কার্যকলাপই এর প্রধান কারণ।</p>
+    <p>এর প্রধান <strong>কারণগুলো</strong> হল: জীবাশ্ম জ্বালানির ব্যবহার, বন উজাড়, শিল্পায়ন এবং কৃষিক্ষেত্রে গ্রিনহাউস গ্যাস নির্গমন।</p>
+    <p>এর <strong>প্রভাবগুলো</strong> হল: সমুদ্রপৃষ্ঠের উচ্চতা বৃদ্ধি, চরম আবহাওয়ার ঘটনা (যেমন: বন্যা, খরা), জীববৈচিত্র্যের ক্ষতি এবং খাদ্য নিরাপত্তাহীনতা।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ৮: প্রিয় ব্যক্তিত্বের তথ্য\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ, এবং `<strong>` ও `<em>` এর ব্যবহার।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"প্রিয় ব্যক্তিত্ব\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আমার প্রিয় ব্যক্তিত্ব: [ব্যক্তিত্বের নাম]\"।\n* একটি `<h2>` হেডিং দিয়ে ব্যক্তিত্বের **পেশা ইটালিক** করে লিখুন (যেমন: \"পেশা: *লেখক*\")।\n* ব্যক্তিত্বের সংক্ষিপ্ত জীবনী নিয়ে একটি `<p>` প্যারাগ্রাফ লিখুন। এই প্যারাগ্রাফে তার **জন্মস্থান ও জন্মতারিখ বোল্ড** করুন।\n* তার সম্পর্কে আপনার একটি **পছন্দের উক্তি ইটালিক** করে একটি `<p>` প্যারাগ্রাফে লিখুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রিয় ব্যক্তিত্ব</title>
+</head>
+<body>
+    <h1>আমার প্রিয় ব্যক্তিত্ব: রবীন্দ্রনাথ ঠাকুর</h1>
+    <h2>পেশা: <em>কবি, সাহিত্যিক, দার্শনিক, সুরকার</em></h2>
+    <p>রবীন্দ্রনাথ ঠাকুর ছিলেন একজন বাঙালি কবি, ঔপন্যাসিক, নাট্যকার, সঙ্গীতজ্ঞ, প্রাবন্ধিক, চিত্রশিল্পী, ছোটগল্পকার, গীতিকার, সুরকার এবং শিক্ষাবিদ। তিনি <strong>৭ মে, ১৮৬১ সালে কলকাতায় জন্মগ্রহণ করেন</strong>।</p>
+    <p>তার একটি পছন্দের উক্তি: <em>"যদি তোর ডাক শুনে কেউ না আসে তবে একলা চলো রে।"</em></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ৯: একটি পণ্যের বিশেষ অফার\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ, `<br>`, `<strong>` এবং `<em>` ব্যবহার করে একটি অফারের ঘোষণা তৈরি করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"বিশেষ অফার\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"**বিশেষ অফার!**\"।\n* একটি `<h2>` হেডিং দিয়ে পণ্যের নাম দিন (যেমন: \"স্মার্টফোন মডেল XZ\")।\n* একটি `<p>` প্যারাগ্রাফে অফারের বিস্তারিত লিখুন। অফারের **ডিসকাউন্ট পার্সেন্টেজ বোল্ড** করুন এবং **সময়সীমা ইটালিক** করে লিখুন। প্রতিটি নতুন বাক্য নতুন লাইনে দেখানোর জন্য `<br>` ট্যাগ ব্যবহার করুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিশেষ অফার</title>
+</head>
+<body>
+    <h1><strong>বিশেষ অফার!</strong></h1>
+    <h2>পণ্য: স্মার্টফোন মডেল XZ</h2>
+    <p>আমাদের নতুন স্মার্টফোন মডেল XZ-এ পাচ্ছেন <strong>২০% ডিসকাউন্ট</strong>!<br>
+    এই অফারটি সীমিত সময়ের জন্য।<br>
+    <em>সময়সীমা: ৩১শে জুলাই, ২০২৫ পর্যন্ত।</em></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১০: জরুরি বার্তা\n\nলক্ষ্য: `<h1>`, `<p>`, `<strong>` এবং `<blockquote>` ব্যবহার করে একটি জরুরি বার্তা তৈরি করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"জরুরি বার্তা\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"**জরুরি ঘোষণা!**\"।\n* একটি `<blockquote>` ট্যাগের মধ্যে মূল জরুরি বার্তাটি লিখুন। বার্তাটির **গুরুত্বপূর্ণ অংশ বোল্ড** করুন।\n* `<h1>` ট্যাগের নিচে একটি `<p>` প্যারাগ্রাফে এই বার্তার **উৎস বা প্রেরক** উল্লেখ করুন (যেমন: \"**জনগণকে জানানো যাচ্ছে**\")।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জরুরি বার্তা</title>
+</head>
+<body>
+    <h1><strong>জরুরি ঘোষণা!</strong></h1>
+    <blockquote>
+        "সকলকে জানানো যাচ্ছে যে, আগামীকাল, ২১শে জুলাই, ২০২৫ তারিখে<br>
+        <strong>বিদ্যুৎ সরবরাহ সকাল ১০টা থেকে দুপুর ২টা পর্যন্ত বন্ধ থাকবে।</strong><br>
+        অসুবিধার জন্য আমরা আন্তরিকভাবে দুঃখিত।"
+    </blockquote>
+    <p><strong>বিদ্যুৎ বিতরণ কর্তৃপক্ষ</strong></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১১: আমার প্রিয় গান ও শিল্পী\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ এবং ইটালিক টেক্সট ব্যবহার করে পছন্দের গান ও শিল্পীর তথ্য দেওয়া।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"আমার প্রিয় গান\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আমার প্রিয় গান: [গানের নাম]\"।\n* একটি `<h2>` হেডিং দিয়ে গানটির **শিল্পীর নাম ইটালিক** করে লিখুন।\n* একটি `<p>` প্যারাগ্রাফে গানটি সম্পর্কে একটি ছোট বর্ণনা দিন এবং কেন এটি আপনার পছন্দের তা লিখুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার প্রিয় গান</title>
+</head>
+<body>
+    <h1>আমার প্রিয় গান: এক পলকে</h1>
+    <h2>শিল্পী: <em>জেমস</em></h2>
+    <p>এই গানটি আমার খুব পছন্দের কারণ এর লিরিক্স এবং সুর দুটোই খুব হৃদয়গ্রাহী। এটি আমাকে স্মৃতিকাতর করে তোলে।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১২: ব্যক্তিগত শুভেচ্ছা কার্ড (সহজ)\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ এবং বোল্ড টেক্সট ব্যবহার করে একটি ডিজিটাল শুভেচ্ছা কার্ড তৈরি করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"শুভেচ্ছা কার্ড\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"**শুভ জন্মদিন!**\" (বা অন্য কোনো শুভেচ্ছা)।\n* একটি `<p>` প্যারাগ্রাফে আপনি যাকে শুভেচ্ছা জানাচ্ছেন তার উদ্দেশ্যে একটি ছোট বার্তা লিখুন।\n* বার্তার শেষে আপনার নাম **বোল্ড** করে দিন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>শুভেচ্ছা কার্ড</title>
+</head>
+<body>
+    <h1><strong>শুভ জন্মদিন!</strong></h1>
+    <p>প্রিয় বন্ধু,<br>
+    তোমার জন্মদিন খুব আনন্দ ও খুশিতে ভরে উঠুক।<br>
+    তোমার সকল স্বপ্ন পূরণ হোক।</p>
+    <p><strong>শুভেচ্ছান্তে,<br>
+    (আপনার নাম)</strong></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১৩: আমার শিক্ষা প্রতিষ্ঠান\n\nলক্ষ্য: বিভিন্ন হেডিং এবং প্যারাগ্রাফে শিক্ষা প্রতিষ্ঠানের তথ্য দেওয়া।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"আমার স্কুল/কলেজ\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আমার শিক্ষা প্রতিষ্ঠান\"।\n* আপনার শিক্ষা প্রতিষ্ঠানের নাম একটি `<h2>` হেডিং দিয়ে লিখুন।\n* একটি `<p>` প্যারাগ্রাফে এর **অবস্থান বোল্ড** করে লিখুন।\n* আরেকটি `<p>` প্যারাগ্রাফে এটি সম্পর্কে আপনার কিছু স্মৃতি বা ভালো লাগার কথা লিখুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার শিক্ষা প্রতিষ্ঠান</title>
+</head>
+<body>
+    <h1>আমার শিক্ষা প্রতিষ্ঠান</h1>
+    <h2>ঢাকা কলেজ</h2>
+    <p>এটি <strong>ঢাকা, বাংলাদেশে</strong> অবস্থিত একটি ঐতিহ্যবাহী শিক্ষা প্রতিষ্ঠান। এর দীর্ঘ এবং গৌরবময় ইতিহাস রয়েছে।</p>
+    <p>এই কলেজে আমার অনেক সুন্দর স্মৃতি আছে। এখানকার শিক্ষক এবং বন্ধুদের সাথে কাটানো সময়গুলো আমার জীবনের অন্যতম সেরা মুহূর্ত।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১৪: একটি সিনেমার সংক্ষিপ্ত পর্যালোচনা\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ এবং ইটালিক টেক্সট ব্যবহার করে একটি সিনেমার সংক্ষিপ্ত রিভিউ লেখা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"সিনেমা রিভিউ\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"সিনেমা পর্যালোচনা: [সিনেমার নাম]\"।\n* একটি `<h2>` হেডিং দিয়ে **পরিচালকের নাম ইটালিক** করে লিখুন।\n* একটি `<p>` প্যারাগ্রাফে সিনেমার কাহিনী সম্পর্কে সংক্ষেপে লিখুন।\n* আরেকটি `<p>` প্যারাগ্রাফে আপনার ব্যক্তিগত রেটিং বা মন্তব্য **ইটালিক** করে দিন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সিনেমা রিভিউ</title>
+</head>
+<body>
+    <h1>সিনেমা পর্যালোচনা: আয়নাবাজি</h1>
+    <h2>পরিচালক: <em>অমিতাভ রেজা চৌধুরী</em></h2>
+    <p>আয়নাবাজি একটি থ্রিলারধর্মী বাংলা চলচ্চিত্র। এর কাহিনী একজন অভিনেতাকে কেন্দ্র করে গড়ে উঠেছে যিনি বিভিন্ন চরিত্রে অভিনয় করে অপরাধীদের ফাঁদে ফেলেন।</p>
+    <p>আমার ব্যক্তিগত রেটিং: <em>এটি একটি অসাধারণ সিনেমা যা আপনাকে শেষ পর্যন্ত ধরে রাখবে।</em></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১৫: একটি কোটেশনের পেজ\n\nলক্ষ্য: একাধিক `<h1>`, `<blockquote>` এবং `<p>` ব্যবহার করে বিভিন্ন কোটেশন সাজানো।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"অনুপ্রেরণার ভাণ্ডার\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"অনুপ্রেরণামূলক উক্তি\"।\n* দুটি ভিন্ন `<blockquote>` ট্যাগ ব্যবহার করে দুটি অনুপ্রেরণামূলক উক্তি লিখুন।\n* প্রতিটি `<h1>` এর নিচে একটি `<p>` ট্যাগ ব্যবহার করে উক্তিটি কার, তা **বোল্ড** করে উল্লেখ করুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনুপ্রেরণার ভাণ্ডার</title>
+</head>
+<body>
+    <h1>অনুপ্রেরণামূলক উক্তি</h1>
+    <blockquote>
+        "স্বপ্ন দেখো না, স্বপ্নকে বাস্তবে পরিণত করো।"
+    </blockquote>
+    <p><strong>এ.পি.জে. আব্দুল কালাম</strong></p>
+
+    <blockquote>
+        "সাফল্য চূড়ান্ত নয়, ব্যর্থতা মারাত্মক নয়: চালিয়ে যাওয়ার সাহসই আসল।"
+    </blockquote>
+    <p><strong>উইনস্টন চার্চিল</strong></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১৬: আমার শহর সম্পর্কে\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ এবং কিছু মূল তথ্য হাইলাইট করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"আমার শহর\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আমার শহর: [আপনার শহরের নাম]\"।\n* একটি `<p>` প্যারাগ্রাফে আপনার শহর সম্পর্কে সাধারণ বর্ণনা দিন।\n* আরেকটি `<p>` প্যারাগ্রাফে শহরের **কিছু বিশেষ স্থান বা বৈশিষ্ট্য বোল্ড** করে উল্লেখ করুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার শহর</title>
+</head>
+<body>
+    <h1>আমার শহর: জয়পুরহাট</h1>
+    <p>জয়পুরহাট বাংলাদেশের রাজশাহী বিভাগের একটি ছোট এবং শান্ত শহর। এটি তার কৃষি উৎপাদন, বিশেষ করে আলু এবং ধান চাষের জন্য পরিচিত।</p>
+    <p>শহরের কিছু <strong>বিশেষ বৈশিষ্ট্য</strong> হল: <strong>প্রাচীন বৌদ্ধ বিহার (পাহাড়পুর)</strong>, <strong>জমজমাট স্থানীয় বাজার</strong> এবং <strong>সবুজ ফসলের মাঠ</strong>।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১৭: স্বাস্থ্য টিপস\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ এবং লাইন ব্রেক ব্যবহার করে কিছু স্বাস্থ্য টিপস দেওয়া।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"স্বাস্থ্য টিপস\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"সুস্থ থাকার সহজ টিপস\"।\n* একটি `<h2>` হেডিং দিয়ে \"দৈনিক টিপস\" লিখুন।\n* একটি `<p>` প্যারাগ্রাফে তিনটি বা চারটি স্বাস্থ্য টিপস লিখুন। প্রতিটি টিপস নতুন লাইনে শুরু করতে `<br>` ট্যাগ ব্যবহার করুন (যেমন: \"১. পর্যাপ্ত ঘুম নিশ্চিত করুন।<br>২. প্রচুর পানি পান করুন।<br>৩. নিয়মিত ব্যায়াম করুন।\")।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্বাস্থ্য টিপস</title>
+</head>
+<body>
+    <h1>সুস্থ থাকার সহজ টিপস</h1>
+    <h2>দৈনিক টিপস</h2>
+    <p>১. পর্যাপ্ত ঘুম নিশ্চিত করুন।<br>
+    ২. প্রচুর পানি পান করুন।<br>
+    ৩. নিয়মিত ব্যায়াম করুন।<br>
+    ৪. পুষ্টিকর খাবার গ্রহণ করুন।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১৮: একটি ছোট বিজ্ঞাপন\n\nলক্ষ্য: হেডিং, প্যারাগ্রাফ, বোল্ড এবং ইটালিক টেক্সট ব্যবহার করে একটি ছোট বিজ্ঞাপন তৈরি করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"আমাদের নতুন কোর্স!\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"**ওয়েব ডেভেলপমেন্ট কোর্স**\"।\n* একটি `<h2>` হেডিং দিয়ে \"এখনই ভর্তি হোন!\" লিখুন।\n* একটি `<p>` প্যারাগ্রাফে কোর্সের **প্রধান সুবিধাগুলো বোল্ড** করে লিখুন।\n* আরেকটি `<p>` প্যারাগ্রাফে **ভর্তির শেষ তারিখ ইটালিক** করে উল্লেখ করুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের নতুন কোর্স!</title>
+</head>
+<body>
+    <h1><strong>ওয়েব ডেভেলপমেন্ট কোর্স</strong></h1>
+    <h2>এখনই ভর্তি হোন!</h2>
+    <p>আমাদের নতুন ওয়েব ডেভেলপমেন্ট কোর্সে শিখুন আধুনিক ওয়েব তৈরির কৌশল।<br>
+    কোর্সের <strong>প্রধান সুবিধাগুলো</strong>: <strong>অভিজ্ঞ প্রশিক্ষক</strong>, <strong>প্র্যাকটিক্যাল প্রজেক্ট</strong> এবং <strong>চাকরির সহায়তা</strong>।</p>
+    <p><em>ভর্তির শেষ তারিখ: ৩১শে আগস্ট, ২০২৫।</em></p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ১৯: একটি সাধারণ প্রশ্নোত্তর সেশন (Q&A)\n\nলক্ষ্য: হেডিং এবং প্যারাগ্রাফ ব্যবহার করে একটি সহজ প্রশ্নোত্তর বিন্যাস তৈরি করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"প্রশ্নোত্তর সেশন\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"সাধারণ প্রশ্নোত্তর (Q&A)\"।\n* প্রথম প্রশ্নটি একটি `<h2>` হেডিং দিয়ে লিখুন (যেমন: \"প্রশ্ন ১: HTML কেন শিখব?\")।\n* প্রশ্নটির উত্তর একটি `<p>` প্যারাগ্রাফে দিন।\n* এভাবে আরও একটি প্রশ্ন এবং তার উত্তর যোগ করুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>প্রশ্নোত্তর সেশন</title>
+</head>
+<body>
+    <h1>সাধারণ প্রশ্নোত্তর (Q&A)</h1>
+    <h2>প্রশ্ন ১: HTML কেন শিখব?</h2>
+    <p>উত্তর: HTML হল ওয়েবপেজ তৈরির মূল ভাষা। এটি ছাড়া কোনো ওয়েবসাইট তৈরি করা সম্ভব নয়, তাই ওয়েব ডেভেলপমেন্ট শেখার জন্য এটি প্রথম ধাপ।</p>
+    <h2>প্রশ্ন ২: HTML কি একটি প্রোগ্রামিং ভাষা?</h2>
+    <p>উত্তর: না, HTML একটি প্রোগ্রামিং ভাষা নয়। এটি একটি মার্কআপ ভাষা, যা ওয়েবপেজের কাঠামো তৈরি করতে ব্যবহৃত হয়।</p>
+</body>
+</html>`
+            },
+            {
+                question: "প্রজেক্ট ২০: একটি ব্যক্তিগত প্রোফাইল (মৌলিক)\n\nলক্ষ্য: হেডিং এবং প্যারাগ্রাফ ব্যবহার করে নিজের সম্পর্কে একটি সংক্ষিপ্ত প্রোফাইল তৈরি করা।\n\nকী করতে হবে:\n* একটি নতুন HTML ফাইল তৈরি করুন।\n* পেজের শিরোনাম দিন \"আমার প্রোফাইল\"।\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"আমার প্রোফাইল\"।\n* একটি `<h2>` হেডিং দিয়ে আপনার নাম লিখুন।\n* একটি `<p>` প্যারাগ্রাফে আপনার **শখগুলো বোল্ড** করে লিখুন।\n* আরেকটি `<p>` প্যারাগ্রাফে আপনার **প্রিয় কাজ** বা **লক্ষ্য** সম্পর্কে লিখুন।",
+                code: `<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমার প্রোফাইল</title>
+</head>
+<body>
+    <h1>আমার প্রোফাইল</h1>
+    <h2>আপনার নাম</h2>
+    <p>আমার <strong>শখগুলো</strong> হল: <strong>বই পড়া</strong>, <strong>নতুন কিছু শেখা</strong> এবং <strong>ভ্রমণ করা</strong>।</p>
+    <p>আমার লক্ষ্য হল একজন দক্ষ ওয়েব ডেভেলপার হওয়া এবং প্রযুক্তির মাধ্যমে মানুষের জীবনকে সহজ করে তোলা।</p>
+</body>
+</html>`
+            }
+        ];
+
+        const projectsContainer = document.getElementById('projects-container');
+
+        projects.forEach((project, index) => {
+            const projectDiv = document.createElement('div');
+            projectDiv.className = 'project-container';
+
+            // Main project title and inner toggle button for detailed question
+            const mainQuestionWrapper = document.createElement('div');
+            mainQuestionWrapper.className = 'flex justify-between items-center mb-4';
+
+            const questionParts = project.question.split('\n\n');
+            const mainProjectTitleText = questionParts[0];
+            const detailedInstructionsText = questionParts.slice(1).join('\n\n');
+
+            const mainQuestionTitle = document.createElement('h3');
+            mainQuestionTitle.className = 'text-xl font-semibold flex-grow'; // Removed text-gray-900, now uses custom CSS
+            mainQuestionTitle.textContent = mainProjectTitleText;
+
+            const innerToggleButton = document.createElement('button');
+            innerToggleButton.className = 'ml-4 p-2 rounded-full focus:outline-none transition duration-300 ease-in-out inner-toggle-button'; // Uses custom CSS
+            innerToggleButton.innerHTML = '&#9660;'; // Down arrow
+
+            mainQuestionWrapper.appendChild(mainQuestionTitle);
+            mainQuestionWrapper.appendChild(innerToggleButton);
+            projectDiv.appendChild(mainQuestionWrapper);
+
+            // Detailed question content (initially hidden)
+            const detailedContentDiv = document.createElement('div');
+            detailedContentDiv.className = 'hidden p-4 rounded-lg mb-4 detailed-content-div'; // Uses custom CSS
+            const detailedParagraph = document.createElement('p');
+            detailedParagraph.className = 'whitespace-pre-wrap';
+            detailedParagraph.textContent = detailedInstructionsText;
+            detailedContentDiv.appendChild(detailedParagraph);
+            projectDiv.appendChild(detailedContentDiv);
+
+            // Event listener for inner toggle (detailed question)
+            innerToggleButton.addEventListener('click', () => {
+                detailedContentDiv.classList.toggle('hidden');
+                innerToggleButton.innerHTML = detailedContentDiv.classList.contains('hidden') ? '&#9660;' : '&#9650;'; // Toggle arrow
+            });
+
+            // Outer toggle button (for code/preview)
+            const outerToggleButton = document.createElement('button');
+            outerToggleButton.className = 'font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out outer-toggle-button'; // Uses custom CSS
+            outerToggleButton.textContent = 'সমাধান দেখুন';
+            projectDiv.appendChild(outerToggleButton);
+
+            // Code and preview content (initially hidden)
+            const codePreviewContentDiv = document.createElement('div');
+            codePreviewContentDiv.className = 'hidden mt-4 rounded-lg overflow-hidden'; // Removed default border, now uses custom CSS
+
+            const innerFlexDiv = document.createElement('div');
+            innerFlexDiv.className = 'flex flex-col md:flex-row';
+
+            // Code Column with Title
+            const codeColumn = document.createElement('div');
+            codeColumn.className = 'md:w-1/2 p-4'; // Removed default bg, now uses custom CSS
+            const codeTitle = document.createElement('h4');
+            codeTitle.className = 'text-lg box-title'; // Uses custom CSS
+            codeTitle.textContent = 'কোড'; // Changed title
+            codeColumn.appendChild(codeTitle);
+            const preTag = document.createElement('pre');
+            preTag.className = 'code-block'; // Applied code-block class here, uses custom CSS
+            const codeTag = document.createElement('code');
+            codeTag.textContent = project.code;
+            preTag.appendChild(codeTag);
+            codeColumn.appendChild(preTag);
+            innerFlexDiv.appendChild(codeColumn);
+
+            // Preview Column with Title
+            const previewColumn = document.createElement('div');
+            previewColumn.className = 'md:w-1/2 p-4 flex flex-col items-center justify-center'; // Removed default bg and border-l, now uses custom CSS
+            const previewTitle = document.createElement('h4');
+            previewTitle.className = 'text-lg box-title'; // Uses custom CSS
+            previewTitle.textContent = 'কোড প্রিভিউ'; // Changed title
+            previewColumn.appendChild(previewTitle);
+            const iframe = document.createElement('iframe');
+            iframe.className = 'preview-frame'; // Uses custom CSS
+            iframe.setAttribute('sandbox', 'allow-same-origin'); // Minimal sandbox for basic HTML
+            previewColumn.appendChild(iframe);
+            innerFlexDiv.appendChild(previewColumn);
+
+            codePreviewContentDiv.appendChild(innerFlexDiv);
+            projectDiv.appendChild(codePreviewContentDiv);
+            projectsContainer.appendChild(projectDiv);
+
+            // Event listener for outer toggle (code/preview)
+            outerToggleButton.addEventListener('click', () => {
+                codePreviewContentDiv.classList.toggle('hidden');
+                if (!codePreviewContentDiv.classList.contains('hidden')) {
+                    iframe.srcdoc = project.code;
+                    outerToggleButton.textContent = 'সমাধান লুকান';
+                } else {
+                    iframe.srcdoc = ''; // Clear iframe when hidden
+                    outerToggleButton.textContent = 'সমাধান দেখুন';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
