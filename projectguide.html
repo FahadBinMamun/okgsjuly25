@@ -283,7 +283,7 @@
 </html>`
             },
             {
-                question: "প্রজেক্ট ৫: একটি অনুপ্রেরণামূলক বার্তা\\n\\nলক্ষ্য: `<blockquote>` এবং ইটালিক (`<em>` বা `<i>`) টেক্সট ব্যবহার করা।\\n\\nকী করতে হবে:\\n* একটি নতুন HTML ফাইল তৈরি করুন।\\n* পেজের শিরোনাম দিন \"অনুপ্রেরণামূলক বার্তা\"।\\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"দিনের সেরা উক্তি\"।\\n* একটি `<blockquote>` ট্যাগের মধ্যে একটি অনুপ্রেরণামূলক উক্তি লিখুন।\\n* `<blockquote>` ট্যাগের নিচে একটি `<p>` প্যারাগ্রাফে উক্তিটি কার বলা, তা **ইটালিক** করে উল্লেখ করুন (যেমন: \"*নেলসন ম্যান্ডেলা*\")।",
+                question: "প্রজেক্ট ৫: একটি অনুপ্রেরণামূলক বার্তা\\n\\nলক্ষ্য: `blockquote` এবং ইটালিক (`<em>` বা `<i>`) টেক্সট ব্যবহার করা।\\n\\nকী করতে হবে:\\n* একটি নতুন HTML ফাইল তৈরি করুন।\\n* পেজের শিরোনাম দিন \"অনুপ্রেরণামূলক বার্তা\"।\\n* `<body>` ট্যাগের মধ্যে একটি `<h1>` হেডিং দিন \"দিনের সেরা উক্তি\"।\\n* একটি `<blockquote>` ট্যাগের মধ্যে একটি অনুপ্রেরণামূলক উক্তি লিখুন।\\n* `<blockquote>` ট্যাগের নিচে একটি `<p>` প্যারাগ্রাফে উক্তিটি কার বলা, তা **ইটালিক** করে উল্লেখ করুন (যেমন: \"*নেলসন ম্যান্ডেলা*\")।",
                 code: `<!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -604,8 +604,9 @@
             const detailedContentDiv = document.createElement('div');
             detailedContentDiv.className = 'hidden p-4 rounded-lg mb-4 detailed-content-div'; // Uses custom CSS
             const detailedParagraph = document.createElement('p');
+            // Fix: Replace escaped newlines with actual newlines for proper rendering
+            detailedParagraph.textContent = detailedInstructionsText.replace(/\\n/g, '\n');
             detailedParagraph.className = 'whitespace-pre-wrap';
-            detailedParagraph.textContent = detailedInstructionsText;
             detailedContentDiv.appendChild(detailedParagraph);
             projectDiv.appendChild(detailedContentDiv);
 
