@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPCG Web Development Contest, July 2025</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.1">
+    <!-- Tally.so embed script added here -->
+    <script async src="https://tally.so/widgets/embed.js"></script>
+    <style>
+        /* Custom styles for the animated floating button */
+        .floating-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        .floating-button {
+            position: relative;
+            overflow: hidden; /* Important for gradient animation */
+            background-color: transparent; /* Will be covered by pseudo-element */
+            color: white;
+            padding: 15px 25px; /* Increased padding for better look */
+            border-radius: 9999px; /* Fully rounded */
+            font-weight: bold;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column; /* Stack text vertically */
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-width: 180px; /* Ensure a minimum width */
+        }
+
+        .floating-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Animated gradient background */
+            background: linear-gradient(135deg, #025373, #037E8C, #F29E38, #A66224);
+            background-size: 400% 400%; /* Larger size for animation */
+            animation: gradientAnimation 10s ease infinite; /* Animation duration and type */
+            z-index: -1; /* Behind the button content */
+            border-radius: 9999px; /* Match button border-radius */
+        }
+
+        .floating-button:hover {
+            transform: translateY(-5px) scale(1.02); /* More pronounced hover effect */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-button-main-text {
+            font-size: 1.1rem; /* Larger main text */
+            margin-bottom: 4px; /* Space between main and subtitle */
+        }
+
+        .floating-button-subtitle {
+            font-size: 0.85rem; /* Smaller subtitle */
+            opacity: 0.9; /* Slightly transparent */
+        }
+
+        /* Keyframes for gradient animation */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* New custom gradient button style for the main content buttons */
+        .gradient-button {
+            background: linear-gradient(135deg, #025373, #037E8C, #F29E38, #A66224);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 9999px;
+            font-weight: bold;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+            min-width: 180px; /* Match floating button's min-width */
+            display: inline-block; /* To allow centering with text-center */
+            text-decoration: none; /* Remove underline for links */
+            text-align: center; /* Ensure text is centered within the button */
+        }
+
+        .gradient-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Custom styles for the moving announcement line (marquee) */
+        .announcement-bar {
+            /* Updated: Bluish gradient */
+            background: linear-gradient(90deg, #025373, #037E8C, #025373);
+            color: white;
+            padding: 10px 0;
+            margin-bottom: 24px; /* Space below the bar */
+            overflow: hidden; /* Hide overflow for marquee effect */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        }
+
+        .announcement-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            white-space: nowrap; /* Keep text on a single line */
+            /* Updated: Slower animation duration */
+            animation: marquee 30s linear infinite; /* Marquee animation */
+            display: inline-block; /* Essential for animation */
+            padding-left: 100%; /* Start text off-screen to the right */
+            will-change: transform; /* Optimize for animation */
+            font-family: 'Tiro Bangla', sans-serif; /* Added font-family */
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Styles for the pop-up button in the top right corner */
+        .top-right-button-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        /* Updated: top-right-button now uses the same gradient and animation as floating-button */
+        .top-right-button {
+            position: relative;
+            overflow: hidden;
+            background-color: transparent;
+            color: white;
+            padding: 10px 15px; /* Slightly smaller padding than floating button */
+            border-radius: 9999px;
+            font-weight: bold;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 150px; /* Adjust min-width for smaller button */
+            justify-content: center; /* Center content within the button */
+            font-family: 'Tiro Bangla', sans-serif; /* Added font-family */
+        }
+
+        .top-right-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #025373, #037E8C, #F29E38, #A66224);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            z-index: -1;
+            border-radius: 9999px;
+        }
+
+        .top-right-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+        }
+
+
+        /* Pop-up Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1001; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            width: 90%; /* Responsive width */
+            max-width: 700px; /* Max width for larger screens */
+            position: relative;
+            animation: fadeInScale 0.3s ease-out forwards; /* Animation */
+            font-family: 'Tiro Bangla', sans-serif; /* Added font-family */
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #025373;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content h2 {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #025373;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            font-family: 'Tiro Bangla', sans-serif; /* Added font-family */
+        }
+
+        .modal-content ul {
+            list-style: none; /* Remove default bullet points */
+            padding: 0;
+        }
+
+        .modal-content ul li {
+            background-color: #e9f5f5; /* Light background for list items */
+            border-left: 5px solid #037E8C; /* Accent border */
+            margin-bottom: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Tiro Bangla', sans-serif; /* Added font-family */
+        }
+
+        .modal-content ul li strong {
+            color: #025373; /* Darker color for date/title */
+            font-family: 'Tiro Bangla', sans-serif; /* Added font-family */
+        }
+
+        /* Font Awesome for icons */
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css");
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <!-- ছবির লিঙ্ক পরিবর্তন করা হয়েছে -->
+            <img src="images/alpcg_logo.png" alt="ALPCG Logo" class="mx-auto mb-4" style="max-width: 200px; height: auto;">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">ALPCG Web Development Contest, July 2025</h1>
+            <p class="text-xl mt-2 text-[#037E8C]" style="font-family: 'Tiro Bangla', sans-serif;">এই পরিকল্পনা প্রয়োজন অনুসারে যেকোনো সময় পরিবর্তন করা হতে পারে।</p>
+        </header>
+
+        <!-- New: Moving Announcement Line (Marquee) -->
+        <section class="announcement-bar">
+            <div class="announcement-text">
+                ✨ প্রিয় শিক্ষার্থীরা, ক্লাবের পক্ষ থেকে তোমাদের জন্য প্রতিদিন দুটি অ্যাসাইনমেন্ট থাকবে: ১. নিয়মিত নির্দেশনা অনুযায়ী কুইজে অংশগ্রহণ করা এবং ২. নির্দেশনা অনুযায়ী HTML প্রোজেক্ট তৈরি করা। 🚀 আজকের অ্যাসাইনমেন্ট (জুলাই ২৩, ২০২৫): ১. ----- 🌟 কুইজ এবং প্রোজেক্ট সম্পন্ন করে এই সাইটে এসে নির্ধারিত ফর্ম পূরণ করে জমা দিতে ভুলো না! শুভকামনা!
+            </div>
+        </section>
+
+        <section class="gradient-bg text-white rounded-2xl p-8 mb-12 shadow-2xl">
+            <h2 class="text-3xl font-bold text-center mb-8" style="font-family: 'Tiro Bangla', sans-serif;">আমাদের চ্যালেঞ্জ ও সুযোগ (প্রাথমিক অনুমান)</h2>
+            <p class="text-center mb-6 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">এই প্রতিযোগিতার জন্য আমাদের কাছে যে সংস্থান এবং পরিস্থিতি রয়েছে, তার একটি প্রাথমিক চিত্র এখানে দেওয়া হলো। চূড়ান্ত সংখ্যা পরিবর্তিত হতে পারে।</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="kpi-card">
+                    <p class="text-6xl font-bold kpi-number" style="font-family: 'Tiro Bangla', sans-serif;">৫২</p>
+                    <p class="mt-2 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">জন প্রত্যাশিত শিক্ষার্থী</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="text-6xl font-bold kpi-number" style="font-family: 'Tiro Bangla', sans-serif;">৩০</p>
+                    <p class="mt-2 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">টি উপলব্ধ কম্পিউটার</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="text-6xl font-bold kpi-number" style="font-family: 'Tiro Bangla', sans-serif;">১২</p>
+                    <p class="mt-2 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">দিনের প্রস্তাবিত সময়সীমা</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">প্রস্তাবিত সমাধান</h2>
+            <p class="text-center mb-6 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">উপলব্ধ সংস্থানগুলির সর্বোত্তম ব্যবহার নিশ্চিত করতে এবং একটি কার্যকর শেখার পরিবেশ তৈরি করতে এই পদ্ধতিগুলি প্রস্তাব করা হচ্ছে।</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="section-bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#037E8C]" style="font-family: 'Tiro Bangla', sans-serif;">১. পেয়ার প্রোগ্রামিং মডেল</h3>
+                    <p class="mb-6 text-center text-gray-700" style="font-family: 'Tiro Bangla', sans-serif;">কম্পিউটার ঘাটতি মোকাবেলায় প্রতিটি কম্পিউটারে দুজন শিক্ষার্থী কাজ করবে। এটি সহযোগিতা বাড়ায় এবং শেখার প্রক্রিয়াকে দ্রুত করে। এই মডেলটি চূড়ান্ত পরিকল্পনায় অন্তর্ভুক্ত থাকবে বলে আশা করা হচ্ছে।</p>
+                    <div class="flex justify-around items-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <span class="text-4xl kpi-number" style="font-family: 'Tiro Bangla', sans-serif;">⌨️</span>
+                            <p class="font-bold mt-2" style="font-family: 'Tiro Bangla', sans-serif;">অপারেটর</p>
+                            <p class="text-sm" style="font-family: 'Tiro Bangla', sans-serif;">কোড লেখে</p>
+                        </div>
+                        <div class="text-4xl text-[#F29E38] font-bold" style="font-family: 'Tiro Bangla', sans-serif;">↔️</div>
+                        <div class="text-center">
+                            <span class="text-4xl kpi-number" style="font-family: 'Tiro Bangla', sans-serif;">👀</span>
+                            <p class="font-bold mt-2" style="font-family: 'Tiro Bangla', sans-serif;">নেভিগেটর</p>
+                            <p class="text-sm" style="font-family: 'Tiro Bangla', sans-serif;">পর্যালোচনা করে</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#037E8C]" style="font-family: 'Tiro Bangla', sans-serif;">২. ল্যাব রোটেশন মডেল</h3>
+                    <p class="mb-6 text-center text-gray-700" style="font-family: 'Tiro Bangla', sans-serif;">ক্লাসের সময়কে দুই ভাগে ভাগ করা হবে, যেন সবাই সক্রিয়ভাবে শিখতে পারে এবং সময় নষ্ট না হয়। এই রোটেশন পদ্ধতিটি বাস্তবায়নের জন্য আরও বিস্তারিত আলোচনার প্রয়োজন হতে পারে।</p>
+                    <div class="flex justify-around items-center p-4 bg-gray-50 rounded-lg">
+                        <div class="text-center">
+                            <span class="text-4xl kpi-number" style="font-family: 'Tiro Bangla', sans-serif;">💻</span>
+                            <p class="font-bold mt-2" style="font-family: 'Tiro Bangla', sans-serif;">ল্যাব সেশন</p>
+                            <p class="text-sm" style="font-family: 'Tiro Bangla', sans-serif;">হাতে-কলমে কোডিং</p>
+                        </div>
+                        <div class="text-4xl text-[#F29E38] font-bold" style="font-family: 'Tiro Bangla', sans-serif;">🔄</div>
+                        <div class="text-center">
+                            <span class="text-4xl kpi-number" style="font-family: 'Tiro Bangla', sans-serif;">📝</span>
+                            <p class="font-bold mt-2" style="font-family: 'Tiro Bangla', sans-serif;">অফলাইন সেশন</p>
+                            <p class="text-sm" style="font-family: 'Tiro Bangla', sans-serif;">পরিকল্পনা ও আলোচনা</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">প্রস্তাবিত পাঠ্যক্রম ও সম্পদ</h2>
+            <p class="text-center mb-6 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">এই প্রতিযোগিতার জন্য একটি সংক্ষিপ্ত এবং কার্যকর পাঠ্যক্রমের প্রস্তাব করা হয়েছে, যা নতুন শিক্ষার্থীদের জন্য মৌলিক বিষয়গুলিতে মনোযোগ দেবে।</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="section-bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-4 text-[#037E8C]" style="font-family: 'Tiro Bangla', sans-serif;">মূল HTML ট্যাগসমূহ</h3>
+                    <p class="mb-4 text-gray-700" style="font-family: 'Tiro Bangla', sans-serif;">আমরা শুধুমাত্র সেইসব ট্যাগ শেখাবো যা একটি কার্যকরী ওয়েবপেজ তৈরির জন্য অপরিহার্য। এই তালিকাটি চূড়ান্ত আলোচনার পর পরিবর্তিত হতে পারে।</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tag-html text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;html&gt;</span>
+                        <span class="tag-html text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;head&gt;</span>
+                        <span class="tag-html text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;body&gt;</span>
+                        <span class="tag-html text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;h1&gt;-&lt;h6&gt;</span>
+                        <span class="tag-css text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;p&gt;</span>
+                        <span class="tag-css text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;img&gt;</span>
+                        <span class="tag-css text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;a&gt;</span>
+                        <span class="tag-js text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;ul&gt;</span>
+                        <span class="tag-js text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;ol&gt;</span>
+                        <span class="tag-js text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;li&gt;</span>
+                        <span class="tag-misc text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">&lt;div&gt;</span>
+                        <span class="tag-misc text-white px-3 py-1 rounded-full text-sm font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">style=""</span>
+                    </div>
+                    <p class="mt-4 text-sm text-red-600 font-semibold" style="font-family: 'Tiro Bangla', sans-serif;">যা প্রাথমিকভাবে বাদ দেওয়া হয়েছে: Forms, Tables, জটিল CSS, JavaScript.</p>
+                    <!-- এখানে নতুন লিঙ্কটি যোগ করা হয়েছে -->
+                    <div class="text-center mt-8">
+                        <a href="web_dev_guide.html" class="gradient-button" style="font-family: 'Tiro Bangla', sans-serif;">HTML পরিচিতি ও ওয়েব ডেভেলপমেন্ট গাইড দেখুন</a>
+                    </div>
+                    <div class="text-center mt-4"> <!-- Added mt-4 here for spacing between buttons -->
+                        <a href="projectguide.html" class="gradient-button" style="font-family: 'Tiro Bangla', sans-serif;">HTML প্রজেক্ট গাইড কন্টেস্টের জন্যে</a>
+                    </div>
+                </div>
+                <div class="section-bg-white p-6 rounded-2xl shadow-md">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#037E8C]" style="font-family: 'Tiro Bangla', sans-serif;">সময় বন্টন (প্রস্তাবিত)</h3>
+                    <div class="chart-container">
+                        <canvas id="timeAllocationChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm mt-4 text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">এই সময় বন্টনটি একটি প্রস্তাবনা এবং চূড়ান্ত সময়সূচী ভিন্ন হতে পারে।</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">প্রতিযোগিতার প্রস্তাবিত সময়রেখা (১২ দিন)</h2>
+            <p class="text-center mb-6 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">এই সময়রেখাটি একটি খসড়া এবং প্রতিযোগিতার চূড়ান্ত তারিখ ও কার্যক্রম পরিবর্তিত হতে পারে।</p>
+            <div class="relative pl-8 timeline-line">
+                <div class="timeline-item mb-8">
+                    <h4 class="text-xl font-bold text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">দিন ১-৫: শেখা 📚</h4>
+                    <p class="text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">৬-৭টি ক্লাসের মাধ্যমে মৌলিক HTML ট্যাগ ও ধারণাগুলোর উপর সম্পূর্ণ মনোযোগ।</p>
+                </div>
+                <div class="timeline-item mb-8">
+                    <h4 class="text-xl font-bold text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">দিন ৬-৯: তৈরি করা 💻</h4>
+                    <p class="text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">শিক্ষার্থীরা তাদের প্রোজেক্ট (ব্যক্তিগত প্রোফাইল, ইভেন্ট পেজ, বা রেসিপি পেজ) তৈরি করবে।</p>
+                </div>
+                <div class="timeline-item">
+                    <h4 class="text-xl font-bold text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">দিন ১০-১২: জমা ও মূল্যায়ন 🏆</h4>
+                    <p class="text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">প্রোজেক্ট জমা নেওয়া হবে এবং একটি স্বচ্ছ রুব্রিকের মাধ্যমে মূল্যায়ন করা হবে।</p>
+                </div>
+                <div class="timeline-item">
+                    <h4 class="text-xl font-bold text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">চূড়ান্ত প্রতিযোগিতা: ৩১শে জুলাই 🗓️</h4>
+                    <p class="text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">সমস্ত সেশন শেষে, ৩১শে জুলাই একই ল্যাবে চূড়ান্ত প্রতিযোগিতা অনুষ্ঠিত হবে। প্রতিযোগিতার বিস্তারিত নিয়মাবলী ও সময়সূচী অংশগ্রহণের পূর্বে জানানো হবে। ৫২ জন আগ্রহী শিক্ষার্থীর মধ্যে যারা প্রস্তুতি সেশনে অংশগ্রহণ করবে, তাদের নিয়েই এই প্রতিযোগিতা আয়োজিত হবে।</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 section-bg-white p-6 rounded-2xl shadow-md">
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">গুরুত্বপূর্ণ ঘোষণা ও নিয়মাবলী</h2>
+            <p class="text-center mb-6 text-lg text-gray-700" style="font-family: 'Tiro Bangla', sans-serif;">এই প্রতিযোগিতার সাফল্যের জন্য এবং একটি সুশৃঙ্খল পরিবেশ বজায় রাখার জন্য কিছু গুরুত্বপূর্ণ নিয়মাবলী এখানে উল্লেখ করা হলো। এই নিয়মাবলী প্রয়োজন অনুসারে পরিবর্তিত হতে পারে।</p>
+            <ul class="list-disc list-inside space-y-3 text-gray-700" style="font-family: 'Tiro Bangla', sans-serif;">
+                <li><strong>ক্লাব সদস্য:</strong> ক্লাবের সকল সদস্যের জন্য এই প্রতিযোগিতায় অংশগ্রহণ বাধ্যতামূলক।</li>
+                <li><strong>নতুন অংশগ্রহণকারী:</strong> ৫২ জন আগ্রহী শিক্ষার্থীর মধ্যে অনেকেই বর্তমানে ক্লাবের সদস্য নন। তাদের উৎসাহকে স্বাগত জানানো হচ্ছে এবং তারা এই সেশনগুলোর মাধ্যমে ক্লাবে যোগদানের সুযোগ পাবেন।</li>
+                <li><strong>উপস্থিতি:</strong> গুরুতর অসুস্থতা বা পূর্বানুমতি ছাড়া টানা দুই দিন অনুপস্থিত থাকলে সদস্যপদ স্থগিত (revoked) করা হতে পারে।</li>
+                <li><strong>পুনরায় যোগদান:</strong> সদস্যপদ স্থগিত হওয়ার পর শুধুমাত্র বিশেষ অনুমতি সাপেক্ষেই ক্লাবের কার্যক্রমে পুনরায় যোগদান করা যাবে।</li>
+                <li><strong>উপস্থিতি খাতা:</strong> ক্লাবের কার্যক্রমে যোগদানের সময় প্রতিবার একটি উপস্থিতি খাতায় (Attendance Register) সাইন-ইন এবং সাইন-আউট করা বাধ্যতামূলক।</li>
+                <li><strong>সক্রিয় অংশগ্রহণ:</strong> প্রতিটি সেশনে সক্রিয়ভাবে অংশগ্রহণ এবং প্রশ্ন জিজ্ঞাসা করে শেখার আগ্রহ প্রদর্শন করায় উৎসাহিত করা হচ্ছে।</li>
+                <li><strong>সহযোগিতা:</strong> পেয়ার প্রোগ্রামিং মডেলের অংশ হিসেবে সহপাঠীদের সাথে সহযোগিতা এবং জ্ঞান ভাগ করে নেওয়া অত্যন্ত গুরুত্বপূর্ণ।</li>
+            </ul>
+            <p class="text-center text-sm mt-6 text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">এই নিয়মাবলী প্রতিযোগিতার সুষ্ঠু পরিচালনার জন্য অপরিহার্য।</p>
+        </section>
+
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#025373]" style="font-family: 'Tiro Bangla', sans-serif;">মূল্যায়ন প্রক্রিয়া</h2>
+            <p class="text-center mb-6 text-lg" style="font-family: 'Tiro Bangla', sans-serif;">প্রতিযোগিতার জন্য একটি স্বচ্ছ এবং ন্যায্য মূল্যায়ন পদ্ধতির প্রস্তাব করা হয়েছে। চূড়ান্ত রুব্রিক সামান্য পরিবর্তিত হতে পারে।</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="section-bg-white p-6 rounded-2xl shadow-md order-2 md:order-1">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#037E8C]" style="font-family: 'Tiro Bangla', sans-serif;">মূল্যায়ন রুব্রিক</h3>
+                    <div class="chart-container">
+                        <canvas id="evaluationRubricChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm mt-4 text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">এই রুব্রিক চূড়ান্ত আলোচনার পর পরিবর্তিত হতে পারে।</p>
+                </div>
+                <div class="order-1 md:order-2">
+                    <p class="text-lg mb-4 text-gray-700" style="font-family: 'Tiro Bangla', sans-serif;">প্রতিটি প্রোজেক্টকে ৪টি প্রধান বিষয়ের উপর ভিত্তি করে মূল্যায়ন করা হবে। এর লক্ষ্য হলো কারিগরি দক্ষতার পাশাপাশি সৃজনশীলতাকেও উৎসাহিত করা, তবে মৌলিক বিষয়গুলোতেই থাকবে মূল ফোকাস।</p>
+                    <ul class="list-none space-y-2" style="font-family: 'Tiro Bangla', sans-serif;">
+                        <li class="flex items-start"><span class="checkmark-icon mr-2">✔️</span> <strong>HTML কাঠামো (৪০%):</strong> সঠিক এবং পরিষ্কার কোড।</li>
+                        <li class="flex items-start"><span class="checkmark-icon mr-2">✔️</span> <strong>বিষয়বস্তু ও উপাদান (৩০%):</strong> ট্যাগের সঠিক ব্যবহার।</li>
+                        <li class="flex items-start"><span class="checkmark-icon mr-2">✔️</span> <strong>কার্যকারিতা (১৫%):</strong> লিঙ্ক ও ছবি ঠিকমতো কাজ করছে কিনা।</li>
+                        <li class="flex items-start"><span class="checkmark-icon mr-2">✔️</span> <strong>মৌলিকতা ও ডিজাইন (১৫%):</strong> সীমিত সামর্থ্যে সৃজনশীলতা।</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-300">
+            <p class="text-gray-600" style="font-family: 'Tiro Bangla', sans-serif;">এই পরিকল্পনাটি ALPCG Web Development Contest, July 2025-কে সফল করতে প্রয়োজন অনুসারে যেকোনো সময় পরিবর্তিত হতে পারে।</p>
+            <p class="text-sm text-gray-500 mt-2" style="font-family: 'Tiro Bangla', sans-serif;">সর্বস্বত্ব সংরক্ষিত © ২০২৫</p>
+            <div class="hidden-credit">
+                <p style="font-family: 'Tiro Bangla', sans-serif;">Overall Credit: ALPCG Team</p>
+                <p style="font-family: 'Tiro Bangla', sans-serif;">Teaching & Development: Fahad Bin Mamun</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Floating Tally.so button -->
+    <div class="floating-button-container">
+        <button class="floating-button"
+                data-tally-open="wo8xJ1" data-tally-emoji-text="👋" data-tally-emoji-animation="wave" data-tally-form-events-forwarding="1">
+            <span class="floating-button-main-text" style="font-family: 'Tiro Bangla', sans-serif;">অ্যাসাইনমেন্ট জমা দিন</span>
+            <span class="floating-button-subtitle" style="font-family: 'Tiro Bangla', sans-serif;">আপনার কুইজ ফলাফল ও প্রোজেক্ট জমা দিন</span>
+        </button>
+    </div>
+
+    <!-- New: Top Right Pop-up Button -->
+    <div class="top-right-button-container">
+        <button id="openNoticeButton" class="top-right-button">
+            <i class="fas fa-bullhorn"></i> <!-- Font Awesome icon for announcement -->
+            <span style="font-family: 'Tiro Bangla', sans-serif;">নোটিশ বোর্ড</span>
+        </button>
+    </div>
+
+    <!-- New: Pop-up Modal for Notice/Roadmap -->
+    <div id="noticeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 style="font-family: 'Tiro Bangla', sans-serif;">ক্লাব অ্যাসাইনমেন্ট রোডম্যাপ</h2>
+            <ul style="font-family: 'Tiro Bangla', sans-serif;">
+                <li><i class="fas fa-calendar-check"></i> <strong>জুলাই ১৯, ২০২৫:</strong> প্রজেক্ট ১ ঃ নিজের সম্পর্কে লিখে একটি সাধারণ ওয়েবপেজ তৈরি।  </li>
+                <li><i class="fas fa-calendar-check"></i> <strong>জুলাই ২০, ২০২৫:</strong> প্রজেক্ট ২ ঃ বিদ্যালয় সম্পর্কে একটি সাধারণ ওয়েবপেজ তৈরি। </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২১, ২০২৫:</strong> প্রজেক্ট ৩ ঃ নিজের মোবাইল বা পছন্দের পণ্যের বিবরণ দিয়ে একটি সাধারণ ওয়েবপেজ তৈরি। </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২৩, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২৪, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২৫, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২৬, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২৭, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২৮, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ২৯, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ৩০, ২০২৫:</strong> </li>
+                <li><i class="fas fa-calendar-alt"></i> <strong>জুলাই ৩১, ২০২৫:</strong> </li>
+                <!-- Add more assignments here as needed -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Ensure all Chart.js initializations run after the entire page is loaded
+        window.onload = function() {
+            const chartColors = {
+                deepBlue: '#025373',
+                tealBlue: '#037E8C',
+                orange: '#F29E38',
+                darkOrange: '#A66224',
+                lightBackground: '#F8F4F0',
+                textColor: '#041B2D',
+                grayBorder: '#ccc'
+            };
+
+            // Updated: hindSiliguriFont object changed to Tiro Bangla
+            const hindSiliguriFont = {
+                family: "'Tiro Bangla', sans-serif",
+                size: 13,
+                weight: '500'
+            };
+
+            function wrapLabel(str, maxLen) {
+                if (str.length <= maxLen) {
+                    return str;
+                }
+                const words = str.split(' ');
+                let currentLine = '';
+                const lines = [];
+                for (let word of words) {
+                    if ((currentLine + word).length > maxLen) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            
+            const sharedTooltipCallback = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                return Array.isArray(label) ? label.join(' ') : label;
+                            }
+                        },
+                        titleFont: hindSiliguriFont,
+                        bodyFont: hindSiliguriFont
+                    }
+                }
+            };
+            
+            const timeAllocationCtx = document.getElementById('timeAllocationChart').getContext('2d');
+            new Chart(timeAllocationCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['তত্ত্বীয় ক্লাস', 'প্রোজেক্টের কাজ', 'পর্যালোচনা ও ব্রেনস্টর্মিং'],
+                    datasets: [{
+                        label: 'সময় বন্টন',
+                        data: [50, 35, 15],
+                        backgroundColor: [
+                            chartColors.deepBlue,
+                            chartColors.orange,
+                            chartColors.tealBlue
+                        ],
+                        borderColor: chartColors.lightBackground,
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: chartColors.textColor,
+                                font: hindSiliguriFont
+                            }
+                        },
+                        tooltip: sharedTooltipCallback.plugins.tooltip
+                    }
+                }
+            });
+
+            const evaluationRubricCtx = document.getElementById('evaluationRubricChart').getContext('2d');
+            new Chart(evaluationRubricCtx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        wrapLabel('HTML কাঠামো ও সিনট্যাক্স', 16), 
+                        wrapLabel('বিষয়বস্তু ও উপাদান ব্যবহার', 16),
+                        wrapLabel('কার্যকারিতা ও অভিজ্ঞতা', 16),
+                        wrapLabel('ভিজ্যুয়াল আবেদন ও মৌলিকতা', 16)
+                    ],
+                    datasets: [{
+                        label: 'মূল্যায়নের গুরুত্ব (শতাংশ)',
+                        data: [40, 30, 15, 15],
+                        backgroundColor: 'rgba(242, 158, 56, 0.2)', // orange with transparency
+                        borderColor: chartColors.orange,
+                        pointBackgroundColor: chartColors.orange,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: chartColors.orange,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: chartColors.grayBorder
+                            },
+                            grid: {
+                                color: chartColors.grayBorder
+                            },
+                            pointLabels: {
+                                color: chartColors.textColor,
+                                font: {
+                                    size: 12,
+                                    family: hindSiliguriFont.family
+                                }
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                backdropColor: 'transparent',
+                                color: chartColors.darkOrange,
+                                stepSize: 10,
+                                font: {
+                                    weight: 'bold',
+                                    family: hindSiliguriFont.family
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                           display: false
+                        },
+                        tooltip: sharedTooltipCallback.plugins.tooltip
+                    }
+                }
+            });
+
+            // JavaScript for the Pop-up Modal
+            const noticeModal = document.getElementById('noticeModal');
+            const openNoticeButton = document.getElementById('openNoticeButton');
+            const closeButton = document.querySelector('.close-button');
+
+            openNoticeButton.onclick = function() {
+                noticeModal.style.display = 'flex'; // Use flex to center content
+            }
+
+            closeButton.onclick = function() {
+                noticeModal.style.display = 'none';
+            }
+
+            // Close the modal if the user clicks anywhere outside of the modal content
+            window.onclick = function(event) {
+                if (event.target == noticeModal) {
+                    noticeModal.style.display = 'none';
+                }
+            }
+        }; // End of window.onload
+    </script>
+</body>
+</html>
