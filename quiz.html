@@ -424,7 +424,7 @@
         const EMAILJS_PUBLIC_KEY = "K6_HVb9wFTJ-wmLOS"; 
 
         const CORRECT_PIN = "7891";
-        const QUESTIONS_PER_QUIZ = 20; // Number of questions to pick for each quiz session (changed from 2 to 20)
+        const QUESTIONS_PER_QUIZ = 25; // Number of questions to pick for each quiz session (changed from 2 to 20)
         const TIME_PER_QUESTION = 15; // seconds
         const FEEDBACK_DELAY_MS = 1500; // time to show feedback before next question
 
@@ -2550,7 +2550,10 @@
   }
         ];
 
-        const secretCodes = ["ALPCG-QUIZ-VX7B", "ALPCG-QUIZ-P9QW", "ALPCG-QUIZ-R4ZL", "ALPCG-QUIZ-M2FK", "ALPCG-QUIZ-T8JH"];
+        //const secretCodes = ["ALPCG-QUIZ-VX7B", "ALPCG-QUIZ-P9QW", "ALPCG-QUIZ-R4ZL", "ALPCG-QUIZ-M2FK", "ALPCG-QUIZ-T8JH"];
+        
+        const secretCodes = ["ALPCG-QUIZ-G7IG", "ALPCG-QUIZ-HOV6", "ALPCG-QUIZ-IEN5", "ALPCG-QUIZ-FA4S", "ALPCG-QUIZ-IEB3"];
+
 
         // --- DOM ELEMENTS ---
         const pinEntrySection = document.getElementById('pin-entry-section');
@@ -2761,21 +2764,48 @@
             resultMessageElement.style.color = ''; // Reset color
 
             // Check for perfect score to award secret code and send email
-            if (score >= 17) { // Condition changed to score >= 17
-                resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! �";
-                resultMessageElement.classList.add('celebration-message');
-                const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
-                secretCodeDisplay.textContent = randomCode;
-                secretCodeContainer.classList.remove('hidden');
-                // Send email notification ONLY for a perfect score
-                sendEmailNotification(randomCode);
-            } else if (score >= currentQuizQuestions.length / 2) {
-                resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
-                resultMessageElement.style.color = '#037E8C';
-            } else {
-                resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন। হাল ছেড়ো না!";
-                resultMessageElement.style.color = '#EF476F';
-            }
+            //if (score >= 17) { // Condition changed from score >= 17
+            //    resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! �";
+             //   resultMessageElement.classList.add('celebration-message');
+            //    const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
+            //    secretCodeDisplay.textContent = randomCode;
+            //    secretCodeContainer.classList.remove('hidden');
+              //  // Send email notification ONLY for a perfect score
+           //     sendEmailNotification(randomCode);
+          //  } else if (score >= currentQuizQuestions.length / 2) {
+           //     resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
+            //    resultMessageElement.style.color = '#037E8C';
+           // } else {
+            //    resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন। হাল ছেড়ো না!";
+            //    resultMessageElement.style.color = '#EF476F';
+            //}
+       		if (score === 25) { // এই লাইনটি পরিবর্তিত হয়েছে: If (score >= 17) থেকে if (score === 25)
+  			  resultMessageElement.textContent = "অসাধারণ! তুমি সব প্রশ্নের সঠিক উত্তর দিয়েছো! 🎉";
+   			  resultMessageElement.classList.add('celebration-message');
+    
+ 			   // এই অংশটি (গোপন কোড তৈরি এবং দেখানো) এখানে রাখা হয়েছে কারণ এটি শুধুমাত্র ২৫ নম্বরের জন্য প্রযোজ্য
+			   const randomCode = secretCodes[Math.floor(Math.random() * secretCodes.length)];
+			   secretCodeDisplay.textContent = randomCode;
+    			secretCodeContainer.classList.remove('hidden');
+
+			    // ২৫ নম্বর পেলে গোপন কোড সহ ইমেল পাঠানো হবে
+			    sendEmailNotification(randomCode);
+
+			} else if (score >= 23) { // এই সম্পূর্ণ else if ব্লকটি নতুন করে যোগ করা হয়েছে
+   			 resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
+			    resultMessageElement.style.color = '#037E8C';
+
+ 			   // 23 বা তার বেশি নম্বর পেলে (কিন্তু ২৫ এর কম হলে) কোনো গোপন কোড ছাড়া ইমেল পাঠানো হবে
+ 			   sendEmailNotification("N/A"); // অথবা sendEmailNotification("No secret code for this score");
+			} else if (score >= currentQuizQuestions.length / 2) { // এই else if ব্লকটি আগের মতোই থাকবে, তবে এখন এটি ১৮ এর কম স্কোরের জন্য প্রযোজ্য হবে
+			    resultMessageElement.textContent = "খুব ভালো করেছো! তোমার জ্ঞান প্রশংসনীয়।";
+ 			   resultMessageElement.style.color = '#037E8C';
+			} else { // এই else ব্লকটি আগের মতোই থাকবে
+			    resultMessageElement.textContent = "আরও অনুশীলন প্রয়োজন। হাল ছেড়ো না!";
+			    resultMessageElement.style.color = '#EF476F';
+			}
+
+       
         }
         
         function sendEmailNotification(secretCode) {
