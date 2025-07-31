@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ফলাফল - ALPCG Web Development Contest July, 2025</title>
     
+    <!-- Favicon Code -->
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Google Fonts: Inter & Hind Siliguri -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -45,26 +48,29 @@
         }
     </style>
 </head>
-<body class="bg-[#0a1d14] text-gray-300 flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-[#0D1B2A] text-gray-300 flex flex-col items-center justify-center min-h-screen p-4">
     <main class="w-full max-w-md mx-auto">
         
+        <!-- Logo Placement -->
         <div class="flex justify-center mb-6">
-            <img src="alpcg_logo.png" alt="ALPCG Logo" class="h-28 w-auto">
+            <img src="alpcg_logo.png" alt="ALPCG Logo" class="h-28 w-auto" onerror="this.src='https://placehold.co/112x112/0D1B2A/9ca3af?text=ALPCG'; this.onerror=null;">
         </div>
 
-        <div id="result-card" class="bg-[#163a2a]/50 backdrop-blur-sm border border-blue-800/50 rounded-xl shadow-2xl shadow-blue-500/20 overflow-hidden transition-all duration-500">
+        <div id="result-card" class="bg-[#1B263B]/60 backdrop-blur-sm border border-blue-800/50 rounded-xl shadow-2xl shadow-sky-400/20 overflow-hidden transition-all duration-500">
             
+            <!-- Search Form View -->
             <div id="search-view">
                 <div class="p-8">
                     <div class="text-center mb-8">
-                        <h1 class="text-xl md:text-2xl font-bold text-gray-200">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি</h1>
-                        <p class="text-blue-400 font-semibold mt-1">ALPCG Web Development Contest July, 2025</p>
+                        <!-- Header Text -->
+                        <h1 class="text-xl md:text-2xl font-bold text-gray-200">Association of Little Programmers & Computer Geeks</h1>
+                        <p class="text-sky-400 font-semibold mt-1">ALPCG Web Development Contest July, 2025</p>
                     </div>
                     
                     <div class="space-y-4">
                         <div>
                             <label for="class-select" class="block text-sm font-medium text-gray-400 mb-1">আপনার ক্লাস নির্বাচন করুন</label>
-                            <select id="class-select" class="w-full px-4 py-3 bg-[#0a1d14] border border-blue-800/60 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <select id="class-select" class="w-full px-4 py-3 bg-[#0D1B2A] border border-blue-700/60 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
                                 <option value="">-- ক্লাস --</option>
                                 <option value="6">ষষ্ঠ শ্রেণী</option>
                                 <option value="7">সপ্তম শ্রেণী</option>
@@ -75,23 +81,25 @@
                         </div>
                         <div>
                             <label for="roll-input" class="block text-sm font-medium text-gray-400 mb-1">আপনার রোল নম্বর দিন</label>
-                            <input type="number" id="roll-input" placeholder="যেমন: 101" class="w-full px-4 py-3 bg-[#0a1d14] border border-blue-800/60 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <input type="number" id="roll-input" placeholder="যেমন: 101" class="w-full px-4 py-3 bg-[#0D1B2A] border border-blue-700/60 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500">
                         </div>
                     </div>
                     
                     <p id="error-message" class="text-red-400 text-sm text-center mt-4 h-5"></p>
 
-                    <button id="check-result-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0a1d14] focus:ring-blue-500 transition-transform transform hover:scale-105 mt-6">
+                    <button id="check-result-btn" class="w-full bg-sky-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0D1B2A] focus:ring-sky-500 transition-transform transform hover:scale-105 mt-6">
                         ফলাফল দেখুন
                     </button>
                 </div>
             </div>
 
+            <!-- Result Display View -->
             <div id="result-view" class="hidden p-8 text-center relative">
                  <div class="confetti-container" id="confetti-container"></div>
                 <div id="result-content">
-                    </div>
-                <button id="check-again-btn" class="mt-8 bg-gray-600 text-gray-200 font-bold py-2 px-6 rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#163a2a] focus:ring-gray-400">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+                <button id="check-again-btn" class="mt-8 bg-gray-600 text-gray-200 font-bold py-2 px-6 rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1B263B] focus:ring-gray-400">
                     আবার দেখুন
                 </button>
             </div>
@@ -99,15 +107,16 @@
         </div>
     </main>
     
-    <footer class="text-center mt-16 pt-8 border-t border-blue-900 w-full max-w-4xl">
+    <!-- Footer Section -->
+    <footer class="text-center mt-16 pt-8 border-t border-blue-900/50 w-full max-w-4xl">
         <nav class="mb-4">
             <ul class="flex flex-wrap justify-center gap-4 md:gap-6 text-base">
-                <li><a href="index.html" class="text-gray-400 hover:text-blue-400 transition-colors duration-200">হোম</a></li>
-                <li><a href="contest-science_olympiad-july24.html" class="text-gray-400 hover:text-blue-400 transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
-                <li><a href="contest-web_development_contest-july24.html" class="text-gray-400 hover:text-blue-400 transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
-                <li><a href="web_dev_guide.html" class="text-gray-400 hover:text-blue-400 transition-colors duration-200">ওয়েব ডেভেলপমেন্ট গাইড</a></li>
-                <li><a href="#privacy-policy" class="text-gray-400 hover:text-blue-400 transition-colors duration-200">গোপনীয়তা নীতি</a></li>
-                <li><a href="#terms-of-service" class="text-gray-400 hover:text-blue-400 transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
+                <li><a href="index.html" class="text-gray-400 hover:text-sky-400 transition-colors duration-200">হোম</a></li>
+                <li><a href="contest-science_olympiad-july24.html" class="text-gray-400 hover:text-sky-400 transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
+                <li><a href="contest-web_development_contest-july24.html" class="text-gray-400 hover:text-sky-400 transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
+                <li><a href="web_dev_guide.html" class="text-gray-400 hover:text-sky-400 transition-colors duration-200">ওয়েব ডেভেলপমেন্ট গাইড</a></li>
+                <li><a href="#privacy-policy" class="text-gray-400 hover:text-sky-400 transition-colors duration-200">গোপনীয়তা নীতি</a></li>
+                <li><a href="#terms-of-service" class="text-gray-400 hover:text-sky-400 transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
             </ul>
         </nav>
         <p class="text-gray-400">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
@@ -174,13 +183,13 @@
 
             if (winner) {
                 contentHTML = `
-                    <div class="mx-auto bg-blue-500/10 rounded-full h-20 w-20 flex items-center justify-center border-2 border-blue-500/30">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <div class="mx-auto bg-sky-500/10 rounded-full h-20 w-20 flex items-center justify-center border-2 border-sky-500/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-sky-400" viewBox="0 0 20 20" fill="currentColor">
                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-200 mt-6">অভিনন্দন, ${winner.name}!</h2>
-                    <p class="text-xl text-blue-300 font-semibold mt-2">
+                    <p class="text-xl text-yellow-400 font-semibold mt-2">
                         ${winner.message}
                     </p>
                     <p class="text-gray-400 mt-4">
@@ -208,7 +217,7 @@
         }
 
         function createConfetti() {
-            const colors = ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#ffffff', '#a5b4fc'];
+            const colors = ['#4A90E2', '#81E6D9', '#F6E05E', '#FFFFFF', '#A3BFFA', '#FBBF24'];
             for (let i = 0; i < 100; i++) {
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
@@ -224,3 +233,4 @@
     </script>
 </body>
 </html>
+
