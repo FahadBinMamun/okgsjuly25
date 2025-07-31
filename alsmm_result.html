@@ -48,15 +48,15 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 text-gray-300 flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-[#0a1d14] text-gray-300 flex flex-col items-center justify-center min-h-screen p-4">
     <main class="w-full max-w-md mx-auto">
         
         <!-- Logo Placement -->
         <div class="flex justify-center mb-6">
-            <img src="images/science_olympiad_logo.png" alt="Science Olympiad Logo" class="h-28 w-auto" onerror="this.src='https://placehold.co/112x112/1e293b/94a3b8?text=Logo'; this.onerror=null;">
+            <img src="science_olympiad_logo-removebg-preview.png" alt="Science Olympiad Logo" class="h-28 w-auto" onerror="this.src='https://placehold.co/112x112/0a1d14/9ca3af?text=Logo'; this.onerror=null;">
         </div>
 
-        <div id="result-card" class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl shadow-2xl shadow-indigo-500/10 overflow-hidden transition-all duration-500">
+        <div id="result-card" class="bg-[#163a2a]/50 backdrop-blur-sm border border-green-800/50 rounded-xl shadow-2xl shadow-green-500/20 overflow-hidden transition-all duration-500">
             
             <!-- Search Form View -->
             <div id="search-view">
@@ -64,13 +64,13 @@
                     <div class="text-center mb-8">
                         <!-- Header Text -->
                         <h1 class="text-xl md:text-2xl font-bold text-gray-200">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি</h1>
-                        <p class="text-indigo-400 font-semibold mt-1">ALSMM Science Olympiad July, 2025</p>
+                        <p class="text-green-400 font-semibold mt-1">ALSMM Science Olympiad July, 2025</p>
                     </div>
                     
                     <div class="space-y-4">
                         <div>
                             <label for="class-select" class="block text-sm font-medium text-gray-400 mb-1">আপনার ক্লাস নির্বাচন করুন</label>
-                            <select id="class-select" class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <select id="class-select" class="w-full px-4 py-3 bg-[#0a1d14] border border-green-800/60 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                                 <option value="">-- ক্লাস --</option>
                                 <option value="6">ষষ্ঠ শ্রেণী</option>
                                 <option value="7">সপ্তম শ্রেণী</option>
@@ -81,13 +81,13 @@
                         </div>
                         <div>
                             <label for="roll-input" class="block text-sm font-medium text-gray-400 mb-1">আপনার রোল নম্বর দিন</label>
-                            <input type="number" id="roll-input" placeholder="যেমন: 101" class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="number" id="roll-input" placeholder="যেমন: 101" class="w-full px-4 py-3 bg-[#0a1d14] border border-green-800/60 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
                         </div>
                     </div>
                     
                     <p id="error-message" class="text-red-400 text-sm text-center mt-4 h-5"></p>
 
-                    <button id="check-result-btn" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-indigo-500 transition-transform transform hover:scale-105 mt-6">
+                    <button id="check-result-btn" class="w-full bg-green-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0a1d14] focus:ring-green-500 transition-transform transform hover:scale-105 mt-6">
                         ফলাফল দেখুন
                     </button>
                 </div>
@@ -99,7 +99,7 @@
                 <div id="result-content">
                     <!-- Dynamic content will be injected here -->
                 </div>
-                <button id="check-again-btn" class="mt-8 bg-slate-600 text-slate-200 font-bold py-2 px-6 rounded-lg hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-slate-400">
+                <button id="check-again-btn" class="mt-8 bg-gray-600 text-gray-200 font-bold py-2 px-6 rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#163a2a] focus:ring-gray-400">
                     আবার দেখুন
                 </button>
             </div>
@@ -108,15 +108,15 @@
     </main>
     
     <!-- Footer Section -->
-    <footer class="text-center mt-16 pt-8 border-t border-slate-700 w-full max-w-4xl">
+    <footer class="text-center mt-16 pt-8 border-t border-green-900 w-full max-w-4xl">
         <nav class="mb-4">
             <ul class="flex flex-wrap justify-center gap-4 md:gap-6 text-base">
-                <li><a href="index.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">হোম</a></li>
-                <li><a href="contest-science_olympiad-july24.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
-                <li><a href="contest-web_development_contest-july24.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
-                <li><a href="web_dev_guide.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট গাইড</a></li>
-                <li><a href="#privacy-policy" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">গোপনীয়তা নীতি</a></li>
-                <li><a href="#terms-of-service" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
+                <li><a href="index.html" class="text-gray-400 hover:text-green-400 transition-colors duration-200">হোম</a></li>
+                <li><a href="contest-science_olympiad-july24.html" class="text-gray-400 hover:text-green-400 transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
+                <li><a href="contest-web_development_contest-july24.html" class="text-gray-400 hover:text-green-400 transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
+                <li><a href="web_dev_guide.html" class="text-gray-400 hover:text-green-400 transition-colors duration-200">ওয়েব ডেভেলপমেন্ট গাইড</a></li>
+                <li><a href="#privacy-policy" class="text-gray-400 hover:text-green-400 transition-colors duration-200">গোপনীয়তা নীতি</a></li>
+                <li><a href="#terms-of-service" class="text-gray-400 hover:text-green-400 transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
             </ul>
         </nav>
         <p class="text-gray-400">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
@@ -126,22 +126,23 @@
     <script>
         // --- এইখানে বিজয়ীদের তালিকা এবং তাদের জন্য বার্তা পরিবর্তন করুন ---
         const winners = [
-            { class: '6', roll: , name: 'আরিফ হোসেন', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
-            { class: '6', roll: , name: 'আরিফ হোসেন', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
-            { class: '6', roll: , name: 'সাদিয়া ইসলাম', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
-            { class: '7', roll: , name: 'ইমরান আহমেদ', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
-            { class: '7', roll: , name: 'জান্নাতুল ফেরদৌস', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
-            { class: '7', roll: , name: 'আলিফ মাহমুদ', message: 'অভিনন্দন! তুমি ৩য় স্থান অধিকার করেছ।' },
-            { class: '8', roll: , name: 'রাকিবুল হাসান', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
-            { class: '8', roll: , name: 'ফারজানা আক্তার', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
-            { class: '9', roll: , name: 'মেহেদী হাসান', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
-            { class: '9', roll: , name: 'সুমাইয়া খাতুন', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
-            { class: '9', roll: , name: 'তানভীর ইসলাম', message: 'অভিনন্দন! বিশেষ পুরস্কারের জন্য তুমি নির্বাচিত হয়েছ।' },
-            { class: '10', roll: , name: 'নাজমুল হক', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '6', roll: 101, name: 'আরিফ হোসেন', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '6', roll: 102, name: 'সাদিয়া ইসলাম', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '7', roll: 201, name: 'ইমরান আহমেদ', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '7', roll: 202, name: 'জান্নাতুল ফেরদৌস', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '7', roll: 203, name: 'আলিফ মাহমুদ', message: 'অভিনন্দন! তুমি ৩য় স্থান অধিকার করেছ।' },
+            { class: '8', roll: 301, name: 'রাকিবুল হাসান', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '8', roll: 302, name: 'ফারজানা আক্তার', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '9', roll: 401, name: 'মেহেদী হাসান', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '9', roll: 402, name: 'সুমাইয়া খাতুন', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '9', roll: 403, name: 'তানভীর ইসলাম', message: 'অভিনন্দন! বিশেষ পুরস্কারের জন্য তুমি নির্বাচিত হয়েছ।' },
+            { class: '10', roll: 501, name: 'নাজমুল হক', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
             { class: '10', roll: 66, name: 'মোঃ রুবেল বিশ্বাস', message: 'অভিনন্দন! তুমি ১ম স্থান অধিকার করেছ। (স্যার, আরো যা ইচ্ছা লেখা যাবে, আবার রেজাল্ট বা সার্টিফিকেট এর ডাউনলোড লিংক ও দেওয়া যাবে! 😁😁)' }
         ];
       
         // --- তালিকা সম্পাদনা এখানে শেষ করুন ---
+
+        // Note: Added some example roll numbers to the winners list for testing.
 
         const classSelect = document.getElementById('class-select');
         const rollInput = document.getElementById('roll-input');
@@ -190,7 +191,7 @@
                         </svg>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-200 mt-6">অভিনন্দন, ${winner.name}!</h2>
-                    <p class="text-xl text-indigo-400 font-semibold mt-2">
+                    <p class="text-xl text-green-300 font-semibold mt-2">
                         ${winner.message}
                     </p>
                     <p class="text-gray-400 mt-4">
@@ -218,7 +219,7 @@
         }
 
         function createConfetti() {
-            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800'];
+            const colors = ['#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800', '#ffffff', '#a5d6a7'];
             for (let i = 0; i < 100; i++) {
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
