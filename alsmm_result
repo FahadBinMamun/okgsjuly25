@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ফলাফল - ALSMM Science Olympiad July, 2025</title>
+    
+    <!-- Favicon Code -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Hind Siliguri', 'Inter', sans-serif;
+        }
+        /* Custom styles for the confetti effect */
+        .confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 100;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0.7;
+            animation: fall 5s linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-gray-300 flex flex-col items-center justify-center min-h-screen p-4">
+    <main class="w-full max-w-md mx-auto">
+        <div id="result-card" class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl shadow-2xl shadow-indigo-500/10 overflow-hidden transition-all duration-500">
+            
+            <!-- Search Form View -->
+            <div id="search-view">
+                <div class="p-8">
+                    <div class="text-center mb-8">
+                        <h1 class="text-xl md:text-2xl font-bold text-gray-200">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি</h1>
+                        <p class="text-indigo-400 font-semibold mt-1">ALSMM Science Olympiad July, 2025</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="class-select" class="block text-sm font-medium text-gray-400 mb-1">আপনার ক্লাস নির্বাচন করুন</label>
+                            <select id="class-select" class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">-- ক্লাস --</option>
+                                <option value="6">ষষ্ঠ শ্রেণী</option>
+                                <option value="7">সপ্তম শ্রেণী</option>
+                                <option value="8">অষ্টম শ্রেণী</option>
+                                <option value="9">নবম শ্রেণী</option>
+                                <option value="10">দশম শ্রেণী</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="roll-input" class="block text-sm font-medium text-gray-400 mb-1">আপনার রোল নম্বর দিন</label>
+                            <input type="number" id="roll-input" placeholder="যেমন: 101" class="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <p id="error-message" class="text-red-400 text-sm text-center mt-4 h-5"></p>
+
+                    <button id="check-result-btn" class="w-full bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-indigo-500 transition-transform transform hover:scale-105 mt-6">
+                        ফলাফল দেখুন
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Display View -->
+            <div id="result-view" class="hidden p-8 text-center relative">
+                 <div class="confetti-container" id="confetti-container"></div>
+                <div id="result-content">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+                <button id="check-again-btn" class="mt-8 bg-slate-600 text-slate-200 font-bold py-2 px-6 rounded-lg hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-800 focus:ring-slate-400">
+                    আবার দেখুন
+                </button>
+            </div>
+
+        </div>
+    </main>
+    
+    <!-- Footer Section -->
+    <footer class="text-center mt-16 pt-8 border-t border-slate-700 w-full max-w-4xl">
+        <nav class="mb-4">
+            <ul class="flex flex-wrap justify-center gap-4 md:gap-6 text-base">
+                <li><a href="index.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">হোম</a></li>
+                <li><a href="contest-science_olympiad-july24.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">বিজ্ঞান অলিম্পিয়াড</a></li>
+                <li><a href="contest-web_development_contest-july24.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট</a></li>
+                <li><a href="web_dev_guide.html" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">ওয়েব ডেভেলপমেন্ট গাইড</a></li>
+                <li><a href="#privacy-policy" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">গোপনীয়তা নীতি</a></li>
+                <li><a href="#terms-of-service" class="text-gray-400 hover:text-[#F29E38] transition-colors duration-200">ব্যবহারের শর্তাবলী</a></li>
+            </ul>
+        </nav>
+        <p class="text-gray-400">ওমর কিন্ডারগার্টেন স্কুল এন্ড ওমর গার্টেন একাডেমি, জয়পুরহাট।</p>
+        <p class="text-sm text-gray-500 mt-2">সর্বস্বত্ব সংরক্ষিত © ২০২৫ | ALPCG | Fahad Bin Mamun</p>
+    </footer>
+
+    <script>
+        // --- এইখানে বিজয়ীদের তালিকা এবং তাদের জন্য বার্তা পরিবর্তন করুন ---
+        const winners = [
+            { class: '10', roll: 66, name: 'MD Rubel Bishash', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '6', roll: , name: 'সাদিয়া ইসলাম', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '7', roll: , name: 'ইমরান আহমেদ', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '7', roll: , name: 'জান্নাতুল ফেরদৌস', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '7', roll: , name: 'আলিফ মাহমুদ', message: 'অভিনন্দন! তুমি ৩য় স্থান অধিকার করেছ।' },
+            { class: '8', roll: , name: 'রাকিবুল হাসান', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '8', roll: , name: 'ফারজানা আক্তার', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '9', roll: , name: 'মেহেদী হাসান', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '9', roll: , name: 'সুমাইয়া খাতুন', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' },
+            { class: '9', roll: , name: 'তানভীর ইসলাম', message: 'অভিনন্দন! বিশেষ পুরস্কারের জন্য তুমি নির্বাচিত হয়েছ।' },
+            { class: '10', roll: 503, name: 'নাজমুল হক', message: 'অসাধারণ! তুমি ১ম স্থান অধিকার করেছ।' },
+            { class: '10', roll: 512, name: 'তাসনিয়া রহমান', message: 'অভিনন্দন! তুমি ২য় স্থান অধিকার করেছ।' }
+        ];
+        // --- তালিকা সম্পাদনা এখানে শেষ করুন ---
+
+        const classSelect = document.getElementById('class-select');
+        const rollInput = document.getElementById('roll-input');
+        const checkResultBtn = document.getElementById('check-result-btn');
+        const errorMessage = document.getElementById('error-message');
+        
+        const searchView = document.getElementById('search-view');
+        const resultView = document.getElementById('result-view');
+        const resultContent = document.getElementById('result-content');
+        const checkAgainBtn = document.getElementById('check-again-btn');
+        const confettiContainer = document.getElementById('confetti-container');
+
+        checkResultBtn.addEventListener('click', () => {
+            const selectedClass = classSelect.value;
+            const enteredRoll = rollInput.value;
+
+            errorMessage.textContent = '';
+
+            if (!selectedClass || !enteredRoll) {
+                errorMessage.textContent = 'অনুগ্রহ করে আপনার ক্লাস ও রোল নম্বর সঠিকভাবে দিন।';
+                return;
+            }
+
+            const winner = winners.find(w => w.class === selectedClass && w.roll == enteredRoll);
+
+            displayResult(winner);
+        });
+
+        checkAgainBtn.addEventListener('click', () => {
+            resultView.classList.add('hidden');
+            searchView.classList.remove('hidden');
+            classSelect.value = '';
+            rollInput.value = '';
+            errorMessage.textContent = '';
+        });
+        
+        function displayResult(winner) {
+            let contentHTML = '';
+            confettiContainer.innerHTML = '';
+
+            if (winner) {
+                contentHTML = `
+                    <div class="mx-auto bg-green-500/10 rounded-full h-20 w-20 flex items-center justify-center border-2 border-green-500/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-200 mt-6">অভিনন্দন, ${winner.name}!</h2>
+                    <p class="text-xl text-indigo-400 font-semibold mt-2">
+                        ${winner.message}
+                    </p>
+                    <p class="text-gray-400 mt-4">
+                        তোমার উজ্জ্বল ভবিষ্যতের জন্য অনেক অনেক শুভকামনা।
+                    </p>
+                `;
+                createConfetti();
+            } else {
+                contentHTML = `
+                    <div class="mx-auto bg-red-500/10 rounded-full h-20 w-20 flex items-center justify-center border-2 border-red-500/30">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                         </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-200 mt-6">দুঃখিত!</h2>
+                    <p class="text-gray-400 mt-2">
+                        তুমি এইবারের প্রতিযোগিতায় স্থান অর্জন করতে পারোনি। হতাশ না হয়ে পরবর্তী প্রতিযোগিতার জন্য প্রস্তুতি নাও। তোমার জন্য শুভকামনা রইল।
+                    </p>
+                `;
+            }
+
+            resultContent.innerHTML = contentHTML;
+            searchView.classList.add('hidden');
+            resultView.classList.remove('hidden');
+        }
+
+        function createConfetti() {
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 8 + 5 + 'px';
+                confetti.style.height = confetti.style.width;
+                confetti.style.opacity = Math.random() + 0.3;
+                confettiContainer.appendChild(confetti);
+            }
+        }
+    </script>
+</body>
+</html>
+
