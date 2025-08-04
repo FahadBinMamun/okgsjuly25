@@ -73,8 +73,8 @@
     <div id="login-section" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
             <div class="text-center mb-6">
-                <img src="images/alpcg_logo.png" alt="ALPCG Logo" class="mx-auto mb-4 h-20 w-20 rounded-full">
-                <h1 class="text-2xl font-bold text-gray-800">ALPCG July Certificate Generator</h1>
+                <img src="https://placehold.co/80x80/1E40AF/FFFFFF?text=ALPCG" alt="ALPCG Logo" class="mx-auto mb-4 h-20 w-20 rounded-full">
+                <h1 class="text-2xl font-bold text-gray-800">Certificate Generator</h1>
                 <p class="text-gray-500">Please enter password to continue</p>
             </div>
             <form id="login-form">
@@ -94,7 +94,7 @@
     <div id="app-section" class="hidden flex flex-col min-h-screen">
         <header class="bg-white shadow-md">
             <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <h1 class="text-2xl font-bold text-gray-900">ALPCG Web Development Contest July, 2025 Certificate Generator</h1>
+                <h1 class="text-2xl font-bold text-gray-900">ALPCG Certificate Generator</h1>
                 <button id="logout-button" class="text-sm text-blue-600 hover:text-blue-800">Logout</button>
             </div>
         </header>
@@ -156,10 +156,36 @@
 
     <!-- Certificate Templates (Hidden) -->
     <div id="top10-template" class="template-holder">
-        <!-- ... template code ... -->
+        <div class="certificate-print-instance crosshatch-bg p-8 relative border border-gray-200 certificate-font">
+            <div class="relative z-10 text-center bg-white bg-opacity-90 p-6 rounded-lg w-full flex flex-col h-full">
+                <header class="flex justify-between items-center mb-4"><img src="https://placehold.co/120x60/000000/FFFFFF?text=School+Logo" alt="School Logo" class="h-14 object-contain"><img src="https://placehold.co/120x60/1E40AF/FFFFFF?text=ALPCG+Logo" alt="ALPCG Club Logo" class="h-14 object-contain"></header>
+                <main class="flex-grow flex flex-col justify-center">
+                    <h1 class="text-3xl font-bold text-gray-800 tracking-wide mb-4">Association of Little Programmers & Computer Geeks</h1>
+                    <p class="text-green-700 text-base font-semibold uppercase tracking-wider mb-2">Certificate of Achievement</p>
+                    <h2 class="certificate-title text-4xl font-bold text-gray-800 mb-4">Top 10 Finisher</h2>
+                    <p class="text-gray-600 text-lg mb-4">This certificate is proudly presented to</p>
+                    <p class="font-dancing-script text-6xl text-green-800 mb-4 student-name-placeholder">Student Name</p>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-base mb-8">For their outstanding performance and for securing a position within the Top 10 in the <br> <span class="font-semibold text-lg">ALPCG Web Development Contest July, 25.</span></p>
+                </main>
+                <footer class="flex justify-around items-center w-full max-w-xl mx-auto pt-4"><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Club President</p><p class="text-xs text-gray-500">ALPCG</p></div><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Faculty Advisor</p><p class="text-xs text-gray-500">School Authority</p></div></footer>
+            </div>
+        </div>
     </div>
+
     <div id="participation-template" class="template-holder">
-        <!-- ... template code ... -->
+        <div class="certificate-print-instance crosshatch-bg p-8 relative border border-gray-200 certificate-font">
+            <div class="relative z-10 text-center bg-white bg-opacity-90 p-6 rounded-lg w-full flex flex-col h-full">
+                <header class="flex justify-between items-center mb-4"><img src="https://placehold.co/120x60/000000/FFFFFF?text=School+Logo" alt="School Logo" class="h-14 object-contain"><img src="https://placehold.co/120x60/1E40AF/FFFFFF?text=ALPCG+Logo" alt="ALPCG Club Logo" class="h-14 object-contain"></header>
+                <main class="flex-grow flex flex-col justify-center">
+                    <h1 class="text-3xl font-bold text-gray-800 tracking-wide mb-4">Association of Little Programmers & Computer Geeks</h1>
+                    <p class="text-gray-500 text-base font-semibold uppercase tracking-wider mb-6">Certificate of Participation</p>
+                    <p class="text-gray-600 text-lg mb-4">This certificate is proudly presented to</p>
+                    <p class="font-dancing-script text-6xl text-blue-800 mb-6 student-name-placeholder">Student Name</p>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-base mb-10">For their valuable contribution and active participation in the <br> <span class="font-semibold text-lg">ALPCG Web Development Contest July, 25.</span></p>
+                </main>
+                <footer class="flex justify-around items-center w-full max-w-xl mx-auto pt-6"><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Club President</p><p class="text-xs text-gray-500">ALPCG</p></div><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Faculty Advisor</p><p class="text-xs text-gray-500">School Authority</p></div></footer>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -213,6 +239,11 @@
             function createCertificateHTML(name, type, isLast) {
                 const templateId = type === 'top10' ? 'top10-template' : 'participation-template';
                 const template = document.getElementById(templateId);
+                // Error was here: template.firstElementChild was null because the template content was missing.
+                if (!template || !template.firstElementChild) {
+                    console.error('Certificate template not found or is empty for id:', templateId);
+                    return ''; // Return empty string to avoid further errors
+                }
                 const clone = template.firstElementChild.cloneNode(true);
                 clone.querySelector('.student-name-placeholder').textContent = name;
                 if (!isLast) {
@@ -230,7 +261,9 @@
                 }
                 const certType = document.querySelector('input[name="single-cert-type"]:checked').value;
                 const certificateHTML = createCertificateHTML(studentName, certType, true);
-                handlePrint(certificateHTML);
+                if(certificateHTML) {
+                    handlePrint(certificateHTML);
+                }
             });
 
             // --- Batch Certificate ---
@@ -246,10 +279,12 @@
                     const isLast = index === studentNames.length - 1;
                     allCertificatesHTML += createCertificateHTML(name.trim(), certType, isLast);
                 });
-                handlePrint(allCertificatesHTML);
+
+                if (allCertificatesHTML) {
+                    handlePrint(allCertificatesHTML);
+                }
             });
         });
     </script>
 </body>
 </html>
-
