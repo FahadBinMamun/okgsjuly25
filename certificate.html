@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPCG Certificate Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@700&family=Dancing+Script:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .certificate-font {
+            font-family: 'Merriweather', serif;
+        }
+        .certificate-title {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-dancing-script {
+            font-family: 'Dancing Script', cursive;
+        }
+        /* This container holds the template off-screen */
+        .template-holder {
+            display: none;
+        }
+        .crosshatch-bg {
+            background-color: #ffffff;
+            background-image: 
+                linear-gradient(45deg, #e5e7eb 25%, transparent 25%, transparent 75%, #e5e7eb 75%, #e5e7eb),
+                linear-gradient(45deg, #e5e7eb 25%, transparent 25%, transparent 75%, #e5e7eb 75%, #e5e7eb);
+            background-size: 10px 10px;
+            background-position: 0 0, 5px 5px;
+        }
+        
+        /* Print Specific Styles */
+        @media print {
+            /* Hide everything in the body by default */
+            body > *:not(#print-container) {
+                display: none;
+            }
+            /* Only show the print container */
+            #print-container {
+                display: block;
+            }
+            .certificate-print-instance {
+                /* Reverted to responsive size to fill the page */
+                width: 100%;
+                height: 100vh;
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+            .crosshatch-bg {
+                background-color: #ffffff !important;
+                background-image: 
+                    linear-gradient(45deg, #e5e7eb 25%, transparent 25%, transparent 75%, #e5e7eb 75%, #e5e7eb),
+                    linear-gradient(45deg, #e5e7eb 25%, transparent 25%, transparent 75%, #e5e7eb 75%, #e5e7eb) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+            /* Let the browser handle page size and orientation */
+            @page {
+                size: auto;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Login Section -->
+    <div id="login-section" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+            <div class="text-center mb-6">
+                <img src="https://placehold.co/80x80/1E40AF/FFFFFF?text=ALPCG" alt="ALPCG Logo" class="mx-auto mb-4 h-20 w-20 rounded-full">
+                <h1 class="text-2xl font-bold text-gray-800">Certificate Generator</h1>
+                <p class="text-gray-500">Please enter password to continue</p>
+            </div>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <p id="error-message" class="text-red-500 text-xs italic mb-4 hidden">Incorrect password. Please try again.</p>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- App Section -->
+    <div id="app-section" class="hidden">
+        <header class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">ALPCG Certificate Generator</h1>
+                <button id="logout-button" class="text-sm text-blue-600 hover:text-blue-800">Logout</button>
+            </div>
+        </header>
+        <main class="py-10">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Single Certificate Generator -->
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Generate Single Certificate</h2>
+                    <div class="mb-4">
+                        <label for="student-name" class="block text-gray-700 text-sm font-bold mb-2">Student Name:</label>
+                        <input type="text" id="student-name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="e.g., John Doe">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Certificate Type:</label>
+                        <div class="flex gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="single-cert-type" value="top10" class="form-radio" checked> <span class="ml-2">Top 10 Finisher</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="single-cert-type" value="participation" class="form-radio"> <span class="ml-2">Participation</span></label>
+                        </div>
+                    </div>
+                    <button id="generate-single-btn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full">
+                        Preview & Print Certificate
+                    </button>
+                </div>
+
+                <!-- Batch Certificate Generator -->
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Generate Batch Certificates</h2>
+                    <div class="mb-4">
+                        <label for="student-names-batch" class="block text-gray-700 text-sm font-bold mb-2">Student Names (one name per line):</label>
+                        <textarea id="student-names-batch" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" placeholder="John Doe&#10;Jane Smith&#10;..."></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Certificate Type:</label>
+                         <div class="flex gap-4">
+                            <label class="inline-flex items-center"><input type="radio" name="batch-cert-type" value="top10" class="form-radio"> <span class="ml-2">Top 10 Finisher</span></label>
+                            <label class="inline-flex items-center"><input type="radio" name="batch-cert-type" value="participation" class="form-radio" checked> <span class="ml-2">Participation</span></label>
+                        </div>
+                    </div>
+                    <button id="generate-batch-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full">
+                        Preview & Print All
+                    </button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Certificate Templates (Hidden) -->
+    <div id="top10-template" class="template-holder">
+        <div class="certificate-print-instance crosshatch-bg p-8 relative border border-gray-200 certificate-font">
+            <div class="relative z-10 text-center bg-white bg-opacity-90 p-6 rounded-lg w-full flex flex-col h-full">
+                <header class="flex justify-between items-center mb-4"><img src="https://placehold.co/120x60/000000/FFFFFF?text=School+Logo" alt="School Logo" class="h-14 object-contain"><img src="https://placehold.co/120x60/1E40AF/FFFFFF?text=ALPCG+Logo" alt="ALPCG Club Logo" class="h-14 object-contain"></header>
+                <main class="flex-grow flex flex-col justify-center">
+                    <h1 class="text-3xl font-bold text-gray-800 tracking-wide mb-4">Association of Little Programmers & Computer Geeks</h1>
+                    <p class="text-green-700 text-base font-semibold uppercase tracking-wider mb-2">Certificate of Achievement</p>
+                    <h2 class="certificate-title text-4xl font-bold text-gray-800 mb-4">Top 10 Finisher</h2>
+                    <p class="text-gray-600 text-lg mb-4">This certificate is proudly presented to</p>
+                    <p class="font-dancing-script text-6xl text-green-800 mb-4 student-name-placeholder">Student Name</p>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-base mb-8">For their outstanding performance and for securing a position within the Top 10 in the <br> <span class="font-semibold text-lg">ALPCG Web Development Contest July, 25.</span></p>
+                </main>
+                <footer class="flex justify-around items-center w-full max-w-xl mx-auto pt-4"><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Club President</p><p class="text-xs text-gray-500">ALPCG</p></div><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Faculty Advisor</p><p class="text-xs text-gray-500">School Authority</p></div></footer>
+            </div>
+        </div>
+    </div>
+
+    <div id="participation-template" class="template-holder">
+        <div class="certificate-print-instance crosshatch-bg p-8 relative border border-gray-200 certificate-font">
+            <div class="relative z-10 text-center bg-white bg-opacity-90 p-6 rounded-lg w-full flex flex-col h-full">
+                <header class="flex justify-between items-center mb-4"><img src="https://placehold.co/120x60/000000/FFFFFF?text=School+Logo" alt="School Logo" class="h-14 object-contain"><img src="https://placehold.co/120x60/1E40AF/FFFFFF?text=ALPCG+Logo" alt="ALPCG Club Logo" class="h-14 object-contain"></header>
+                <main class="flex-grow flex flex-col justify-center">
+                    <h1 class="text-3xl font-bold text-gray-800 tracking-wide mb-4">Association of Little Programmers & Computer Geeks</h1>
+                    <p class="text-gray-500 text-base font-semibold uppercase tracking-wider mb-6">Certificate of Participation</p>
+                    <p class="text-gray-600 text-lg mb-4">This certificate is proudly presented to</p>
+                    <p class="font-dancing-script text-6xl text-blue-800 mb-6 student-name-placeholder">Student Name</p>
+                    <p class="text-gray-600 max-w-2xl mx-auto text-base mb-10">For their valuable contribution and active participation in the <br> <span class="font-semibold text-lg">ALPCG Web Development Contest July, 25.</span></p>
+                </main>
+                <footer class="flex justify-around items-center w-full max-w-xl mx-auto pt-6"><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Club President</p><p class="text-xs text-gray-500">ALPCG</p></div><div class="text-center"><p class="border-t-2 border-gray-400 px-6 pt-2 text-sm font-semibold">Faculty Advisor</p><p class="text-xs text-gray-500">School Authority</p></div></footer>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginSection = document.getElementById('login-section');
+            const appSection = document.getElementById('app-section');
+            const loginForm = document.getElementById('login-form');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+            const logoutButton = document.getElementById('logout-button');
+
+            const generateSingleBtn = document.getElementById('generate-single-btn');
+            const generateBatchBtn = document.getElementById('generate-batch-btn');
+
+            // --- Authentication ---
+            loginForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (passwordInput.value === 'OKGSadmins') {
+                    loginSection.classList.add('hidden');
+                    appSection.classList.remove('hidden');
+                    errorMessage.classList.add('hidden');
+                } else {
+                    errorMessage.classList.remove('hidden');
+                }
+            });
+            
+            logoutButton.addEventListener('click', function() {
+                appSection.classList.add('hidden');
+                loginSection.classList.remove('hidden');
+                passwordInput.value = '';
+            });
+
+            // --- Print Logic ---
+            function handlePrint(certificatesHTML) {
+                // Remove any old print container if it exists
+                const oldContainer = document.getElementById('print-container');
+                if (oldContainer) {
+                    oldContainer.remove();
+                }
+
+                // Create a new container for printing
+                const printContainer = document.createElement('div');
+                printContainer.id = 'print-container';
+                printContainer.innerHTML = certificatesHTML;
+                document.body.appendChild(printContainer);
+
+                // Set up a listener for after printing to clean up the container
+                window.onafterprint = () => {
+                    printContainer.remove();
+                    window.onafterprint = null; // Clean up the event handler
+                };
+
+                // Trigger the browser's native print dialog
+                window.print();
+            }
+
+            function createCertificateHTML(name, type, isLast) {
+                const templateId = type === 'top10' ? 'top10-template' : 'participation-template';
+                const template = document.getElementById(templateId);
+                
+                // Get the inner HTML of the template holder
+                const clone = template.firstElementChild.cloneNode(true);
+                clone.querySelector('.student-name-placeholder').textContent = name;
+                
+                // Add page break class if it's not the last certificate in a batch
+                if (!isLast) {
+                    clone.classList.add('page-break');
+                }
+                
+                return clone.outerHTML;
+            }
+
+            // --- Single Certificate ---
+            generateSingleBtn.addEventListener('click', function () {
+                const studentName = document.getElementById('student-name').value.trim();
+                if (!studentName) {
+                    alert('Please enter a student name.');
+                    return;
+                }
+                const certType = document.querySelector('input[name="single-cert-type"]:checked').value;
+                const certificateHTML = createCertificateHTML(studentName, certType, true); // True because it's the only one
+                handlePrint(certificateHTML);
+            });
+
+            // --- Batch Certificate ---
+            generateBatchBtn.addEventListener('click', function() {
+                const studentNames = document.getElementById('student-names-batch').value.trim().split('\n').filter(name => name.trim() !== '');
+                if (studentNames.length === 0) {
+                    alert('Please enter at least one student name.');
+                    return;
+                }
+                const certType = document.querySelector('input[name="batch-cert-type"]:checked').value;
+
+                let allCertificatesHTML = '';
+                studentNames.forEach((name, index) => {
+                    const isLast = index === studentNames.length - 1;
+                    allCertificatesHTML += createCertificateHTML(name.trim(), certType, isLast);
+                });
+
+                handlePrint(allCertificatesHTML);
+            });
+        });
+    </script>
+</body>
+</html>
